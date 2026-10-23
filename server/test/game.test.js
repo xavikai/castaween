@@ -7,6 +7,12 @@ const html=fs.readFileSync(new URL('../../index.html',import.meta.url),'utf8');
 function code(from,to){return html.slice(html.indexOf(`function ${from}(`),html.indexOf(`function ${to}(`));}
 function run(source,context){vm.createContext(context);vm.runInContext(source,context);return context;}
 
+test('nicknames in the elimination feed are escaped as text',()=>{
+  const messages=[];const c=run(code('showElimination','dropLog'),{addFeed:html=>messages.push(html)});
+  c.showElimination({cause:'<b>Pau</b>',nom:'Marta & <img>'});
+  assert.equal(messages[0],'<b>&lt;b&gt;Pau&lt;/b&gt;</b> elimina <b>Marta &amp; &lt;img&gt;</b>');
+});
+
 test('inputs are capped at 10 Hz, sent only on changes, taps include release',()=>{
   const messages=[],NET={role:'client',tap:false,build:false,upgrade:false,lastInput:0,input:''};
   const S={spectator:false,keys:{KeyD:true},joy:{x:0,y:0}};
@@ -30,7 +36,7 @@ function roomFixture(){
   const t={id:0,active:[],members:[],queue:[]},S={cast:[],follow:null,player:null},NET={peers:new Map()};
   function add(human,id){const m={team:t,human,peer:id,state:'active',name:id,mesh:{g:{},bar:{g:{}}}};t.members.push(m);t.active.push(m);S.cast.push(m);return m;}
   for(let i=0;i<10;i++)add(false,'bot'+i);
-  const c=run(code('netRemove','netLook'),{NET,S,TEAMS:[t],SLOTS:10,scene:{remove(){}},leaveArena:m=>{t.active=t.active.filter(x=>x!==m);},dropCarry(){},spawn:m=>{m.state='active';t.active.push(m);},botLook:()=>({}),netLook:x=>x,netRoster(){},netBroadcast(){},netMember:(team,nom,look,id)=>{const m={team,name:nom,human:!!id,peer:id,state:'queue',mesh:{g:{},bar:{g:{}}}};t.members.push(m);S.cast.push(m);return m;}});
+  const c=run(code('netRemove','netLook'),{NET,S,TEAMS:[t],SLOTS:10,scene:{remove(){}},clearNameTag(){},leaveArena:m=>{t.active=t.active.filter(x=>x!==m);},dropCarry(){},spawn:m=>{m.state='active';t.active.push(m);},botLook:()=>({}),netLook:x=>x,netRoster(){},netBroadcast(){},netMember:(team,nom,look,id)=>{const m={team,name:nom,human:!!id,peer:id,state:'queue',mesh:{g:{},bar:{g:{}}}};t.members.push(m);S.cast.push(m);return m;}});
   return {c,t,S,NET};
 }
 test('ten human slots, FIFO waitlist, disconnect promotes queue then restores bot',()=>{

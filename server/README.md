@@ -9,13 +9,13 @@ Configuració pública: `assets/online.json`, amb `{"servidor":"wss://castaween-
 ## A l'aula
 
 1. Professor: obre el joc a l'ordinador del projector i prem **Obre una sala (professor)**. Comparteix el codi de quatre xifres; la pantalla mostra les persones de cada curs. Prem **Comença**.
-2. Alumnes: configura **Personatge**, després **Juga → curs → codi → Entra a l'arena**. Mou-te amb el joystick i prem LLANÇA. Els controls i les regles són els del joc original.
+2. Alumnes: configura **Personatge** si vols, després **Mode en línia → nickname i curs → codi → Entra a l'arena**. El nickname (fins a 12 caràcters) es desa en aquest dispositiu, es veu damunt la castanyera i s'envia als avisos d'eliminació de tothom («Pau elimina Marta»). Mou-te amb el joystick i prem LLANÇA. Els controls i les regles són els del joc original.
 3. El professor veu la partida amb el mode espectador existent: càmera automàtica, seguir castanyeres i vista general. Només ell inicia la ronda següent. **Mira una partida** permet entrar com a espectador remot, sense ocupar cap plaça.
 4. Mantén l'ordinador del professor despert, connectat a Internet i el joc en primer pla. Tancar l'amfitrió tanca la sala. Per acabar, **Surt de la sala**. No deixis sales obertes quan no es fan servir.
 
 Hi ha 10 places per curs, amb bots a les places buides. La persona número 11 va a la cua FIFO. Una caiguda o un torn de 90 s deixa entrar la primera de la cua; sense cua no hi ha límit de torn. Es manté la reaparició original de 3 s. Si algú es desconnecta, entra la primera de la cua o un bot. Les rondes duren 300 segons de simulació, amb l'acceleració de proves desactivada en línia.
 
-**Juga amb bots** està sempre disponible. Si falta la configuració, el flux original amb bots continua funcionant. Si no es pot establir la connexió, s'inicia una partida local amb un avís. Un codi inexistent mostra un error i permet corregir-lo. Una interrupció durant la partida retorna al menú; es pot tornar a entrar o triar bots.
+**Mode local · bots** està sempre disponible: **nickname i curs → Comença partida local**, sense escriure cap codi ni obrir cap WebSocket. Si falta la configuració, el joc passa directament a una partida local. Si no es pot establir la connexió, s'inicia una partida local amb un avís. Un codi inexistent mostra un error i permet corregir-lo. Una interrupció durant la partida retorna al menú; es pot tornar a entrar o triar el mode local.
 
 ## Arquitectura
 

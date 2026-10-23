@@ -306,7 +306,7 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
       </div>
       <div class="stripe" aria-hidden="true"><i style="--c:#3ec7e0"></i><i style="--c:#e8507f"></i><i style="--c:#f2c230"></i><i style="--c:#63d471"></i><i style="--c:#a57bff"></i></div>
       <div class="btns">
-        <button class="btn big" id="playBtn">Juga</button>
+        <button class="btn big" id="playBtn">Mode en línia</button>
         <button class="btn ghost" id="specBtn">Mira una partida</button>
         <div class="row3"><button class="btn ghost" id="lookBtn">Personatge</button><button class="btn ghost" id="howBtn">Com es juga</button><button class="btn ghost" id="optBtn">Opcions</button></div>
       </div>
@@ -317,7 +317,7 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
       <div class="cbar"><button class="back" data-go="home">← Menú</button><span><button class="back" id="tallerBtn">Taller de models</button> · <button class="back" id="rndLook">Aleatori</button></span></div>
       <h2>La teva castanyera</h2>
       <p class="hint2">Arrossega la figura per fer-la girar.</p>
-      <label class="label" for="nameIn">Nom a l'arena</label>
+      <label class="label" for="nameIn">Nickname a l'arena</label>
       <input class="name" id="nameIn" maxlength="12" placeholder="Tu" autocomplete="off">
       <div class="lrow" id="modelRow"><div class="label">Model</div><div class="opts" id="lookModels"></div><p class="credit" id="modelCredit" hidden></p></div>
       <div id="lookRows"></div>
@@ -398,15 +398,19 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
       <button class="btn ghost" id="tallerBtn2">Taller de models (.glb)</button>
       <label class="switch"><input type="checkbox" id="accel"><span></span><div>Temps accelerat ×6<small>Per provar: ronda de 50 s i torn de 15 s.</small></div></label>
       <div class="compare">
-        <div class="now"><h4>Ara</h4><ul><li>Tu i 49 bots</li><li>El codi i la sala són locals</li></ul></div>
-        <div class="later"><h4>Multijugador</h4><ul><li>Codi real per sala</li><li>Les persones substitueixen bots</li><li>Cua compartida per curs</li></ul></div>
+        <div class="now"><h4>Mode local</h4><ul><li>Tu i 49 bots</li><li>Entra sense cap codi de sala</li></ul></div>
+        <div class="later"><h4>Mode en línia</h4><ul><li>Codi del professor per entrar</li><li>Les persones substitueixen bots</li><li>Cua compartida per curs</li></ul></div>
       </div>
       <button class="btn" data-go="home">Fet</button>
     </div>
 
     <div class="card" id="step1" hidden>
       <button class="back" data-go="home">← Menú</button>
-      <div class="steps"><span class="on">1 · Curs</span><span>2 · Codi</span><span>3 · Arena</span></div>
+      <div class="steps" id="entrySteps"><span class="on">1 · Nickname i curs</span><span>2 · Codi</span><span>3 · Arena</span></div>
+      <label class="label" for="nicknameIn">El teu nickname</label>
+      <input class="name" id="nicknameIn" maxlength="12" placeholder="Ex.: CastanyaNinja" autocomplete="nickname" aria-describedby="nicknameHelp nicknameErr">
+      <p class="note" id="nicknameHelp">Màxim 12 caràcters. Es veurà damunt la teva castanyera i a les eliminacions.</p>
+      <p class="err" id="nicknameErr" role="alert"></p>
       <h2>Tria el teu curs</h2>
       <div class="teams" id="teamPick"></div>
       <div class="btns"><button class="btn" id="toCode">Següent</button></div>
@@ -1225,7 +1229,7 @@ function clearRound(){
   for(const q of S.crates)scene.remove(q.g);S.crates=[];for(const q of S.puddles)scene.remove(q.g);S.puddles=[];
   for(const p of projPool){p.alive=false;p.mesh.visible=false;}
 }
-function clearWorld(){for(const m of S.cast){scene.remove(m.mesh.g);scene.remove(m.mesh.bar.g);}S.cast=[];clearRound();}
+function clearWorld(){for(const m of S.cast){clearNameTag(m.mesh);scene.remove(m.mesh.g);scene.remove(m.mesh.bar.g);}S.cast=[];clearRound();}
 function buildRoom(){
   clearWorld();S.player=null;const names=shuffle(NAMES.slice());let ni=0;
   TEAMS.forEach(t=>{t.active=[];t.queue=[];t.members=[];t.stock=START_STOCK;t.hitT=0;t.delivered=0;
@@ -1252,11 +1256,15 @@ function swapOut(m){const t=m.team;leaveArena(m);const next=t.queue.shift();m.st
 function dropCarry(m){const n=m.carry;if(!n)return;if(n>=2&&S.player&&S.player.state==='active'&&Math.hypot(S.player.pos.x-m.pos.x,S.player.pos.z-m.pos.z)<14)hint('rival');for(let i=0;i<n;i++){const a=Math.random()*6.283,v=rand(2,4.5);dropLog(m.pos.x,m.pos.z,Math.cos(a)*v,Math.sin(a)*v,rand(5,7.5),1.2);}
   m.carry=0;if(n>=2){popText(m.pos.x,2.8,m.pos.z,`+${n} llenya a terra!`,'wood');shock(m.pos.x,m.pos.z,2.6,0xffb030);}}
 function downCast(m,byTxt){
+  const cause=document.createElement('span');cause.innerHTML=byTxt;
+  const event={t:'baixa',nom:m.name,cause:cause.textContent||'Halloween'};
+  showElimination(event);if(NET.role==='host')NET.events.push(event);
   burst(m.pos.x,1,m.pos.z,12,'nut',4);smoke(m.pos.x,0.6,m.pos.z,10);shock(m.pos.x,m.pos.z,2,m.team.color);if(m.isPlayer){shakeAmt=Math.max(shakeAmt,0.4);sfx('down');}dropCarry(m);
   const t=m.team;
-  if(m.human&&t.queue.length){const n=swapOut(m);addFeed(`${who(m)} cau davant ${byTxt}`,n?` · entra ${esc(n.name)} de la cua`:'');}
-  else{leaveArena(m);m.state='respawning';m.respawn=RESPAWN;if(m.isPlayer)addFeed(`${who(m)} caus davant ${byTxt}`,' · reapareixes');}
+  if(m.human&&t.queue.length){const n=swapOut(m);if(n)addFeed(`Entra ${who(n)} de la cua`);}
+  else{leaveArena(m);m.state='respawning';m.respawn=RESPAWN;}
 }
+function showElimination(ev){addFeed(`<b>${esc(ev.cause)}</b> elimina <b>${esc(ev.nom)}</b>`);}
 const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const who=m=>`<b style="color:${m.team.css}">${esc(m.name)}</b>`;
 const teamTag=t=>`<b style="color:${t.css}">${t.short}</b>`;
@@ -1601,16 +1609,16 @@ function startGame(){
   S.phase='play';$('#lobby').hidden=true;$('#results').hidden=true;$('#hud').hidden=false;feedEl.innerHTML='';hudT=0;
   $('#connectionLabel').textContent=NET.role?`Sala ${S.code} · en línia`:'Partida amb bots';
   $('#hud').classList.toggle('spectating',!!S.spectator);$('#spec').hidden=!S.spectator;$('#specHint').hidden=!S.spectator;
-  if(S.spectator){addFeed(`Mires la sala ${S.code}`,' · mode espectador');banner('Mode espectador','var(--ember)');setTimeout(()=>{$('#specHint').hidden=true;},6000);syncSpecBtns();return;}
+  if(S.spectator){addFeed(NET.offline?'Mires una partida local amb bots':`Mires la sala ${S.code}`,' · mode espectador');banner('Mode espectador','var(--ember)');setTimeout(()=>{$('#specHint').hidden=true;},6000);syncSpecBtns();return;}
   if(S.simFull){addFeed(`Sala ${S.code} · ${teamTag(S.player.team)} és ple`,' · entres a la cua');}
-  else{addFeed(`Has entrat a la sala ${S.code}`,' · substitueixes un bot');banner('Alimenta la foguera!','var(--ember)');}
+  else{addFeed(NET.offline?'Partida local · contra bots':`Has entrat a la sala ${S.code}`,NET.offline?'': ' · substitueixes un bot');banner('Alimenta la foguera!','var(--ember)');}
 }
 function endRound(){
   sfx('end');$('#tip').style.opacity='0';
   S.phase='results';S.holding=false;S.joy.on=false;joyEl.hidden=true;for(const p of projPool){p.alive=false;p.mesh.visible=false;}
   const sorted=TEAMS.slice().sort((a,b)=>b.stock-a.stock);const top=sorted[0];const tie=sorted[1]&&sorted[1].stock===top.stock;if(!tie&&NET.role!=='client')top.wins++;
   const w=$('#resWinner');w.style.setProperty('--c',tie?'var(--ink)':top.css);w.textContent=tie?'Empat':top.name;
-  $('#resEyebrow').textContent=`Final de la ronda ${S.round} · sala ${S.code}`;
+  $('#resEyebrow').textContent=`Final de la ronda ${S.round} · ${NET.offline?'partida local':'sala '+S.code}`;
   let mvp=null;for(const m of S.cast)if(!mvp||m.delivered>mvp.delivered)mvp=m;
   $('#resMine').textContent=S.spectator?'–':S.player.delivered;$('#resMvp').textContent=mvp&&mvp.delivered?mvp.name:'–';$('#resMvpL').textContent=mvp&&mvp.delivered?`Millor castanyera · ${mvp.delivered} de llenya (${mvp.team.short})`:'Millor castanyera';
   $('#resTable').innerHTML='<tr><th>#</th><th>Curs</th><th class="num">Llenya</th><th class="num">Rondes</th></tr>'+sorted.map((t,i)=>`<tr><td>${i+1}</td><td><span class="tdot" style="--c:${t.css}"></span>${t.name}${t.id===S.pTeam?' (tu)':''}</td><td class="num">${t.stock}</td><td class="num">${t.wins}</td></tr>`).join('');
@@ -1625,7 +1633,7 @@ function nextRound(){
   S.phase='play';$('#results').hidden=true;feedEl.innerHTML='';hudT=0;banner(`Ronda ${S.round}`,'var(--ember)');
 }
 function openPause(){if(S.phase!=='play')return;if(NET.role==='client')NET.localPaused=true;else S.phase='paused';S.holding=false;S.joy.on=false;S.joy.x=S.joy.y=0;S.keys={};joyEl.hidden=true;
-  $('#pauseCode').textContent='· codi '+S.code;
+  $('#pauseCode').textContent=NET.offline?'· partida local':'· codi '+S.code;
   $('#pauseTable').innerHTML='<tr><th>Curs</th><th class="num">Persones</th><th class="num">Bots</th><th>En espera</th></tr>'+TEAMS.map(t=>{const h=t.active.filter(m=>m.human).length;return `<tr><td><span class="tdot" style="--c:${t.css}"></span>${t.short}</td><td class="num">${h}</td><td class="num">${t.active.length-h}</td><td class="qnames">${t.queue.length?t.queue.map(m=>m.isPlayer?'<b style="color:var(--ink)">Tu</b>':esc(m.name)).join(', '):'–'}</td></tr>`;}).join('');
   $('#pause').hidden=false;}
 $('#pauseBtn').addEventListener('click',openPause);
@@ -1640,7 +1648,7 @@ const tp=$('#teamPick');
 function renderPick(){tp.innerHTML='';TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.className='team-opt';b.style.setProperty('--c',t.css);b.setAttribute('aria-pressed',i===pickTeam);b.innerHTML=`<span class="sw"></span><b>${t.name}</b>`;b.addEventListener('click',()=>{pickTeam=i;renderPick();});tp.appendChild(b);});}
 renderPick();
 const CARDS=['home','custom','taller','howto','opts','step1','step2','onlineRoom'];
-function showCard(id){CARDS.forEach(c=>$('#'+c).hidden=c!==id);$('#lobby').scrollTop=0;S.view=id;if(id==='custom'){renderLook();updatePreview();}else if(id==='taller'){renderTaller();updatePreview();}else if(preview)preview.visible=false;}
+function showCard(id){CARDS.forEach(c=>$('#'+c).hidden=c!==id);$('#lobby').scrollTop=0;S.view=id;if(id==='step1'){const local=!!NET.offline;$('#nicknameIn').value=S.look.name||'';$('#nicknameErr').textContent='';$('#entrySteps').innerHTML=local?'<span class="on">1 · Nickname i curs</span><span>2 · Partida amb bots</span>':'<span class="on">1 · Nickname i curs</span><span>2 · Codi</span><span>3 · Arena</span>';$('#toCode').textContent=local?'Comença partida local':'Següent';}if(id==='custom'){renderLook();updatePreview();}else if(id==='taller'){renderTaller();updatePreview();}else if(preview)preview.visible=false;}
 function showStep(n){showCard(n===1?'step1':'step2');}
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{audioInit();sfx('click');showCard(b.dataset.go);}));
 $('#playBtn').addEventListener('click',()=>{NET.offline=false;audioInit();sfx('click');S.spectator=false;showCard('step1');});
@@ -1714,16 +1722,19 @@ $('#sndOn').addEventListener('change',e=>{AU.sfxOn=e.target.checked;audioInit();
 $('#musOn').addEventListener('change',e=>{AU.musOn=e.target.checked;audioInit();audioSet();syncMute();});
 function syncMute(){const on=AU.sfxOn||AU.musOn;$('#muteWave').toggleAttribute('hidden',!on);$('#muteX').toggleAttribute('hidden',on);$('#muteBtn').setAttribute('aria-label',on?'Silencia el so':'Activa el so');}
 $('#muteBtn').addEventListener('click',()=>{const on=!(AU.sfxOn||AU.musOn);AU.sfxOn=AU.musOn=on;$('#sndOn').checked=$('#musOn').checked=on;audioInit();audioSet();syncMute();});
-async function openCodeCard(){await NET.config;S.code=String(Math.floor(1000+Math.random()*9000));$('#roomCode').textContent=S.code;$('#codeTitle').textContent=`Entra a la sala · ${TEAMS[pickTeam].name}`;$('#codeIn').value='';$('#codeErr').textContent='';$('#codeIn').classList.remove('bad');showStep(2);
+async function openCodeCard(){await NET.config;if(!NET.url||NET.offline){startLocalGame();return;}S.code='';$('#codeTitle').textContent=`Entra a la sala · ${TEAMS[pickTeam].name}`;$('#codeIn').value='';$('#codeErr').textContent='';$('#codeIn').classList.remove('bad');showStep(2);
   $('#roomCode').parentElement.hidden=!!NET.url&&!NET.offline;
   $('#simFullRow').hidden=!!S.spectator||!!NET.url&&!NET.offline;$('#joinBtn').textContent=S.spectator?'Entra com a espectador':"Entra a l'arena";if(S.spectator)$('#codeTitle').textContent='Mira la sala';$('#backBtn').textContent=S.spectator?'← Menú':'← Canvia de curs';}
-$('#toCode').addEventListener('click',()=>{S.spectator=false;openCodeCard();});
+function saveNickname(){const name=$('#nicknameIn').value.replace(/[\u0000-\u001f\u007f]/g,'').trim().slice(0,12);if(!name){$('#nicknameErr').textContent='Escriu un nickname perquè els altres et puguin identificar.';$('#nicknameIn').focus();return false;}S.look.name=name;try{localStorage.setItem('castaween-look',JSON.stringify(S.look));}catch{}return true;}
+function startLocalGame(){netClose();NET.offline=true;S.code='Local';$('#simFull').checked=false;startGame();}
+$('#nicknameIn').addEventListener('input',()=>{$('#nicknameErr').textContent='';});
+$('#toCode').addEventListener('click',()=>{if(!saveNickname())return;S.spectator=false;if(NET.offline)startLocalGame();else openCodeCard();});
 $('#backBtn').addEventListener('click',()=>{if(S.spectator)showCard('home');else showStep(1);});
 $('#codeIn').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,4);$('#codeErr').textContent='';e.target.classList.remove('bad');});
 async function join(){const v=$('#codeIn').value;if(v.length<4){$('#codeErr').textContent='Escriu els 4 números de la pantalla de la sala.';$('#codeIn').classList.add('bad');return;}
   await NET.config;if(NET.url&&!NET.offline){$('#joinBtn').disabled=true;
     try{netClose();await netConnect(v,'client');NET.role='client';NET.localPaused=false;S.code=v;S.clock=1;clearWorld();S.player=null;S.follow=null;netWaiting();netSend({t:'join',curs:pickTeam,nom:S.look.name||'Alumne',look:S.look,spectator:!!S.spectator});}
-    catch(e){netClose();if(e.message==='inexistent'||e.message==='limit'){$('#codeErr').textContent=e.message==='inexistent'?'Aquest codi no correspon a cap sala oberta. Revisa la pantalla del professor.':'La sala ha arribat al límit de connexions.';$('#codeIn').classList.add('bad');}else{S.code=v;startGame();banner('Sense connexió · partida amb bots','var(--ember)');}}
+    catch(e){netClose();if(e.message==='inexistent'||e.message==='limit'){$('#codeErr').textContent=e.message==='inexistent'?'Aquest codi no correspon a cap sala oberta. Revisa la pantalla del professor.':'La sala ha arribat al límit de connexions.';$('#codeIn').classList.add('bad');}else{startLocalGame();banner('Sense connexió · partida amb bots','var(--ember)');}}
     finally{$('#joinBtn').disabled=false;}return;}
   if(v!==S.code){$('#codeErr').textContent='Aquest codi no correspon a cap sala oberta. Revisa la pantalla.';$('#codeIn').classList.add('bad');return;}startGame();}
 $('#joinBtn').addEventListener('click',join);$('#hq').addEventListener('change',e=>applyQuality(e.target.checked));$('#codeIn').addEventListener('keydown',e=>{if(e.key==='Enter')join();});
@@ -1735,7 +1746,7 @@ const hostButton=document.createElement('button');hostButton.className='btn ghos
 const roomCard=document.createElement('div');roomCard.id='onlineRoom';roomCard.className='card';roomCard.hidden=true;
 roomCard.innerHTML='<h2>Sala de Castaween</h2><div class="screen"><div class="big" id="onlineCode">····</div><p id="onlineStatus" role="status">Connectant…</p></div><div id="onlineRoster"></div><div class="btns"><button class="btn" id="onlineStart">Comença</button><button class="btn ghost" id="onlineLeave">Surt de la sala</button></div>';
 $('#lobby').appendChild(roomCard);
-const offlineButton=document.createElement('button');offlineButton.className='btn ghost';offlineButton.id='offlineBtn';offlineButton.textContent='Juga amb bots';hostButton.after(offlineButton);offlineButton.addEventListener('click',()=>{NET.offline=true;S.spectator=false;audioInit();showCard('step1');});
+const offlineButton=document.createElement('button');offlineButton.className='btn ghost';offlineButton.id='offlineBtn';offlineButton.textContent='Mode local · bots';$('#playBtn').after(offlineButton);offlineButton.addEventListener('click',()=>{NET.offline=true;S.spectator=false;audioInit();showCard('step1');});
 function netSend(m){if(NET.ws&&NET.ws.readyState===WebSocket.OPEN&&NET.ws.bufferedAmount<256000){NET.ws.send(JSON.stringify(m));return true;}return false;}
 function netClose(){const ws=NET.ws;NET.ws=null;NET.role=null;if(ws)ws.close();for(const e of NET.replicas.values())netDispose(e);NET.peers.clear();NET.replicas.clear();NET.previous.clear();NET.events=[];NET.input='';NET.received=0;NET.seq=0;NET.resync=false;NET.tap=NET.build=NET.upgrade=false;}
 function netRoster(){
@@ -1758,7 +1769,7 @@ function netConnect(code,role){return new Promise((resolve,reject)=>{
 function netLost(reason){if(!NET.role)return;netClose();toLobby();$('#home .tagline').textContent=reason==='amfitrio'?"L’amfitrió s’ha desconnectat. Torna a entrar quan obri una sala.":'Connexió interrompuda. Pots continuar amb bots o tornar a entrar.';}
 hostButton.addEventListener('click',async()=>{
   hostButton.disabled=true;await NET.config;netClose();
-  if(!NET.url){hostButton.disabled=false;$('#home .tagline').textContent='Mode en línia no configurat. Juga amb bots amb el botó Juga.';return;}
+  if(!NET.url){hostButton.disabled=false;$('#home .tagline').textContent='Mode en línia no configurat. Pots jugar amb Mode local · bots.';return;}
   try{for(let attempt=0;attempt<20;attempt++){
     S.code=String(1000+crypto.getRandomValues(new Uint32Array(1))[0]%9000);
     try{await netConnect(S.code,'host');break;}catch(e){if(e.message!=='ocupada'||attempt===19)throw e;}
@@ -1772,7 +1783,7 @@ function netMember(t,nom,look,peer){
   const sample=t.members[0];const m=Object.assign({},sample,{name:nom,look,human:!!peer,peer:peer||null,isPlayer:false,state:'queue',pos:new THREE.Vector3(),vel:new THREE.Vector3(),ai:{t:0,target:null,strafe:1,dist:7,raid:null},mesh:makeCastanyera(t,false,look),carry:0,kills:0,delivered:0,turn:0,burn:0,weapon:null,ammo:0,netInput:{mx:0,mz:0,tir:false}});
   t.members.push(m);S.cast.push(m);return m;
 }
-function netRemove(m){const t=m.team;leaveArena(m);t.queue=t.queue.filter(x=>x!==m);t.members=t.members.filter(x=>x!==m);S.cast=S.cast.filter(x=>x!==m);scene.remove(m.mesh.g);scene.remove(m.mesh.bar.g);if(S.follow===m)S.follow=null;}
+function netRemove(m){const t=m.team;leaveArena(m);t.queue=t.queue.filter(x=>x!==m);t.members=t.members.filter(x=>x!==m);S.cast=S.cast.filter(x=>x!==m);clearNameTag(m.mesh);scene.remove(m.mesh.g);scene.remove(m.mesh.bar.g);if(S.follow===m)S.follow=null;}
 function netHostMessage(m){
   if(m.t==='join'){
     if(NET.peers.has(m.id))return;
@@ -1823,7 +1834,7 @@ function netBroadcast(to){if(NET.role!=='host')return;
   netSend({t:'estat',...(to?{to}:{}),seq:to?NET.seq:++NET.seq,full,up,del,meta,events});
   if(!to)NET.previous=current;
 }
-function netDispose(e){if(e.mesh){scene.remove(e.mesh.g);if(e.mesh.bar)scene.remove(e.mesh.bar.g);}if(e.g)scene.remove(e.g);}
+function netDispose(e){if(e.mesh){clearNameTag(e.mesh);scene.remove(e.mesh.g);if(e.mesh.bar)scene.remove(e.mesh.bar.g);}if(e.g)scene.remove(e.g);}
 function netReplica(d){const team=TEAMS[d.team||0];let e={pos:new THREE.Vector3(d.x,d.y,d.z),vel:new THREE.Vector3(),phase:0,face:0,flash:0,lunge:0,inv:0,burn:0,throwAnim:0,respawn:0,carry:0,role:'c',t:0,age:1,ry:0,team};
   if(d.k==='c')Object.assign(e,{mesh:makeCastanyera(team,d.peer===NET.id,d.look),isPlayer:d.peer===NET.id,ai:{}});
   if(d.k==='m')Object.assign(e,{mesh:makeMonster(d.type),def:MON[d.type],alive:true});
@@ -1855,7 +1866,7 @@ function netReceive(m){
   const phase=m.meta.phase;
   if(phase==='results'&&S.phase!=='results'){endRound();$('#nextBtn').hidden=true;}
   else if(phase!=='results'){S.phase=phase;if(phase==='lobby'){netWaiting();$('#onlineStatus').textContent='Espera que el professor comenci.';}else{$('#lobby').hidden=true;$('#results').hidden=true;$('#hud').hidden=false;$('#hud').classList.toggle('spectating',!!S.spectator);$('#spec').hidden=!S.spectator;}}
-  for(const ev of m.events||[]){if(ev.t==='tir'){sfx(ev.kind==='bazooka'?'heavy':ev.kind==='fire'?'fire':'throw',ev.x,ev.z);}else if(ev.t==='entrega'){sparks(ev.x,2,ev.z,10,0xffc050,5);popText(ev.x,3,ev.z,'+'+ev.n+' llenya','wood');sfx('deliver',ev.x,ev.z);}else if(ev.t==='mort'){smoke(ev.x,.6,ev.z,6);shock(ev.x,ev.z,2,0xffa040);}else{sparks(ev.x,1,ev.z,6,0xffa040,4);sfx('hit',ev.x,ev.z);}}
+  for(const ev of m.events||[]){if(ev.t==='baixa'){showElimination(ev);}else if(ev.t==='tir'){sfx(ev.kind==='bazooka'?'heavy':ev.kind==='fire'?'fire':'throw',ev.x,ev.z);}else if(ev.t==='entrega'){sparks(ev.x,2,ev.z,10,0xffc050,5);popText(ev.x,3,ev.z,'+'+ev.n+' llenya','wood');sfx('deliver',ev.x,ev.z);}else if(ev.t==='mort'){smoke(ev.x,.6,ev.z,6);shock(ev.x,ev.z,2,0xffa040);}else{sparks(ev.x,1,ev.z,6,0xffa040,4);sfx('hit',ev.x,ev.z);}}
   netRoster();
 }
 function netInterpolate(now,dt){for(const e of NET.replicas.values()){if(!e.netTarget)continue;const a=clamp((now-e.netAt)/100,0,1),v=e.netFrom.clone().lerp(e.netTarget,a);if(e.pos)e.pos.copy(v);e.x=v.x;e.y=v.y;e.z=v.z;const k=e.netData.k;if(['a','b','u','p'].includes(k)&&e.g)e.g.position.set(v.x,k==='a'?.6:k==='b'?.5:v.y,v.z);if(k==='p')e.g.rotation.x+=dt*12;}specUpdate(dt);}
@@ -1958,7 +1969,13 @@ function animCast(R,sp,phase,dt,now,thr,hurt,inv){const rig=R.rig,hasA=!!(R.X&&R
   const lean=thr>0?(thr>0.55?-0.22:0.28*thr/0.55):hurt?-0.25:mv*0.2;rig.rotation.x+=(lean-rig.rotation.x)*k;
   rig.rotation.z+=(Math.sin(phase)*0.09*mv-rig.rotation.z)*k;
   const armT=thr>0?(thr>0.55?-3.0:0.6):Math.sin(phase)*0.6*mv+Math.sin(now/600)*0.05;R.shoulder.rotation.x+=(armT-R.shoulder.rotation.x)*Math.min(1,dt*(thr>0?30:10));}
+function clearNameTag(mesh){if(!mesh||!mesh.nick)return;mesh.g.remove(mesh.nick);mesh.nick.material.map.dispose();mesh.nick.material.dispose();mesh.nick=null;}
+function syncNameTag(m){const mesh=m.mesh;if(!m.human){clearNameTag(mesh);return;}if(mesh.nick&&mesh.nickName===m.name)return;clearNameTag(mesh);
+  const c=document.createElement('canvas');c.width=512;c.height=96;const x=c.getContext('2d');x.font='400 46px Bungee, Impact, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillStyle='rgba(14,17,34,.85)';x.fillRect(8,8,496,80);x.fillStyle=m.team.css;x.fillRect(8,84,496,4);x.fillStyle='#fff8e8';x.fillText(m.name,256,48,470);
+  const texture=new THREE.CanvasTexture(c);const nick=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,transparent:true,depthWrite:false}));nick.scale.set(2.5,.47,1);nick.position.y=2.85;nick.renderOrder=7;mesh.g.add(nick);mesh.nick=nick;mesh.nickName=m.name;
+}
 function animate(dt,now){
+  for(const m of S.cast)syncNameTag(m);
   for(const m of S.cast){if(m.state!=='active')continue;const g=m.mesh.g;const sp=Math.hypot(m.vel.x,m.vel.z);m.phase+=dt*(4+sp*2.2);
     g.position.set(m.pos.x,0,m.pos.z);g.rotation.y=lerpA(g.rotation.y,m.face,Math.min(1,dt*14));
     animCast(m.mesh,sp,m.phase,dt,now,m.throwAnim>0?m.throwAnim/0.18:0,m.flash>0,m.inv);if(m.mesh.X){animAsset(m.mesh.X,dt,sp,m.throwAnim>0,m.flash>0,BOT.speed);setAssetFlash(m.mesh.X,m.flash>0);}if(m.throwAnim>0)m.throwAnim-=dt;

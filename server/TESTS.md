@@ -2,7 +2,9 @@
 
 ## Automàtica
 
-`node --test server/test/*.test.js`: **8 proves, 8 correctes**.
+`node --test server/test/*.test.js`: **9 proves, 9 correctes**.
+
+- Els nicknames dels avisos d'eliminació s'escapen com a text, sense interpretar HTML de l'usuari.
 
 - Inputs a 10 Hz, només quan canvien; conservació del toc curt i enviament de l'alliberament.
 - Diferències de camps i eliminacions; la instantània d'un nou alumne no modifica la base del broadcast.
@@ -36,3 +38,13 @@ Es va detectar un tancament 1006 en una connexió unidireccional de l'amfitrió.
 Els controls locals han permès forçar caigudes, torns i finals de ronda. Després de publicar el commit del joc, s'ha repetit l'entrada amb un amfitrió i tres alumnes directament a GitHub Pages. Un alumne ha sortit i ha tornat a entrar com a espectador remot. La partida pública ha completat una ronda natural de cinc minuts sense errors de consola a l'amfitrió ni al mòbil inspeccionat; tots dos han mostrat Audiovisuals com a guanyador amb 55 de llenya i una victòria. També s'ha comprovat el tancament de l'amfitrió i la continuació amb el botó **Juga amb bots**.
 
 No s'ha fet una prova amb cinquanta mòbils físics. Cal una prova de Wi-Fi al centre abans de la jornada. Les sales i els clients de prova s'han tancat en acabar.
+
+## Actualització: nicknames i mode local sense codi
+
+- Menú amb **Mode en línia** i **Mode local · bots** diferenciats.
+- Nickname buit: avís clar i focus al camp. Nickname desat: es recupera a la següent entrada i es comparteix amb el configurador de Personatge.
+- Mode local: nickname «Castanya», triar curs i **Comença partida local** obre directament l'arena amb bots. Cap pantalla de codi ni WebSocket de sala.
+- Etiqueta «Castanya» visible sobre la castanyera humana al renderitzat 3D.
+- Prova amb amfitrió, «Marta» de 3D i «Pau» d'Audiovisuals: una eliminació provocada amb el control QA genera **Pau elimina Marta** al professor i als dos clients. Els bots també apareixen als avisos quan cauen.
+- Cap error de consola a l'amfitrió ni al mòbil inspeccionat durant aquesta prova.
+- El Worker continua retransmetent el protocol; l'esdeveniment de baixa viatja dins dels missatges d'estat existents, sense afegir missatges periòdics.

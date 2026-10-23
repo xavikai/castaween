@@ -6,7 +6,9 @@ Videojoc web 3D low poly per a mòbil, fet a CIFOG per la Castanyada. Les castan
 
 **Joc:** https://xavikai.github.io/castaween/
 
-Professor: **Obre una sala (professor) → comparteix el codi → Comença**. Alumnes: **Personatge → Juga → curs → codi**. Conserva l'ordinador del professor despert i el joc en primer pla. **Mira una partida** conserva el mode espectador; **Juga amb bots** permet jugar localment.
+Professor: **Obre una sala (professor) → comparteix el codi → Comença**. Alumnes: **Mode en línia → nickname i curs → codi**. El nickname es veu damunt les castanyeres humanes i als avisos d'eliminació, per exemple «Pau elimina Marta». Es desa en aquest dispositiu i també es pot editar a **Personatge**.
+
+**Mode local · bots → nickname i curs → Comença partida local** inicia una partida contra la màquina sense cap codi ni connexió al Worker. Conserva l'ordinador del professor despert i el joc en primer pla durant el mode en línia. **Mira una partida** conserva el mode espectador.
 
 Desplegament, protocol, límits gratuïts, proves i limitacions: [server/README.md](server/README.md).
 
