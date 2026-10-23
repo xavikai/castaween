@@ -1,0 +1,31 @@
+/* Tema d'exemple per a Castaween.
+   Per activar-lo: a assets/assets.json posa  "ui": { "css": "ui/tema-exemple.css" }
+   Tot el que hi ha aquí sobreescriu l'estil per defecte del joc. */
+
+:root {
+  /* Colors principals */
+  --night: #0e1122;        /* fons general */
+  --panel: rgba(16,18,36,.84); /* fons dels panells del HUD */
+  --panel-solid: #171a31;  /* fons de les targetes del menú */
+  --ink: #f4ead6;          /* text */
+  --muted: #aaa3bb;        /* text secundari */
+  --ember: #ff8a2a;        /* color d'accent (botons, títol) */
+  --ember-deep: #c9561a;
+  --danger: #ff5a4e;       /* vida baixa, errors */
+  --hallow: #a35cff;       /* color de Halloween (avisos) */
+  --heal: #8fe07a;         /* barra de vida */
+
+  /* Tipografies: carrega-les amb @import des de Google Fonts si en canvies */
+  --display: 'Bungee', Impact, sans-serif;  /* títols i botons */
+  --body: 'Rubik', system-ui, sans-serif;   /* text */
+}
+
+/* Exemples de peces que es poden redissenyar:
+.home h1            títol del menú principal
+.btn                botons principals          .btn.ghost  botons secundaris
+.card               targetes del menú          .card.home  targeta de portada
+.chip               marcador de cada curs (dalt)
+.clock              rellotge de la ronda
+.hp                 barra de vida              .throw      botó LLANÇA
+.feed div           avisos de la partida       .banner     rètol gran (Nit de Difunts!)
+*/

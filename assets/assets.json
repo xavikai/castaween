@@ -1,0 +1,37 @@
+{
+  "_llegeix-me": "Configuració dels assets de Castaween. Els camins són relatius a la carpeta assets/. Si un element no hi és o el fitxer falla, el joc fa servir la versió integrada. Guia completa: ASSETS.md",
+  "castanyeres": [],
+  "monstres": {},
+  "escenari": {},
+  "so": {
+    "efectes": {
+      "llancament": "so/efectes/llancament.mp3",
+      "llancament-foc": "so/efectes/llancament-foc.mp3",
+      "bazooka": "so/efectes/bazooka.mp3",
+      "impacte": "so/efectes/impacte.mp3",
+      "mal": "so/efectes/mal.mp3",
+      "monstre": "so/efectes/monstre.mp3",
+      "fantasma": "so/efectes/fantasma.mp3",
+      "explosio": "so/efectes/explosio.mp3",
+      "llenya": "so/efectes/llenya.mp3",
+      "arma": "so/efectes/arma.mp3",
+      "panellet": "so/efectes/panellet.mp3",
+      "entrega": "so/efectes/entrega.mp3",
+      "caiguda": "so/efectes/caiguda.mp3",
+      "aparicio": "so/efectes/aparicio.mp3",
+      "torradora": "so/efectes/torradora.mp3",
+      "foguera-cop": "so/efectes/foguera-cop.mp3",
+      "carabassot": "so/efectes/carabassot.mp3",
+      "campana": "so/efectes/campana.mp3",
+      "clic": "so/efectes/clic.mp3",
+      "final-ronda": "so/efectes/final-ronda.mp3"
+    },
+    "musica": {
+      "menu": "so/musica/musica-menu.wav",
+      "partida": "so/musica/musica-partida.wav",
+      "nit": "so/musica/musica-nit.wav"
+    }
+  },
+  "ui": {},
+  "config": "config.json"
+}

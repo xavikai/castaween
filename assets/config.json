@@ -1,0 +1,41 @@
+{
+  "_llegeix-me": "Valors d'equilibri del joc. Canvia els números i recarrega la pàgina.",
+  "armes": {
+    "foc": {
+      "municio": 12,
+      "cadencia": 0.42
+    },
+    "rafega": {
+      "municio": 30,
+      "cadencia": 0.12
+    },
+    "bazooka": {
+      "municio": 3,
+      "cadencia": 0.9
+    }
+  },
+  "monstres": {
+    "carabassa": {
+      "vida": 4,
+      "velocitat": 3.0,
+      "mal": 10,
+      "llenya": 1
+    },
+    "fantasma": {
+      "vida": 3,
+      "velocitat": 3.8,
+      "mal": 7,
+      "llenya": 1
+    },
+    "carabassot": {
+      "vida": 18,
+      "velocitat": 2.2,
+      "mal": 22,
+      "llenya": 5
+    }
+  },
+  "bots": {
+    "velocitat": 5.0,
+    "cadencia": 1.5
+  }
+}
