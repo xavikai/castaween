@@ -26,6 +26,8 @@ Tot el que surt al joc es pot substituir per material fet a classe, sense tocar 
 
 Dins del joc, **Personatge → Taller de models** valida un `.glb` abans d'entregar-lo.
 
+**[Descarrega els models i la guia d'escala](https://xavikai.github.io/castaween/assets/)**: model actual de referència i plantilla animada a **1,80 m**. A Blender, treballa en metres amb **Unit Scale 1.000**; les mides i els eixos són a `assets/plantilles/LLEGEIX-ME.md`.
+
 ## Estructura
 
 ```

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ca">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0e1122">
+<title>Castaween · Models i escala</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:24px 16px 48px;background:#0e1122;color:#f4ead6;font:16px/1.6 system-ui,sans-serif}main{max-width:780px;margin:auto}a{color:#ffad67}h1,h2{line-height:1.2}h1{color:#ff8a2a}h2{font-size:21px;margin-top:0}section{background:#171a31;border:1px solid #35364b;border-radius:16px;padding:22px;margin:20px 0}p{margin:10px 0}.download{display:inline-block;background:#ff8a2a;color:#2a1306;font-weight:750;padding:12px 16px;border-radius:10px;text-decoration:none;margin:6px 0}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid #35364b}small,.note{color:#bcb4c9}code{color:#ffe0bb}li{margin:7px 0}a:focus-visible{outline:3px solid #ff8a2a;outline-offset:4px}
+</style>
+<main>
+<a href="../">← Torna a Castaween</a>
+<h1>Models i escala de Castaween</h1>
+<p>Tothom treballa en metres: <strong>1 unitat = 1 metre</strong>. La castanyera d'entrega fa <strong>1,80 m d'alt</strong>, amb l'origen a terra.</p>
+<section>
+<h2>El model actual del joc</h2>
+<p>La castanyera clàssica actual, amb les mateixes formes i proporcions, ajustada a l'escala d'entrega. Sense barret opcional, contorn, ombra, efectes ni increments de mida de la vista prèvia.</p>
+<a class="download" href="plantilles/castanyera-actual-referencia.glb" download>Descarrega el model actual · GLB</a>
+<table><thead><tr><th>Dimensió a Blender</th><th>Mida</th></tr></thead><tbody><tr><td>Alçada · Z</td><td>1,800 m</td></tr><tr><td>Amplada · X</td><td>1,024 m</td></tr><tr><td>Fondària · Y</td><td>0,988 m</td></tr></tbody></table>
+<p class="note">Referència estàtica per comparar mides i proporcions: 1.529 triangles, colors per vèrtex i sense esquelet ni animacions. Per a una entrega, cal adaptar-la al pressupost de 1.500 triangles i a la paleta oficial.</p>
+<p><a href="plantilles/mides-castanyera.json" download>Descarrega les mides exactes · JSON</a></p>
+</section>
+<section>
+<h2>Plantilla per preparar l'entrega</h2>
+<p>També a 1,80 m, amb la paleta oficial, quatre ossos i les animacions <code>idle</code>, <code>corre</code>, <code>llanca</code> i <code>cop</code>. Aquesta és la base tècnica per practicar rig, UV i exportació.</p>
+<a class="download" href="plantilles/plantilla-castanyera.glb" download>Descarrega la plantilla animada · GLB</a>
+<p><a href="paleta-castaween.png" download>Descarrega la paleta oficial · PNG</a> · <a href="paleta-guia.png" download>Guia de colors · PNG</a></p>
+</section>
+<section>
+<h2>Com treballar a Blender</h2>
+<ol><li>A <strong>Scene Properties → Units</strong>, tria <strong>Metric</strong>, <strong>Unit Scale: 1.000</strong> i <strong>Length: Meters</strong>.</li><li>Importa el GLB amb <strong>File → Import → glTF 2.0</strong>. No el redimensionis en importar-lo.</li><li>Deixa la referència al costat del teu model, en una col·lecció pròpia. Mesura el conjunt del personatge: en aquesta referència el cos i el braç són dues peces.</li><li>El teu personatge ha de fer <strong>1,80 m d'alt</strong>, amb <strong>Z cap amunt</strong>, mirant cap a <strong>−Y</strong> i amb l'origen al centre de la base, a terra.</li><li>Aplica les transformacions amb <strong>Ctrl+A → All Transforms</strong>. Exporta només el teu model, sense la referència, càmeres ni llums, en <strong>glTF Binary (.glb)</strong>, amb <strong>+Y Up</strong>.</li><li>Valida'l a <strong>Personatge → Taller de models</strong> abans d'entregar-lo.</li></ol>
+<p class="note">Blender converteix els eixos en importar/exportar glTF: al fitxer GLB, l'alçada és Y i la cara mira cap a +Z. No cal girar-lo manualment després d'importar-lo.</p>
+<p><a href="https://github.com/xavikai/castaween/blob/main/ASSETS.md">Guia completa de models, límits i exportació</a> · <a href="plantilles/LLEGEIX-ME.md" download>Descarrega les instruccions</a></p>
+</section>
+</main>
+</html>

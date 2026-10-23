@@ -172,7 +172,7 @@ td.num,th.num{text-align:right}
 .menu-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background-size:cover;background-position:center;z-index:-1;pointer-events:none}
 .sheet.menu{isolation:isolate}
 select.name{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
-.filebtn{display:block;text-align:center;cursor:pointer}
+.filebtn{display:block;text-align:center;cursor:pointer;text-decoration:none}
 .filebtn:focus-within{outline:2px solid var(--ember);outline-offset:2px}
 .checks{display:flex;flex-direction:column;gap:5px;margin:0;padding:0;list-style:none}
 .checks li{display:flex;gap:9px;align-items:flex-start;font-size:13px;line-height:1.4}
@@ -331,6 +331,8 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
       <div class="cbar"><button class="back" data-go="home">← Menú</button><span><button class="back" id="tallerBtn">Taller de models</button> · <button class="back" id="rndLook">Aleatori</button></span></div>
       <h2>La teva castanyera</h2>
       <p class="hint2">Arrossega la figura per fer-la girar.</p>
+      <a class="btn ghost filebtn" href="assets/plantilles/castanyera-actual-referencia.glb" download>Descarrega el model de referència · 1,80 m</a>
+      <a class="back" href="assets/" target="_blank" rel="noopener">Models i mides per a Blender ↗</a>
       <label class="label" for="nameIn">Nickname a l'arena</label>
       <input class="name" id="nameIn" maxlength="12" placeholder="Tu" autocomplete="off">
       <div class="lrow" id="modelRow"><div class="label">Model</div><div class="opts" id="lookModels"></div><p class="credit" id="modelCredit" hidden></p></div>
@@ -344,6 +346,8 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
     <div class="card custom" id="taller" hidden>
       <div class="cbar"><button class="back" data-go="custom">← Personatge</button><button class="back" data-go="home">Menú</button></div>
       <h2>Taller de models</h2>
+      <a class="btn ghost filebtn" href="assets/plantilles/castanyera-actual-referencia.glb" download>Descarrega el model de referència · 1,80 m</a>
+      <a class="back" href="assets/" target="_blank" rel="noopener">Plantilla animada i guia d'escala ↗</a>
       <p class="note">Prova el teu model .glb abans d'entregar-lo: el joc comprova els requisits i el mostra amb el color del curs. El fitxer no surt del teu dispositiu.</p>
       <label class="label" for="tKind">Què has modelat</label>
       <select class="name" id="tKind"></select>

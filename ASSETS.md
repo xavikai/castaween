@@ -4,6 +4,16 @@ Aquesta guia explica com substituir qualsevol element del joc (personatges, mons
 
 ## Com funciona
 
+### Descarrega models per treballar a escala
+
+La carpeta [**assets/ al web**](https://xavikai.github.io/castaween/assets/) té botons de descàrrega i instruccions per a Blender:
+
+- [**Model actual de referència (.glb)**](assets/plantilles/castanyera-actual-referencia.glb): la castanyera clàssica actual, normalitzada a **1,80 m**. Estàtica, per comparar mides i proporcions. Fa **1,024 m d'ample** i **0,988 m de fondària**. Té 1.529 triangles i colors per vèrtex; s'ha d'optimitzar i adaptar a la paleta si es fa servir com a base d'una entrega.
+- [**Plantilla animada (.glb)**](assets/plantilles/plantilla-castanyera.glb): també de **1,80 m**, amb paleta, esquelet i les quatre animacions.
+- [**Instruccions d'escala**](assets/plantilles/LLEGEIX-ME.md) i [**mides exactes**](assets/plantilles/mides-castanyera.json).
+
+A Blender, feu servir **Metric · Unit Scale 1.000 · Meters**. La castanyera s'entrega a **1,80 m d'alt**, amb l'origen a terra. Amplada i fondària són orientatives per comparar siluetes. Els botons de descàrrega també són a **Personatge** i **Taller de models** del joc.
+
 Tot es configura des d'un sol fitxer: `assets/assets.json`. El joc el llegeix en arrencar i:
 
 - Si un element hi és i el fitxer es carrega bé, el fa servir.
