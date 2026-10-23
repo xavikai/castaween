@@ -2,6 +2,8 @@
 
 Descarrega'ls des de https://xavikai.github.io/castaween/assets/ o amb els botons de Personatge i Taller de models.
 
+Els monstres, arbres i objectes també tenen GLB de referència a `../referencies/`, amb les seves pròpies alçades, el catàleg de mides `mides-models.json` i les instruccions `LLEGEIX-ME.md`. El ZIP del catàleg web inclou tot el conjunt.
+
 ## Què és cada fitxer
 
 - **castanyera-actual-referencia.glb**: geometria de la castanyera clàssica actual, extreta de `index.html` amb les opcions per defecte. Estàtica, sense esquelet, sense contorns/ombres/llenya carregada ni multiplicadors de visualització. Escala aplicada per fer **1,80 m d'alt**. Serveix per comparar proporcions i mesures, no és una entrega preparada: té 1.529 triangles i colors per vèrtex.

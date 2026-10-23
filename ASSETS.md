@@ -11,6 +11,8 @@ La carpeta [**assets/ al web**](https://xavikai.github.io/castaween/assets/) té
 - [**Model actual de referència (.glb)**](assets/plantilles/castanyera-actual-referencia.glb): la castanyera clàssica actual, normalitzada a **1,80 m**. Estàtica, per comparar mides i proporcions. Fa **1,024 m d'ample** i **0,988 m de fondària**. Té 1.529 triangles i colors per vèrtex; s'ha d'optimitzar i adaptar a la paleta si es fa servir com a base d'una entrega.
 - [**Plantilla animada (.glb)**](assets/plantilles/plantilla-castanyera.glb): també de **1,80 m**, amb paleta, esquelet i les quatre animacions.
 - [**Instruccions d'escala**](assets/plantilles/LLEGEIX-ME.md) i [**mides exactes**](assets/plantilles/mides-castanyera.json).
+- **Monstres, arbres i objectes**: [19 models GLB al catàleg](https://xavikai.github.io/castaween/assets/#resta-models), [mides de cada model](assets/referencies/mides-models.json) i [instruccions](assets/referencies/LLEGEIX-ME.md). Inclou els tres monstres i tots els elements d'escenari substituïbles de la taula tècnica, ajustats a les alçades d'entrega. El tram de marge també fa **1,20 m de llarg (X)**. Són exemplars estàtics de les geometries integrades, amb els colors originals, sense efectes ni animacions; cal adaptar-los a la paleta i als límits si es reutilitzen com a entrega.
+- [**Descarrega tot el conjunt en ZIP**](assets/referencies/castaween-referencies.zip): els 19 models, la castanyera actual, la plantilla animada, les mides, les instruccions i la paleta.
 
 A Blender, feu servir **Metric · Unit Scale 1.000 · Meters**. La castanyera s'entrega a **1,80 m d'alt**, amb l'origen a terra. Amplada i fondària són orientatives per comparar siluetes. Els botons de descàrrega també són a **Personatge** i **Taller de models** del joc.
 
