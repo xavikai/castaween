@@ -33,4 +33,6 @@ Proves amb l'amfitrió i tres pestanyes d'alumnes, primer en escriptori i despr�
 
 Es va detectar un tancament 1006 en una connexió unidireccional de l'amfitrió. S'ha afegit ACK sortint sense temporitzadors. En repetir la prova amb el Worker actualitzat, cada client addicional havia rebut **més de 1.800 estats, només 2 instantànies completes i més de 1.800 deltes**, mantenint les connexions. No s'ha identificat de forma concloent quin intermediari originava el primer tall.
 
-Els controls locals han permès forçar caigudes, torns i finals de ronda; no s'ha esperat una ronda natural completa de cinc minuts ni s'ha fet una prova amb cinquanta mòbils físics. Cal una prova de Wi-Fi al centre abans de la jornada.
+Els controls locals han permès forçar caigudes, torns i finals de ronda. Després de publicar el commit del joc, s'ha repetit l'entrada amb un amfitrió i tres alumnes directament a GitHub Pages. Un alumne ha sortit i ha tornat a entrar com a espectador remot. La partida pública ha completat una ronda natural de cinc minuts sense errors de consola a l'amfitrió ni al mòbil inspeccionat; tots dos han mostrat Audiovisuals com a guanyador amb 55 de llenya i una victòria. També s'ha comprovat el tancament de l'amfitrió i la continuació amb el botó **Juga amb bots**.
+
+No s'ha fet una prova amb cinquanta mòbils físics. Cal una prova de Wi-Fi al centre abans de la jornada. Les sales i els clients de prova s'han tancat en acabar.

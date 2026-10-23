@@ -62,7 +62,7 @@ Pitjor cas d'una ronda de 5 minuts amb 50 alumnes: tots canvien input contínuam
 
 **100.000 / 7.736 = 12 rondes completes/dia** en aquest escenari, amb unes 7.168 peticions de marge per espera, errors i resincronització. No és una garantia de capacitat quan el compte té altres consums. Amb les mateixes connexions obertes entre rondes, el límit pur de trànsit s'acosta a 13 rondes (13 × 7.680 + ~56 = 99.896), però el marge és massa petit per planificar-hi una jornada. Planifica **12** o menys.
 
-La sala en espera/resultats emet 1 Hz: unes 180 peticions equivalents/hora, a més d'entrades i sortides. Els inputs que no canvien no s'envien, per tant l'ús real normalment és inferior al pitjor cas. Els ACK i les retransmissions sortints no afegeixen peticions. A 128 MB, fins i tot comptant tota la ronda com activa, 300 × 0,128 = 38,4 GB-s/ronda: el pressupost de peticions és el límit rellevant d'aquest càlcul. L'objecte no fa lectures/escriptures explícites de l'estat de joc a SQLite.
+La sala en espera/resultats emet 1 Hz: unes 180 peticions equivalents/hora, a més d'entrades i sortides. Els inputs que no canvien no s'envien, per tant l'ús real normalment és inferior al pitjor cas. Els ACK i les retransmissions sortints no afegeixen peticions. Amb l'assignació de 128 MB, fins i tot comptant tota la ronda com activa, el consum és inferior a 40 GB-s/ronda: el pressupost de peticions és el límit rellevant d'aquest càlcul. L'objecte no fa lectures/escriptures explícites de l'estat de joc a SQLite.
 
 ## Desenvolupar i desplegar
 
