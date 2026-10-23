@@ -48,3 +48,10 @@ No s'ha fet una prova amb cinquanta mòbils físics. Cal una prova de Wi-Fi al c
 - Prova amb amfitrió, «Marta» de 3D i «Pau» d'Audiovisuals: una eliminació provocada amb el control QA genera **Pau elimina Marta** al professor i als dos clients. Els bots també apareixen als avisos quan cauen.
 - Cap error de consola a l'amfitrió ni al mòbil inspeccionat durant aquesta prova.
 - El Worker continua retransmetent el protocol; l'esdeveniment de baixa viatja dins dels missatges d'estat existents, sense afegir missatges periòdics.
+
+## Configurador: figura i opcions sense solapament
+
+- Vista de mòbil 390 × 844: figura en una àrea superior reservada, opcions amb desplaçament independent a sota. Els rectangles del menú i de la vista prèvia no se solapen, també després de seleccionar «Barret de palla» entre les opcions inferiors.
+- Escriptori 1280 × 720: figura sencera a l'esquerra, opcions a la dreta; rotació amb arrossegament comprovada.
+- La càmera s'enquadra segons l'espai disponible de la vista prèvia, també al Taller de models. En sortir del configurador es desactiva el desplaçament de projecció i es recupera l'enquadrament del joc.
+- Desar l'aspecte des del mòbil i iniciar una partida local continua funcionant, sense pantalla de codi.

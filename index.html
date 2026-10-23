@@ -190,6 +190,19 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
 .row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.row3 .btn{font-size:12.5px;padding:13px 4px}
 .card.custom{margin-top:auto;max-height:54vh;overflow-y:auto;gap:12px;padding-top:14px}
 .card.custom>*{flex-shrink:0}
+.sheet.menu.preview-mode{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(140px,34%) minmax(0,1fr);align-items:stretch;overflow:hidden;background:rgba(8,9,20,.12)}
+.preview-mode .menu-top{grid-row:1;max-width:none}
+.preview-area{grid-row:2;position:relative;min-height:0;touch-action:none;cursor:grab}
+.preview-area:active{cursor:grabbing}
+.preview-area span{position:absolute;bottom:0;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:11px;color:var(--ink);background:rgba(14,17,34,.65);padding:4px 10px;border-radius:999px;pointer-events:none}
+.preview-mode .card.custom{grid-row:3;margin:0;min-height:0;max-height:none;justify-self:center;align-self:stretch}
+.preview-mode .menu-bg{display:none}
+@media (min-width:740px),(min-width:560px) and (orientation:landscape){
+  .sheet.menu.preview-mode{grid-template-columns:minmax(0,1fr) clamp(260px,38vw,420px);grid-template-rows:auto minmax(0,1fr)}
+  .preview-mode .menu-top{grid-column:1/-1}
+  .preview-mode .preview-area{grid-row:2;grid-column:1}
+  .preview-mode .card.custom{grid-row:2;grid-column:2;max-width:none}
+}
 .cbar{display:flex;justify-content:space-between}
 .hint2{margin:-8px 0 0;font-size:12px;color:var(--muted)}
 .name{font:inherit;font-size:16px;font-weight:500;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:rgba(244,234,214,.05);color:var(--ink)}
@@ -298,6 +311,7 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
       <span class="eyebrow">Castaween · aula</span>
     </div>
 
+    <div class="preview-area" id="previewArea" role="img" aria-label="Vista prèvia del personatge" hidden><span>Arrossega per girar el personatge</span></div>
     <div class="card home" id="home">
       <div class="title">
         <span class="kicker">31 d'octubre · Castanyada</span>
@@ -1648,7 +1662,7 @@ const tp=$('#teamPick');
 function renderPick(){tp.innerHTML='';TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.className='team-opt';b.style.setProperty('--c',t.css);b.setAttribute('aria-pressed',i===pickTeam);b.innerHTML=`<span class="sw"></span><b>${t.name}</b>`;b.addEventListener('click',()=>{pickTeam=i;renderPick();});tp.appendChild(b);});}
 renderPick();
 const CARDS=['home','custom','taller','howto','opts','step1','step2','onlineRoom'];
-function showCard(id){CARDS.forEach(c=>$('#'+c).hidden=c!==id);$('#lobby').scrollTop=0;S.view=id;if(id==='step1'){const local=!!NET.offline;$('#nicknameIn').value=S.look.name||'';$('#nicknameErr').textContent='';$('#entrySteps').innerHTML=local?'<span class="on">1 · Nickname i curs</span><span>2 · Partida amb bots</span>':'<span class="on">1 · Nickname i curs</span><span>2 · Codi</span><span>3 · Arena</span>';$('#toCode').textContent=local?'Comença partida local':'Següent';}if(id==='custom'){renderLook();updatePreview();}else if(id==='taller'){renderTaller();updatePreview();}else if(preview)preview.visible=false;}
+function showCard(id){CARDS.forEach(c=>$('#'+c).hidden=c!==id);const hasPreview=id==='custom'||id==='taller';$('#lobby').classList.toggle('preview-mode',hasPreview);$('#previewArea').hidden=!hasPreview;$('#lobby').scrollTop=0;S.view=id;if(id==='step1'){const local=!!NET.offline;$('#nicknameIn').value=S.look.name||'';$('#nicknameErr').textContent='';$('#entrySteps').innerHTML=local?'<span class="on">1 · Nickname i curs</span><span>2 · Partida amb bots</span>':'<span class="on">1 · Nickname i curs</span><span>2 · Codi</span><span>3 · Arena</span>';$('#toCode').textContent=local?'Comença partida local':'Següent';}if(id==='custom'){renderLook();updatePreview();}else if(id==='taller'){renderTaller();updatePreview();}else if(preview)preview.visible=false;}
 function showStep(n){showCard(n===1?'step1':'step2');}
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{audioInit();sfx('click');showCard(b.dataset.go);}));
 $('#playBtn').addEventListener('click',()=>{NET.offline=false;audioInit();sfx('click');S.spectator=false;showCard('step1');});
@@ -1715,9 +1729,10 @@ function renderLook(){const box=$('#lookRows');box.innerHTML='';$('#nameIn').val
 $('#nameIn').addEventListener('input',e=>{S.look.name=e.target.value.trim().slice(0,12);});
 $('#rndLook').addEventListener('click',()=>{const n=S.look.name;S.look=randomLook();S.look.name=n;sfx('pick');renderLook();updatePreview();});
 $('#saveLook').addEventListener('click',()=>{try{localStorage.setItem('castaween-look',JSON.stringify(S.look));}catch(e){}sfx('heal');showCard('home');});
-$('#lobby').addEventListener('pointerdown',e=>{if(S.view!=='custom'||e.target!==$('#lobby'))return;spinDrag={x:e.clientX,s:spin};});
+$('#previewArea').addEventListener('pointerdown',e=>{if(S.view!=='custom'&&S.view!=='taller')return;e.preventDefault();spinDrag={x:e.clientX,s:spin};e.currentTarget.setPointerCapture(e.pointerId);});
 addEventListener('pointermove',e=>{if(spinDrag)spin=spinDrag.s+(e.clientX-spinDrag.x)*0.012;});
 addEventListener('pointerup',()=>{spinDrag=null;});
+addEventListener('pointercancel',()=>{spinDrag=null;});
 $('#sndOn').addEventListener('change',e=>{AU.sfxOn=e.target.checked;audioInit();audioSet();syncMute();});
 $('#musOn').addEventListener('change',e=>{AU.musOn=e.target.checked;audioInit();audioSet();syncMute();});
 function syncMute(){const on=AU.sfxOn||AU.musOn;$('#muteWave').toggleAttribute('hidden',!on);$('#muteX').toggleAttribute('hidden',on);$('#muteBtn').setAttribute('aria-label',on?'Silencia el so':'Activa el so');}
@@ -2002,9 +2017,12 @@ function animate(dt,now){
 }
 function updateCam(dt){
   const P=S.player;
-  if(S.phase==='lobby'&&(S.view==='custom'||S.view==='taller')&&preview){const sp=previewSpot(),k=1-Math.exp(-dt*4),ph=preview.userData.h||2.3,d=(portrait?6.6:4.6)*Math.max(1,ph/2.3);
-    camPos.lerp(new THREE.Vector3(sp.x+Math.sin(sp.face)*d,1.5,sp.z+Math.cos(sp.face)*d),k);camLook.lerp(new THREE.Vector3(sp.x,(portrait?-0.55:0.9)*Math.max(1,ph/2.3)+(ph>2.3?ph*0.3:0),sp.z),k);camPos.y+=(1.5*Math.max(1,ph/2.3)-camPos.y)*k;camera.position.copy(camPos);camera.lookAt(camLook);
+  if(S.phase==='lobby'&&(S.view==='custom'||S.view==='taller')&&preview){const sp=previewSpot(),rect=$('#previewArea').getBoundingClientRect(),first=!(camera.view&&camera.view.enabled),k=first?1:1-Math.exp(-dt*8),ph=(preview.userData.h||2.3)*1.15;
+    const focal=innerHeight/(2*Math.tan(camera.fov*Math.PI/360)),d=Math.max(ph*focal/(Math.max(1,rect.height)*.78),ph*.8*focal/(Math.max(1,rect.width)*.78));
+    camera.setViewOffset(innerWidth,innerHeight,innerWidth/2-rect.left-rect.width/2,innerHeight/2-rect.top-rect.height/2,innerWidth,innerHeight);
+    camPos.lerp(new THREE.Vector3(sp.x+Math.sin(sp.face)*d,ph*.52,sp.z+Math.cos(sp.face)*d),k);camLook.lerp(new THREE.Vector3(sp.x,ph*.5,sp.z),k);camera.position.copy(camPos);camera.lookAt(camLook);
     preview.visible=true;preview.rotation.y=sp.face+spin+(spinDrag?0:Math.sin(performance.now()/1400)*0.25);const R=preview.userData;animCast(R,0,0,dt,performance.now(),0,false,0);if(R.X){if(R.X.mixer)R.X.mixer.update(dt);}return;}
+  if(camera.view&&camera.view.enabled)camera.clearViewOffset();
   if(S.phase==='lobby'||!P){const a=performance.now()/11000;camPos.set(Math.cos(a)*50,30,Math.sin(a)*50);camera.position.copy(camPos);camera.lookAt(0,0,0);return;}
   if(S.spectator&&S.phase!=='lobby'&&SP.over){const k=1-Math.exp(-dt*3),cx=clamp(SP.pan.x,-30,30),cz=clamp(SP.pan.z,-30,30);
     camLook.lerp(new THREE.Vector3(cx,0,cz+6),k);camPos.lerp(new THREE.Vector3(cx,portrait?82:58,cz+(portrait?44:40)),k);camera.position.copy(camPos);camera.lookAt(camLook);return;}
