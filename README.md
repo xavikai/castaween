@@ -2,7 +2,13 @@
 
 Videojoc web 3D low poly per a mòbil, fet a CIFOG per la Castanyada. Les castanyeres de cada curs defensen la Castanyada davant de Halloween: cacen monstres, recullen la llenya que deixen i alimenten la foguera del seu curs. Guanya el curs amb la foguera més gran quan s'acaben els 5 minuts.
 
-**Estat:** prototip jugable amb bots. Encara no hi ha multijugador en línia.
+**Estat:** joc amb bots i mode en línia d'aula. El professor executa la simulació i Cloudflare retransmet els missatges WebSocket.
+
+**Joc:** https://xavikai.github.io/castaween/
+
+Professor: **Obre una sala (professor) → comparteix el codi → Comença**. Alumnes: **Personatge → Juga → curs → codi**. Conserva l'ordinador del professor despert i el joc en primer pla. **Mira una partida** conserva el mode espectador; **Juga amb bots** permet jugar localment.
+
+Desplegament, protocol, límits gratuïts, proves i limitacions: [server/README.md](server/README.md).
 
 ## Jugar
 
@@ -23,6 +29,7 @@ Dins del joc, **Personatge → Taller de models** valida un `.glb` abans d'entre
 ```
 index.html        el joc (un sol fitxer, three.js r128 des de CDN)
 assets/           models, so, música, interfície i configuració
+server/           repetidor Cloudflare Worker + Durable Objects SQLite
 ASSETS.md         guia per a l'alumnat
 PROJECTE-CICLES.md
 ```
