@@ -2,6 +2,8 @@
 
 Aquesta guia explica com substituir qualsevol element del joc (personatges, monstres, escenari, so, música i interfície) per material fet per l'alumnat, i quins requisits ha de complir perquè el joc vagi fluid al mòbil.
 
+Per començar a classe: [**guia pas a pas de preparació i entregues**](https://xavikai.github.io/castaween/assets/guia-entregues.html).
+
 ## Com funciona
 
 ### Descarrega models per treballar a escala
@@ -177,6 +179,35 @@ Mateixes regles. Les animacions són `camina` (bucle) i `ataca` (sense bucle). L
 Les castanyeres apareixen al configurador (**Personatge → Model**) amb el nom de l'autor. Els bots també les fan servir, i prefereixen les del seu curs.
 
 Claus de l'escenari: `castanyer`, `pi`, `casa`, `roca`, `marge`, `lapida`, `arbre-sec`, `carabassa-deco`, `cripta`, `portal`, `paradeta`, `foguera`, `torradora`, `caixa`, `panellet`, `llenya`.
+
+### Diverses propostes per tipus: tots els alumnes hi participen
+
+Cada clau de `monstres` i `escenari` pot contenir una **llista de propostes**, amb identificador únic dins del tipus, nom, autor, curs i fitxer. No sobreescriviu la proposta del company: afegiu un objecte més a la mateixa llista.
+
+```json
+{
+  "monstres": {
+    "carabassa": [
+      { "id": "carabassa-marta", "nom": "La dentuda", "autor": "Marta", "curs": "3D i videojocs", "fitxer": "monstres/3d-garcia-marta.glb" },
+      { "id": "carabassa-pol", "nom": "La rondinaire", "autor": "Pol", "curs": "3D i videojocs", "fitxer": "monstres/3d-puig-pol.glb" }
+    ]
+  },
+  "escenari": {
+    "castanyer": [
+      { "id": "arbre-ona", "nom": "Castanyer d'Ona", "autor": "Ona", "fitxer": "escenari/3d-serra-ona.glb" },
+      { "id": "arbre-biel", "nom": "Castanyer de Biel", "autor": "Biel", "fitxer": "escenari/3d-font-biel.glb" }
+    ]
+  }
+}
+```
+
+- **Monstres, torradores, caixes, panellets i llenya:** les noves aparicions recorren les propostes per torns, sense sorteig que pugui deixar-ne alguna fora. Cada tipus té el seu torn independent. Les peces que ja són al camp mantenen el model fins que desapareixen.
+- **Arbres, edificis i escenari fix:** les propostes es reparteixen entre les posicions existents. A cada ronda es mostra el següent grup. Un portal amb tres propostes mostra la primera a la ronda 1, la segona a la ronda 2 i la tercera a la ronda 3. Si hi ha més propostes que llocs o aparicions, calen més rondes per veure-les totes.
+- **Mode en línia:** l'amfitrió tria la proposta dels elements dinàmics i n'envia l'ID als mòbils. Tothom ha de recarregar la mateixa versió publicada abans d'obrir o entrar a la sala.
+- **Compatibilitat:** el camí únic antic (`"carabassa": "monstres/pol.glb"`) continua funcionant. També s'accepta una llista de camins. Si falta `id`, s'utilitza el camí del fitxer. Un ID repetit dins d'un tipus es descarta i queda registrat com a error.
+- **Errors:** un fitxer que falla no impedeix carregar els dels companys. Si no es carrega cap proposta d'un tipus, es conserva el model integrat. La càrrega i memòria augmenten amb el nombre de models; respecteu els pressupostos i eviteu variants duplicades del mateix fitxer.
+
+El Taller genera l'entrada amb les dades d'autoria per a qualsevol tipus de model. Les proves locals del Taller substitueixen temporalment aquell tipus només al dispositiu; per compartir les entregues, afegiu-les a les llistes del manifest i publiqueu els GLB.
 
 ## So i música
 

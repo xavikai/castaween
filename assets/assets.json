@@ -1,6 +1,14 @@
 {
   "_llegeix-me": "Configuració dels assets de Castaween. Els camins són relatius a la carpeta assets/. Si un element no hi és o el fitxer falla, el joc fa servir la versió integrada. Guia completa: ASSETS.md",
-  "castanyeres": [],
+  "castanyeres": [
+    {
+      "id": "castanyera-nova",
+      "nom": "Castanyera nova",
+      "autor": "Castaween",
+      "curs": "",
+      "fitxer": "castanyeres/castanyera-nova.glb"
+    }
+  ],
   "monstres": {},
   "escenari": {},
   "so": {

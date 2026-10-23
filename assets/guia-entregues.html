@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ca">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Castaween · Guia d'entregues de models</title>
+<style>*{box-sizing:border-box}body{margin:0;padding:24px 16px 48px;background:#0e1122;color:#f4ead6;font:16px/1.65 system-ui,sans-serif}main{max-width:850px;margin:auto}a{color:#ffad67}h1,h2{line-height:1.2}h1{color:#ff8a2a}h2{margin-top:0}section{background:#171a31;border:1px solid #35364b;border-radius:16px;padding:22px;margin:22px 0}li{margin:8px 0}code{color:#ffe0bb}pre{overflow:auto;background:#0e1122;border-radius:10px;padding:16px;font-size:13px;line-height:1.55}.table{overflow:auto}table{width:100%;border-collapse:collapse;min-width:420px}th,td{text-align:left;padding:8px;border-bottom:1px solid #35364b}small{color:#bcb4c9}.button{display:inline-block;background:#ff8a2a;color:#2a1306;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none}a:focus-visible{outline:3px solid #ff8a2a;outline-offset:4px}@media print{body{background:white;color:black;padding:0;font-size:11pt}main{max-width:none}section{background:white;border:1px solid #aaa;break-inside:auto}h1,a,code{color:black}pre{background:#eee;white-space:pre-wrap;overflow-wrap:anywhere}nav,.button{display:none}}</style>
+</head><body><main>
+<nav><a href="./">← Models i mides</a> · <a href="../">Obre el joc</a></nav>
+<h1>Com preparar i entregar models per a Castaween</h1>
+<p>Cada alumne pot presentar una castanyera, un monstre, un arbre o un objecte. Les propostes es guarden amb noms diferents i poden conviure dins del joc.</p>
+<p><a class="button" href="referencies/castaween-referencies.zip" download>Descarrega les referències i la paleta</a></p>
+<section><h2>1. Acordeu què farà cadascú</h2>
+<p><strong>Professorat:</strong> repartiu els tipus de model i feu una llista amb alumne, curs, tipus, nom de la proposta i estat de revisió. Pot haver-hi diverses carabasses o diversos castanyers: cada proposta necessita un fitxer propi.</p>
+<p><strong>Alumnat:</strong> tria un tipus del Taller i descarrega'n la referència al <a href="./#resta-models">catàleg de models i mides</a>. El GLB de referència serveix per comparar l'escala. Per practicar esquelet i animació, fes servir la plantilla animada de castanyera.</p>
+</section>
+<section><h2>2. Prepara Blender a escala</h2>
+<ol><li>A <strong>Scene Properties → Units</strong>: <strong>Metric</strong>, <strong>Unit Scale 1.000</strong>, <strong>Length Meters</strong>. Una unitat és un metre.</li>
+<li>Importa la referència amb <strong>File → Import → glTF 2.0</strong>, sense redimensionar-la. Deixa-la en una col·lecció separada anomenada <code>REFERENCIA</code>.</li>
+<li>Modela al costat de la referència i comprova les dimensions del conjunt. <strong>Z cap amunt</strong>, cara principal cap a <strong>−Y</strong>, origen al centre de la base i peus o base a <strong>Z = 0</strong>.</li>
+<li>Respecta l'alçada de la taula del teu tipus. La castanyera fa <strong>1,80 m</strong>; el castanyer, <strong>4,30 m</strong>; el pi, <strong>6 m</strong>. El marge ha de fer <strong>1,20 m de llarg en X</strong>. Amplada i fondària dels altres models orienten les proporcions.</li></ol>
+<p>Blender converteix els eixos de glTF automàticament: al GLB l'alçada és Y. No giris el model a mà després d'importar-lo.</p>
+</section>
+<section><h2>3. Compleix els requisits del joc</h2>
+<ul><li><strong>Un material i la paleta oficial</strong> de 256 × 256 px. A l'UV Editor, col·loca cada cara sobre la casella del seu color. La <a href="paleta-guia.png">guia de colors</a> t'ajuda a trobar-les.</li>
+<li>La fila magenta és el color variable. A les castanyeres, paradetes, fogueres i torradores es converteix en el color del curs; als monstres, en lila de Halloween. No cal una còpia per a cada curs.</li>
+<li>Compta <strong>triangles</strong>, no cares de Blender. Comprova el pressupost abans d'afegir detalls petits.</li>
+<li>Sense càmeres, llums, shape keys ni modificadors pendents. Exclou la referència de l'exportació.</li></ul>
+<div class="table"><table><thead><tr><th>Tipus</th><th>Triangles màxims</th><th>Pes màxim</th></tr></thead><tbody>
+<tr><td>Castanyera</td><td>1.500</td><td>400 KB</td></tr><tr><td>Carabassa / fantasma</td><td>800</td><td>250 KB</td></tr><tr><td>Carabassot</td><td>2.000</td><td>500 KB</td></tr><tr><td>Castanyer</td><td>500</td><td>150 KB</td></tr><tr><td>Pi</td><td>200</td><td>80 KB</td></tr></tbody></table></div>
+<p>La <a href="https://github.com/xavikai/castaween/blob/main/ASSETS.md#requisits-tècnics">guia tècnica</a> i el Taller indiquen el límit de cada objecte i el nombre màxim d'ossos.</p>
+<p><strong>Animació:</strong> les castanyeres poden portar <code>idle</code>, <code>corre</code>, <code>llanca</code> i <code>cop</code>; els monstres, <code>camina</code> i <code>ataca</code>. Es pot començar amb un model sense esquelet: el joc hi aplica moviment automàtic. Els arbres i objectes no necessiten rig.</p>
+<p><small>Els GLB de referència són instantànies dels models integrats. No són necessàriament entregues preparades amb paleta i pressupost: si els reutilitzes, revisa'ls.</small></p>
+</section>
+<section><h2>4. Exporta i prova la proposta</h2>
+<ol><li>Desa el projecte <code>.blend</code> per poder corregir-lo. Selecciona el teu model i l'esquelet, si en té.</li>
+<li>Aplica <strong>Ctrl+A → All Transforms</strong>. Comprova de nou la mida i l'origen.</li>
+<li>A <strong>File → Export → glTF 2.0</strong>: <strong>glTF Binary (.glb)</strong>, <strong>Selected Objects</strong>, <strong>+Y Up</strong>, UVs, normals i materials. Activa animacions si n'hi ha. Desactiva Draco.</li>
+<li>Posa un nom únic en minúscules, sense accents ni espais: <code>3d-garcia-marta-carabassa.glb</code>. No entreguis tots els fitxers com <code>model.glb</code>.</li>
+<li>Obre <strong>Personatge → Taller de models</strong>, tria el tipus correcte i carrega el GLB. Revisa la figura, els colors, la mida i les animacions.</li>
+<li>Corregeix els punts vermells; revisa els grocs amb el professorat. Prova'l amb <strong>Juga amb aquest model</strong>, <strong>Fes servir aquest monstre</strong> o <strong>Posa-ho a l'escena</strong>, segons el tipus.</li>
+<li>Escriu el <strong>nom del model</strong> i l'<strong>autor/a</strong> i copia l'entrada de configuració del Taller.</li></ol>
+<p>El Taller és una prova local: <strong>no envia ni publica el GLB</strong>. Els companys el veuran després que el professorat l'afegeixi al projecte i el publiqui.</p>
+</section>
+<section><h2>5. Què entrega cada alumne</h2>
+<ul><li>El <code>.glb</code> validat, amb el nom únic.</li><li>El projecte <code>.blend</code> com a font editable, a la carpeta o plataforma de classe que indiqui el professorat.</li><li>Tipus de model, nom de la proposta, autor/a, curs i entrada JSON generada al Taller.</li></ul>
+<p>Exemple: <strong>Carabassa · La dentuda · Marta Garcia · 3D i videojocs</strong>, fitxer <code>3d-garcia-marta-carabassa.glb</code>.</p>
+</section>
+<section><h2>6. Professorat: afegeix totes les propostes</h2>
+<ol><li>Copia cada GLB a la carpeta que toca. Conserva les entregues dels altres alumnes:</li></ol>
+<pre>assets/
+  castanyeres/   → castanyeres
+  monstres/      → carabassa, fantasma, carabassot
+  escenari/      → arbres, construccions i objectes</pre>
+<p>Edita <code>assets/assets.json</code>. <strong>Afegeix les propostes a les llistes que ja hi ha</strong>; conserva també els apartats de so, música, interfície i configuració.</p>
+<p>Exemple d'una clau dins de <code>monstres</code>:</p>
+<pre>"carabassa": [
+  {
+    "id": "carabassa-marta",
+    "nom": "La dentuda",
+    "autor": "Marta Garcia",
+    "curs": "3D i videojocs",
+    "fitxer": "monstres/3d-garcia-marta-carabassa.glb"
+  },
+  {
+    "id": "carabassa-pol",
+    "nom": "La rondinaire",
+    "autor": "Pol Puig",
+    "curs": "3D i videojocs",
+    "fitxer": "monstres/3d-puig-pol-carabassa.glb"
+  }
+]</pre>
+<p>Per a arbres i objectes es fa igual, dins de <code>escenari</code>: <code>"castanyer": [ ... ]</code>, <code>"casa": [ ... ]</code>, <code>"panellet": [ ... ]</code>, etc. Les castanyeres van totes a la llista <code>castanyeres</code>, sense una clau de tipus intermèdia.</p>
+<ul><li><code>id</code>: únic dins del tipus. Conserva'l un cop publicat.</li><li><code>fitxer</code>: camí relatiu a <code>assets/</code>, amb barres <code>/</code>. No hi posis <code>C:\Users\...</code> ni un altre prefix <code>assets/</code>.</li><li><code>nom</code>, <code>autor</code>, <code>curs</code>: dades de la proposta. El nickname del jugador es configura per separat.</li></ul>
+<p>Els exemples indiquen el format; cal que els fitxers citats existeixin. JSON no admet comentaris ni una coma després de l'última entrada. Si el tipus abans era un camí únic, converteix-lo en una llista que inclogui la proposta anterior i les noves. <a href="https://github.com/xavikai/castaween/blob/main/ASSETS.md#diverses-propostes-per-tipus-tots-els-alumnes-hi-participen">Vegeu l'exemple complet d'estructura</a>.</p>
+</section>
+<section><h2>7. Publica i comprova-ho a l'aula</h2>
+<ol><li>Desa els fitxers i el JSON. A GitHub Desktop, revisa els canvis, fes <strong>Commit to main</strong> i <strong>Push origin</strong>. Inclou tant els GLB com el manifest.</li><li>Espera que el desplegament de <strong>GitHub Pages</strong> acabi correctament a l'apartat Actions del repositori.</li><li>Recarrega el joc al professor i als mòbils abans de crear la sala. Si veus una versió antiga, prova una recàrrega completa amb <strong>Ctrl+F5</strong> a l'ordinador.</li><li>Prova primer <strong>Mode local · bots</strong>. Després, el professor prem <strong>Obre una sala</strong>, comparteix el codi i prem <strong>Comença</strong>; els alumnes entren per <strong>Mode en línia</strong> amb nickname, curs i codi.</li></ol>
+<p>Els GLB i el manifest es publiquen a GitHub Pages. Per afegir propostes no cal tornar a desplegar el Worker de Cloudflare.</p>
+</section>
+<section><h2>8. Com es veuran totes les entregues</h2>
+<ul><li><strong>Castanyeres:</strong> es poden triar a Personatge → Model; els bots també les utilitzen.</li><li><strong>Monstres i objectes que apareixen:</strong> cada tipus recorre els seus models per torns. Un exemplar manté el model mentre és al camp.</li><li><strong>Arbres i escenari fix:</strong> es reparteixen les propostes entre les posicions disponibles. La ronda següent continua el repartiment. Si només hi ha un portal i tres propostes, es veuran a les rondes 1, 2 i 3.</li><li><strong>Quan n'hi ha moltes:</strong> calen prou aparicions o rondes per veure-les totes. Els models no canvien la vida, el mal, les col·lisions ni les regles.</li></ul>
+<p>Un fitxer que falla no impedeix carregar els dels companys. Si fallen totes les propostes d'un tipus, es fa servir el model integrat. Molts models pesants augmenten la càrrega inicial i la memòria: manteniu els límits del Taller.</p>
+</section>
+<section><h2>Si alguna cosa no surt</h2>
+<ul><li><strong>No apareix:</strong> comprova que GLB i JSON s'hagin publicat, el camí exacte, majúscules/minúscules i que l'ID no estigui repetit dins del tipus.</li><li><strong>Només el veig jo:</strong> carregar-lo al Taller no el publica; falta afegir-lo al manifest i fer push.</li><li><strong>Mida o orientació incorrectes:</strong> compara'l amb la referència, revisa l'origen, aplica transformacions i exporta amb +Y Up.</li><li><strong>El color del curs no canvia:</strong> revisa les UV de les peces variables sobre les caselles magenta de la paleta.</li><li><strong>No veig totes les variants:</strong> deixa que apareguin més exemplars o comença una altra ronda.</li><li><strong>El mòbil mostra un altre model:</strong> recarrega la versió publicada a tots els dispositius i torna a obrir la sala.</li></ul>
+</section>
+<p><a href="./">Models i mides</a> · <a href="https://github.com/xavikai/castaween/blob/main/ASSETS.md">Guia tècnica completa</a> · <a href="../">Juga a Castaween</a></p>
+<p><small>Pots imprimir aquesta guia o desar-la com a PDF amb la funció d'impressió del navegador.</small></p>
+</main></body></html>

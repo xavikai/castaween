@@ -12,7 +12,7 @@ let seed=20261023;const seeded=Object.create(Math);seeded.random=()=>{seed=(Math
 const context=vm.createContext({THREE,Math:seeded,document:{createElement(){return {getContext(){return {fillRect(){},strokeRect(){},fillText(){}};}};}}});
 vm.runInContext(`const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera();
 const ASSETS={mon:{},prop:{}},MON_KEY={pumpkin:'carabassa',ghost:'fantasma',boss:'carabassot'};
-function markShadows(){}\n${source}\n`+`
+function markShadows(){}function nextAsset(){return null;}\n${source}\n`+`
 globalThis.models={PROPS,BUDGET,scene,makeMonster,makeTowerMesh,makePanellet,logBodyGeo,castMat,crateGeo,crateM,bandGeo,crateBand,TEAMS};`,context);
 const R=context.models;R.scene.updateMatrixWorld(true);
 const out=path.join(root,'assets','referencies');fs.mkdirSync(out,{recursive:true});

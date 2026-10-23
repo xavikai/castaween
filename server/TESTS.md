@@ -55,3 +55,15 @@ No s'ha fet una prova amb cinquanta mòbils físics. Cal una prova de Wi-Fi al c
 - Escriptori 1280 × 720: figura sencera a l'esquerra, opcions a la dreta; rotació amb arrossegament comprovada.
 - La càmera s'enquadra segons l'espai disponible de la vista prèvia, també al Taller de models. En sortir del configurador es desactiva el desplaçament de projecció i es recupera l'enquadrament del joc.
 - Desar l'aspecte des del mòbil i iniciar una partida local continua funcionant, sense pantalla de codi.
+
+## Diverses propostes per tipus · 23/10/2026
+
+- `node --test server/test/*.test.js`: 15 proves correctes. Inclou normalització del manifest antic i nou, autoria, errors independents, IDs duplicats, alternança per tipus, repartiment de 50 places, rotació d'un portal únic i identificadors de model a les instantànies i rèpliques.
+- Prova real amb `node server/test/serve.cjs --proposals`: manifest de prova només al servidor local, amb dos models de carabassa, el fantasma en format de camí antic i tres propostes de castanyer, pi, portal, paradeta, torradora, caixa, panellet i llenya. No s'han afegit entregues fictícies al manifest publicat.
+- Una pestanya d'amfitrió connectada al Worker desplegat i un mòbil en iframe de 390 × 844. Càrrega sense errors. Els dos mostren els mateixos IDs de monstres i objectes, incloent-hi les dues carabasses i variants de troncs reutilitzats.
+- Canvi de ronda 1 a 2: tots dos reben el portal B en lloc de l'A i el repartiment renovat d'arbres/paradetes, sense perdre el mode espectador.
+- Els arbres continuen utilitzant InstancedMesh agrupats per proposta. Les col·lisions, regles i mides d'integració són les que ja tenia el joc.
+- `node tools/check-references.cjs test-results/three-r128.cjs test-results/GLTFLoader-r128.cjs`: les 19 referències GLB continuen carregant i mantenint les mides i l'origen. ZIP regenerat amb la documentació actualitzada.
+- Límit pràctic: si hi ha més propostes que llocs o aparicions, calen més rondes per veure-les totes. La càrrega inicial i la memòria creixen amb la quantitat i el pes dels models. Els fitxers de cada alumne s'han de publicar i registrar al manifest.
+- Revisió abans de publicar: es conserva la castanyera nova local com a model per defecte (1.450 triangles, un material, una textura, 150.424 bytes). Carrega i es veu al configurador sense errors de consola. El catàleg i el ZIP també la inclouen.
+- Guia d'entregues a `assets/guia-entregues.html`, revisada al navegador; inclou passos per a alumnat/professorat, JSON, exportació, alternança, publicació i resolució d'errors.
