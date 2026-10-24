@@ -6,6 +6,7 @@ for(const f of ['castanyera-actual-referencia.glb','plantilla-castanyera.glb','m
 for(const f of ['paleta-castaween.png','paleta-guia.png'])files.push(['assets/'+f,path.join(root,'assets',f)]);
 files.push(['ASSETS.md',path.join(root,'ASSETS.md')]);
 files.push(['assets/guia-entregues.html',path.join(root,'assets','guia-entregues.html')]);
+files.push(['assets/guia-alumnat-castaween.pdf',path.join(root,'assets','guia-alumnat-castaween.pdf')]);
 files.push(['assets/castanyeres/castanyera-nova.glb',path.join(root,'assets','castanyeres','castanyera-nova.glb')]);
 const table=Uint32Array.from({length:256},(_,n)=>{for(let k=0;k<8;k++)n=n&1?0xedb88320^(n>>>1):n>>>1;return n>>>0;});
 function crc32(data){let crc=0xffffffff;for(const b of data)crc=table[(crc^b)&255]^(crc>>>8);return (crc^0xffffffff)>>>0;}
