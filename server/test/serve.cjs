@@ -2,6 +2,7 @@
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'../..');
 const proposals=process.argv.includes('--proposals');
+const reviews=process.argv.includes('--reviews');
 function proposalManifest(){const man=JSON.parse(fs.readFileSync(path.join(root,'assets/assets.json'))),entry=(kind,id,file)=>({id,nom:id,autor:'Prova local',fitxer:'referencies/'+(file||kind)+'-referencia.glb'});
   man.monstres={carabassa:[entry('carabassa','alumna-a'),entry('carabassa','alumne-b','carabassot')],fantasma:'referencies/fantasma-referencia.glb',carabassot:[entry('carabassot','boss-a'),entry('carabassot','boss-b')]};
   man.escenari={};for(const k of ['castanyer','pi','portal','paradeta','torradora','panellet','llenya','caixa'])man.escenari[k]=[entry(k,k+'-a'),entry(k,k+'-b'),entry(k,k+'-c')];return man;}
@@ -18,6 +19,7 @@ const variantsButton=document.createElement('button');variantsButton.id='qaVaria
 setInterval(()=>{$('#qaReport').textContent=JSON.stringify({role:NET.role,code:S.code,phase:S.phase,seq:NET.received,peers:NET.peers.size,replicas:NET.replicas.size,player:S.player&&{name:S.player.name,state:S.player.state,x:+S.player.pos.x.toFixed(2),z:+S.player.pos.z.toFixed(2),hp:S.player.hp,look:S.player.look},teams:TEAMS.map(t=>({active:(t.active||[]).length,human:(t.active||[]).filter(c=>c.human).length,bots:(t.members||[]).filter(c=>!c.human).length,queue:(t.queue||[]).map(c=>c.name)})),people:S.cast.filter(c=>c.peer).map(c=>({id:c.peer,name:c.name,state:c.state,x:+c.pos.x.toFixed(2),z:+c.pos.z.toFixed(2),turn:+c.turn.toFixed(2)})),projectiles:[...NET.replicas.values()].filter(e=>e.netData.k==='p').length},null,1);},100);
 `;
 http.createServer((req,res)=>{const url=new URL(req.url,'http://localhost'),rel=decodeURIComponent(url.pathname).slice(1)||'index.html';
+  if(reviews&&rel==='assets/online.json'){res.setHeader('Content-Type','application/json');return res.end(JSON.stringify({servidor:'ws://127.0.0.1:8787'}));}
   if(proposals&&rel==='assets/assets.json'){res.setHeader('Content-Type','application/json');res.setHeader('Cache-Control','no-store');return res.end(JSON.stringify(proposalManifest()));}
   if(rel==='mobile'){res.setHeader('Content-Type','text/html; charset=utf-8');return res.end('<!doctype html><html><head><title>Castaween · mòbil 390 × 844</title></head><body style="margin:0;background:#111;display:flex;justify-content:center"><iframe title="Mòbil 390 × 844" src="'+(url.searchParams.has('clean')?'/':'/?qa=1')+'" width="390" height="844" style="border:0"></iframe></body></html>');}
   if(!(rel==='index.html'||rel==='cifog-logo.png'||rel.startsWith('assets/'))){res.writeHead(404);return res.end();}

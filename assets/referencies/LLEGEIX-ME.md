@@ -6,7 +6,7 @@ Els models són instantànies de la geometria real d’index.html, amb colors pe
 
 El JSON conté les mides exactes i els triangles de cada fitxer. Els models procedurals aleatoris s’exporten amb llavor fixa: són un exemplar, no totes les variants. Exclou-los de l’exportació de la teva entrega. Aplica Ctrl+A → All Transforms i exporta GLB amb +Y Up.
 
-Aquests fitxers són referències de mides, no entregues optimitzades. Comprova els pressupostos de triangles, la paleta oficial i les animacions a ASSETS.md i al Taller. Les flames, llums, halos i textos flotants els afegeix el joc.
+Aquests fitxers són referències de mides, no entregues optimitzades. Per entregar-ne una versió, cal texturitzar-la amb la paleta oficial obligatòria (`assets/paleta-castaween.png`), que és l’única textura admesa, i comprovar els pressupostos de triangles i les animacions a ASSETS.md i al Taller. Les flames, llums, halos i textos flotants els afegeix el joc.
 
 | Fitxer | Alt Z (m) | Ample X (m) | Fons Y (m) | Triangles / límit | Detalls |
 |---|---:|---:|---:|---:|---|

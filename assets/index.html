@@ -14,9 +14,17 @@
 <p><a class="download" href="guia-entregues.html">Guia pas a pas per preparar i entregar models</a></p>
 <p><a href="guia-alumnat-castaween.pdf" download>Descarrega la guia per a l'alumnat en PDF · Blender, entrega i mides</a></p>
 <p>Tothom treballa en metres: <strong>1 unitat = 1 metre</strong>. La castanyera d'entrega fa <strong>1,80 m d'alt</strong>, amb l'origen a terra.</p>
+<section id="paleta">
+<h2>Paleta obligatòria</h2>
+<p>Tots els models s'han de texturitzar amb aquesta paleta, sense modificar-la. <strong>És l'única textura admesa</strong>: el Taller i les entregues rebutgen els models amb una altra textura o sense textura. Així tot el joc manté el mateix estil gràfic.</p>
+<a class="download" href="paleta-castaween.png" download>Descarrega la paleta · PNG 512 × 512 px</a>
+<p><a href="paleta-guia.png"><img src="paleta-guia.png" alt="Guia de la paleta: 64 colors plans, 16 degradats i 16 ulls, amb els codis i els noms" style="width:100%;height:auto;border-radius:10px;display:block"></a></p>
+<ul><li><strong>64 colors plans</strong> (dalt a l'esquerra): cada cara al centre d'una casella.</li><li><strong>16 degradats</strong> (a la dreta): una illa UV allargada dins d'una franja. El costat clar és a l'esquerra.</li><li><strong>16 ulls</strong> (baix a l'esquerra): el pla de l'ull encaixat dins de la casella.</li><li>La fila magenta i el degradat CURS es tornen del color del curs.</li></ul>
+<p class="note">A Blender: material amb <em>Image Texture</em> → <em>Base Color</em>, interpolació <strong>Closest</strong>. Exporta amb Material: Export i Images: Automatic. <a href="guia-entregues.html#requisits">Pas a pas</a></p>
+</section>
 <section>
 <h2>Castanyera nova del projecte</h2>
-<p>El model configurat per defecte al joc: un material amb textura, 1.450 triangles i aproximadament 1,80 m d'alçada. Sense esquelet ni animacions.</p>
+<p>El model configurat per defecte al joc: un material amb la paleta oficial, 1.450 triangles i aproximadament 1,80 m d'alçada. Sense esquelet ni animacions.</p>
 <a class="download" href="castanyeres/castanyera-nova.glb" download>Descarrega la castanyera nova · GLB</a>
 </section>
 <section>
@@ -31,7 +39,7 @@
 <h2>Plantilla per preparar l'entrega</h2>
 <p>També a 1,80 m, amb la paleta oficial, quatre ossos i les animacions <code>idle</code>, <code>corre</code>, <code>llanca</code> i <code>cop</code>. Aquesta és la base tècnica per practicar rig, UV i exportació.</p>
 <a class="download" href="plantilles/plantilla-castanyera.glb" download>Descarrega la plantilla animada · GLB</a>
-<p><a href="paleta-castaween.png" download>Descarrega la paleta oficial · PNG</a> · <a href="paleta-guia.png" download>Guia de colors · PNG</a></p>
+<p><a href="paleta-castaween.png" download>Descarrega la paleta obligatòria · PNG</a> · <a href="paleta-guia.png" download>Guia de la paleta · PNG</a></p>
 </section>
 <!-- WORLD-REFERENCES:START -->
 <section id="resta-models">
@@ -63,7 +71,7 @@
 <!-- WORLD-REFERENCES:END -->
 <section>
 <h2>Com treballar a Blender</h2>
-<ol><li>A <strong>Scene Properties → Units</strong>, tria <strong>Metric</strong>, <strong>Unit Scale: 1.000</strong> i <strong>Length: Meters</strong>.</li><li>Importa el GLB amb <strong>File → Import → glTF 2.0</strong>. No el redimensionis en importar-lo.</li><li>Deixa la referència al costat del teu model, en una col·lecció pròpia. Mesura el conjunt del personatge: en aquesta referència el cos i el braç són dues peces.</li><li>Respecta l'alçada de la taula del teu model (castanyera: <strong>1,80 m</strong>), amb <strong>Z cap amunt</strong>, mirant cap a <strong>−Y</strong> i amb l'origen al centre de la base, a terra.</li><li>Aplica les transformacions amb <strong>Ctrl+A → All Transforms</strong>. Exporta només el teu model, sense la referència, càmeres ni llums, en <strong>glTF Binary (.glb)</strong>, amb <strong>+Y Up</strong>.</li><li>Valida'l a <strong>Personatge → Taller de models</strong> abans d'entregar-lo.</li></ol>
+<ol><li>A <strong>Scene Properties → Units</strong>, tria <strong>Metric</strong>, <strong>Unit Scale: 1.000</strong> i <strong>Length: Meters</strong>.</li><li>Importa el GLB amb <strong>File → Import → glTF 2.0</strong>. No el redimensionis en importar-lo.</li><li>Deixa la referència al costat del teu model, en una col·lecció pròpia. Mesura el conjunt del personatge: en aquesta referència el cos i el braç són dues peces.</li><li>Respecta l'alçada de la taula del teu model (castanyera: <strong>1,80 m</strong>), amb <strong>Z cap amunt</strong>, mirant cap a <strong>−Y</strong> i amb l'origen al centre de la base, a terra.</li><li>Aplica les transformacions amb <strong>Ctrl+A → All Transforms</strong>. Exporta només el teu model, sense la referència, càmeres ni llums, en <strong>glTF Binary (.glb)</strong>, amb <strong>+Y Up</strong>.</li><li>Texturitza'l només amb la <a href="#paleta">paleta obligatòria</a>.</li><li>Valida'l a <strong>Personatge → Taller de models</strong> abans d'entregar-lo.</li></ol>
 <p class="note">Blender converteix els eixos en importar/exportar glTF: al fitxer GLB, l'alçada és Y i la cara mira cap a +Z. No cal girar-lo manualment després d'importar-lo.</p>
 <p><a href="https://github.com/xavikai/castaween/blob/main/ASSETS.md">Guia completa de models, límits i exportació</a> · <a href="plantilles/LLEGEIX-ME.md" download>Descarrega les instruccions</a></p>
 </section>

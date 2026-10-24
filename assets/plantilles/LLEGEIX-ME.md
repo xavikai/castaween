@@ -7,7 +7,7 @@ Els monstres, arbres i objectes també tenen GLB de referència a `../referencie
 ## Què és cada fitxer
 
 - **castanyera-actual-referencia.glb**: geometria de la castanyera clàssica actual, extreta de `index.html` amb les opcions per defecte. Estàtica, sense esquelet, sense contorns/ombres/llenya carregada ni multiplicadors de visualització. Escala aplicada per fer **1,80 m d'alt**. Serveix per comparar proporcions i mesures, no és una entrega preparada: té 1.529 triangles i colors per vèrtex.
-- **plantilla-castanyera.glb**: plantilla tècnica ja existent, de **1,80 m**, amb paleta, quatre ossos (`arrel`, `cos`, `cap`, `bras`) i quatre animacions (`idle`, `corre`, `llanca`, `cop`). Serveix per practicar el format d'entrega, UV i animació.
+- **plantilla-castanyera.glb**: plantilla tècnica ja existent, de **1,80 m**, amb la paleta oficial de 512 px, quatre ossos (`arrel`, `cos`, `cap`, `bras`) i quatre animacions (`idle`, `corre`, `llanca`, `cop`). Serveix per practicar el format d'entrega, UV i animació.
 - **mides-castanyera.json**: mides precises, nombre de triangles i empremta del codi que ha generat la referència actual.
 
 ## Escala comuna
@@ -28,7 +28,7 @@ Z cap amunt i cara cap a **−Y** a Blender; origen al centre de la base, a terr
 
 El model actual té dues peces, cos i braç. Les dimensions d'una sola peça no són les de tot el personatge. Conserva la referència en una col·lecció separada i exclou-la de l'exportació del teu model. Per veure els colors, activa Material Preview.
 
-Abans d'exportar el teu model: Ctrl+A → All Transforms. Exporta glTF Binary (.glb), Selected Objects, +Y Up. Màxim **1.500 triangles, 20 ossos i 400 KB**, amb **un material i la paleta oficial**. Valida'l al Taller del joc. La referència estàtica de 1.529 triangles s'ha d'optimitzar i adaptar a la paleta si es reutilitza com a base d'una entrega.
+Abans d'exportar el teu model: Ctrl+A → All Transforms. Exporta glTF Binary (.glb), Selected Objects, +Y Up. Màxim **1.500 triangles, 20 ossos i 400 KB**, amb **un material i la paleta oficial com a única textura**: descarrega `assets/paleta-castaween.png` i fes-la servir sense modificar-la. No s'admet cap altra textura, ni colors de material o de vèrtex. Valida'l al Taller del joc. La referència estàtica de 1.529 triangles s'ha d'optimitzar i adaptar a la paleta si es reutilitza com a base d'una entrega.
 
 ## Regenerar la referència quan canviï la figura del joc
 

@@ -4,6 +4,8 @@ Aquesta guia explica com substituir qualsevol element del joc (personatges, mons
 
 Per començar a classe: [**guia pas a pas de preparació i entregues**](https://xavikai.github.io/castaween/assets/guia-entregues.html).
 
+> **Paleta obligatòria.** Tots els models s'han de texturitzar amb [`paleta-castaween.png`](assets/paleta-castaween.png) ([guia de colors](assets/paleta-guia.png)), sense modificar-la. És l'única textura admesa: el Taller i el servidor d'entregues rebutgen qualsevol altra textura, i els models sense textura. Així tot el joc té el mateix estil gràfic.
+
 ## Com funciona
 
 ### Descarrega models per treballar a escala
@@ -11,7 +13,8 @@ Per començar a classe: [**guia pas a pas de preparació i entregues**](https://
 La carpeta [**assets/ al web**](https://xavikai.github.io/castaween/assets/) té botons de descàrrega i instruccions per a Blender:
 
 - [**Model actual de referència (.glb)**](assets/plantilles/castanyera-actual-referencia.glb): la castanyera clàssica actual, normalitzada a **1,80 m**. Estàtica, per comparar mides i proporcions. Fa **1,024 m d'ample** i **0,988 m de fondària**. Té 1.529 triangles i colors per vèrtex; s'ha d'optimitzar i adaptar a la paleta si es fa servir com a base d'una entrega.
-- [**Plantilla animada (.glb)**](assets/plantilles/plantilla-castanyera.glb): també de **1,80 m**, amb paleta, esquelet i les quatre animacions.
+- [**Plantilla animada (.glb)**](assets/plantilles/plantilla-castanyera.glb): també de **1,80 m**, amb la paleta oficial, esquelet i les quatre animacions.
+- [**Paleta obligatòria (.png)**](assets/paleta-castaween.png) i [**guia de la paleta**](assets/paleta-guia.png): l'única textura que es pot fer servir.
 - [**Instruccions d'escala**](assets/plantilles/LLEGEIX-ME.md) i [**mides exactes**](assets/plantilles/mides-castanyera.json).
 - **Monstres, arbres i objectes**: [19 models GLB al catàleg](https://xavikai.github.io/castaween/assets/#resta-models), [mides de cada model](assets/referencies/mides-models.json) i [instruccions](assets/referencies/LLEGEIX-ME.md). Inclou els tres monstres i tots els elements d'escenari substituïbles de la taula tècnica, ajustats a les alçades d'entrega. El tram de marge també fa **1,20 m de llarg (X)**. Són exemplars estàtics de les geometries integrades, amb els colors originals, sense efectes ni animacions; cal adaptar-los a la paleta i als límits si es reutilitzen com a entrega.
 - [**Descarrega tot el conjunt en ZIP**](assets/referencies/castaween-referencies.zip): els 19 models, la castanyera actual, la plantilla animada, les mides, les instruccions i la paleta.
@@ -29,8 +32,8 @@ Per tant, el joc sempre funciona, encara que només s'hagi entregat una part del
 assets/
   assets.json              ← la configuració
   config.json              ← valors d'equilibri del joc
-  paleta-castaween.png     ← la textura oficial (256 × 256 px)
-  paleta-guia.png          ← la mateixa paleta, gran i amb els codis
+  paleta-castaween.png     ← la textura obligatòria (512 × 512 px)
+  paleta-guia.png          ← la mateixa paleta, gran, amb els codis i els noms
   plantilles/
     plantilla-castanyera.glb   ← model de referència amb esquelet i animacions
   castanyeres/             ← models de l'alumnat
@@ -48,30 +51,48 @@ Al joc, **Personatge → Taller de models** (o **Opcions → Taller de models**)
 
 1. Tria què has modelat (castanyera, monstre o element d'escenari).
 2. Carrega el teu `.glb`.
-3. El Taller comprova tots els requisits d'aquesta guia (verd, groc o vermell), mostra el model amb el color de cada curs i reprodueix les animacions.
+3. El Taller comprova tots els requisits d'aquesta guia (verd, groc o vermell), mostra el model amb el color de cada curs i reprodueix les animacions. Si la textura no és la paleta oficial, el model no es pot provar.
 4. Amb **Juga amb aquest model** el pots provar en una partida.
 5. A sota genera l'entrada que cal enganxar a `assets.json`.
 
 El fitxer no surt del dispositiu. És l'eina per comprovar el model abans d'entregar-lo.
 
-## La paleta: per què una sola textura
+## La paleta obligatòria
 
-Tots els models fan servir la mateixa textura, `paleta-castaween.png`: 64 caselles de color de 32 × 32 px. Cada cara del model es mapeja al centre d'una casella.
+Tots els models fan servir la mateixa textura, `paleta-castaween.png` (512 × 512 px). **És obligatòria i no es pot modificar ni substituir per cap altra.** Es descarrega des del [catàleg de models](https://xavikai.github.io/castaween/assets/), des de **Personatge** i des del **Taller de models**.
 
-Per què és millor que fer materials o textures pròpies:
+La textura té quatre zones:
 
+| Zona | Contingut | Com es fa servir |
+|---|---|---|
+| Dalt a l'esquerra | **64 colors plans** en caselles de 32 px (pells, cabells, roba, Castanyada, Halloween, vius, neutres i la fila CURS) | Cada cara al centre d'una casella |
+| Dalt a la dreta | **8 degradats**: pell, castanya, foc, carabassa, nit lila, fantasma, vegetació i CURS | Una illa UV allargada dins d'una franja de 32 px |
+| Baix a l'esquerra | **16 ulls** en caselles de 64 px: castanyera (marró, blau, verd, fosc), mirades i expressions, i ulls de Halloween (carabassa, fantasma, Carabassot, monstre…) | El pla de l'ull, encaixat dins de la casella |
+| Baix a la dreta | **8 degradats més**: pedra, fusta, panellet, moniato, aigua, or, verí i vermell | Igual que els altres degradats |
+
+La [guia de la paleta](assets/paleta-guia.png) mostra els codis de cada color i el nom de cada degradat i de cada ull.
+
+Per què una sola textura obligatòria:
+
+- **Estil coherent.** Tots els models comparteixen colors, degradats i ulls, encara que els facin persones diferents.
 - **Rendiment.** Un sol material per model vol dir menys crides de dibuix: amb 50 personatges a la pantalla, és la diferència entre anar fluid o no.
-- **Estil coherent.** Tots els models comparteixen colors, encara que els facin persones diferents.
-- **Pes mínim.** La textura ocupa uns pocs KB i es comparteix entre tots els models.
-- **Color del curs automàtic.** La fila de baix (**CURS**, magenta) no surt mai magenta: el joc la substitueix pel color del curs de qui juga. Les caselles clares donen el color clar i les fosques, el fosc.
+- **Pes mínim.** La textura ocupa uns 40 KB i es comparteix entre tots els models.
+- **Color del curs automàtic.** La fila de baix dels colors plans i el degradat **CURS** (magenta) no surten mai magenta: el joc els substitueix pel color del curs de qui juga. El magenta clar dona el color clar i el fosc, el fosc.
+
+**Com es controla.** El Taller marca en vermell els models sense textura, amb una textura diferent o amb més d'un material, i no deixa provar-los. El servidor d'entregues també els rebutja. A més, el joc sempre dibuixa els models amb la paleta oficial, encara que el fitxer en porti una altra.
+
+**Models fets amb la paleta antiga (256 px).** Continuen funcionant: els 64 colors són els mateixos i el joc els adapta sol. Per tenir degradats i ulls, el professorat pot actualitzar el GLB amb `python tools/migrate-palette.py model.glb`.
 
 ### Com fer-ho a Blender
 
-1. Crea un material amb una *Image Texture* que carregui `paleta-castaween.png`. A la textura, posa la interpolació en **Closest**, perquè no es barregin colors.
-2. A l'*UV Editor*, obre també `paleta-castaween.png` com a imatge de fons.
-3. Selecciona les cares d'un color, fes **U → Unwrap**, i després escala l'illa UV fins a 0 (**S 0**) i mou-la al centre de la casella que vulguis.
-4. Repeteix-ho per a cada color. Consulta `paleta-guia.png` per veure els codis de cada casella.
-5. Les peces que han de ser del color del curs (el mocador, el xal…) van a la fila magenta.
+1. Descarrega `paleta-castaween.png` i desa-la al costat del teu `.blend`. No l'editis.
+2. Crea un material amb una *Image Texture* que carregui `paleta-castaween.png`, connectada a *Base Color*. A la textura, posa la interpolació en **Closest**, perquè no es barregin colors.
+3. A l'*UV Editor*, obre també `paleta-castaween.png` com a imatge de fons.
+4. **Colors plans:** selecciona les cares d'un color, fes **U → Unwrap**, escala l'illa UV fins a 0 (**S 0**) i mou-la al centre de la casella que vulguis.
+5. **Degradats:** fes **U → Unwrap** (o *Project from View*), escala l'illa a 0 en vertical (**S Y 0**) i col·loca-la dins d'una franja de degradat. L'amplada de l'illa decideix quina part del degradat es veu: el costat clar és a l'esquerra.
+6. **Ulls:** modela l'ull com un pla de 6–8 costats, fes **U → Project from View** des de davant i encaixa l'illa dins de la casella de l'ull, amb una mica de marge.
+7. Les peces que han de ser del color del curs (el mocador, el xal…) van a la fila magenta o al degradat CURS.
+8. Exporta amb **Data → Material: Export** i **Images: Automatic**: la paleta queda dins del `.glb`.
 
 ## Requisits tècnics
 
@@ -104,17 +125,19 @@ El joc escala cada model a l'alçada de la taula. Tot i així, modelar a mida re
 
 ### Regles per a tots els models
 
-- **Un material**, amb la paleta oficial. Res de textures pròpies.
+- **Un material, amb la paleta oficial com a única textura** (obligatori). Res de textures pròpies, ni colors de material o de vèrtex, ni la paleta retocada.
 - **Transformacions aplicades** a Blender (**Ctrl + A → All Transforms**).
 - **Origen a terra**, al centre de la base (entre els peus, en el cas dels personatges).
 - **Mirant cap a −Y**: és a dir, de cara quan mires la vista frontal de Blender (tecla 1 del teclat numèric). Per a l'escenari, la cara principal (la porta, el taulell…) també va cap a −Y, perquè el joc la gira cap a la plaça.
 - **Sense *shape keys*, ni modificadors sense aplicar, ni càmeres ni llums.**
-- Formes clares i un cap gran: el joc es veu des de dalt i de lluny, i els detalls de menys de 5 cm no es veuen.
+- **Totes les peces amb UV** mapejades a la paleta.
+- Formes clares i un cap gran: el joc es veu des de dalt i de lluny, i els detalls de menys de 5 cm no es veuen. Per als ulls, fes servir les caselles d'ulls de la paleta.
 
 ### Castanyeres
 
 - Alçada 1,8 m. Les proporcions de cap gran funcionen millor.
-- El mocador o el xal han d'anar a la fila magenta, perquè es vegi de quin curs ets.
+- El mocador o el xal han d'anar a la fila magenta o al degradat CURS, perquè es vegi de quin curs ets.
+- Els ulls, a les caselles d'ulls de castanyera.
 - **Esquelet opcional.** Si no en té, el joc l'anima automàticament amb rebots i inclinació. Si en té, màxim 20 ossos.
 - **Animacions**, amb aquests noms exactes:
 
@@ -147,13 +170,19 @@ Mateixes regles. Les animacions són `camina` (bucle) i `ataca` (sense bucle). L
 - **Include → Limit to:** Selected Objects (selecciona el model i, si en té, l'esquelet)
 - **Transform:** +Y Up activat
 - **Data → Mesh:** Apply Modifiers, UVs i Normals activats
-- **Data → Material:** Export
+- **Data → Material:** Export, amb **Images: Automatic** (la paleta queda incrustada)
 - **Animation:** activat, una acció per animació amb els noms de la taula
 - **Compression:** desactivada (el joc no llegeix la compressió Draco)
 
 **Nom del fitxer:** `curs-cognom-nom.glb`, en minúscules, sense accents ni espais. Per exemple: `3d-garcia-marta.glb`.
 
 ## Afegir un model al joc
+
+### Opció recomanada: entrega i aprovació en línia
+
+Al menú del joc, **Envia el teu model GLB** obre el formulari amb nom, curs, tipus i proposta. El professor obre les entregues des del seu panell privat i comparteix un codi de 6 xifres. Cal descarregar i usar la paleta oficial sense retocar-la. El servidor comprova tots els píxels del PNG incrustat (admet també la paleta oficial antiga de 256 px per compatibilitat), els límits i el format GLB. Les propostes pendents són privades. En aprovar-les entren automàticament al catàleg; en rebutjar-les o tornar-les a pendent en surten. Recarregueu tots els dispositius abans de començar la sala. No cal modificar `assets.json`.
+
+### Alternativa: integració manual al repositori
 
 1. Copia el `.glb` a la carpeta que toca (`assets/castanyeres/`, `assets/monstres/` o `assets/escenari/`).
 2. Afegeix-lo a `assets/assets.json`. L'entrada la genera el Taller.

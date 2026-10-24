@@ -328,6 +328,7 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
           <a class="btn ghost" href="assets/index.html" target="_blank" rel="noopener">Models de referència ↗</a>
           <a class="btn ghost" href="assets/guia-alumnat-castaween.pdf" download>Descarrega la guia PDF</a>
         </div>
+        <a class="btn ghost filebtn" href="assets/entregues.html" target="_blank" rel="noopener">Envia el teu model GLB ↗</a>
       </div>
       <p class="credits">Un joc de la Castanyada fet amb l'alumnat de CIFOG · 3D i videojocs, Audiovisuals, Fotografia, Disseny i Gràfica interactiva</p>
     </div>
@@ -337,6 +338,7 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
       <h2>La teva castanyera</h2>
       <p class="hint2">Arrossega la figura per fer-la girar.</p>
       <a class="btn ghost filebtn" href="assets/plantilles/castanyera-actual-referencia.glb" download>Descarrega el model de referència · 1,80 m</a>
+      <a class="btn ghost filebtn" href="assets/paleta-castaween.png" download>Descarrega la paleta obligatòria · PNG</a>
       <a class="back" href="assets/" target="_blank" rel="noopener">Models i mides per a Blender ↗</a>
       <label class="label" for="nameIn">Nickname a l'arena</label>
       <input class="name" id="nameIn" maxlength="12" placeholder="Tu" autocomplete="off">
@@ -352,8 +354,10 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
       <div class="cbar"><button class="back" data-go="custom">← Personatge</button><button class="back" data-go="home">Menú</button></div>
       <h2>Taller de models</h2>
       <a class="btn ghost filebtn" href="assets/plantilles/castanyera-actual-referencia.glb" download>Descarrega el model de referència · 1,80 m</a>
+      <a class="btn ghost filebtn" href="assets/paleta-castaween.png" download>Descarrega la paleta obligatòria · PNG</a>
+      <a class="back" href="assets/paleta-guia.png" target="_blank" rel="noopener">Guia de la paleta: colors, degradats i ulls ↗</a>
       <a class="back" href="assets/" target="_blank" rel="noopener">Tots els models, plantilles i mides ↗</a>
-      <p class="note">Prova el teu model .glb abans d'entregar-lo: el joc comprova els requisits i el mostra amb el color del curs. El fitxer no surt del teu dispositiu.</p>
+      <p class="note">Tots els models han de fer servir la paleta oficial com a única textura, perquè el joc tingui un estil coherent. Prova el teu model .glb abans d'entregar-lo: el joc comprova els requisits i el mostra amb el color del curs. El fitxer no surt del teu dispositiu.</p>
       <label class="label" for="tKind">Què has modelat</label>
       <select class="name" id="tKind"></select>
       <p class="credit" id="tBudget"></p>
@@ -1111,9 +1115,26 @@ function addSmoothNormals(geo){if(geo.attributes.sNormal)return;if(!geo.attribut
   for(let i=0;i<P.count;i++){const k=kf(i);let a=acc.get(k);if(!a){a=[0,0,0];acc.set(k,a);}a[0]+=N.getX(i);a[1]+=N.getY(i);a[2]+=N.getZ(i);}
   for(let i=0;i<P.count;i++){const a=acc.get(kf(i)),l=Math.hypot(a[0],a[1],a[2])||1;sn[i*3]=a[0]/l;sn[i*3+1]=a[1]/l;sn[i*3+2]=a[2]/l;}
   geo.setAttribute('sNormal',new THREE.BufferAttribute(sn,3));}
+// ----- paleta oficial obligatòria: tots els models es dibuixen amb aquesta textura -----
+// paleta-castaween.png fa 512 px; el quadrant de dalt a l'esquerra és la paleta antiga de 256 px.
+const PALETTE={url:'assets/paleta-castaween.png',tex:null,data:null,w:0,h:0};
+PALETTE.ready=new Promise(res=>{const im=new Image();im.onload=()=>{try{const cv=document.createElement('canvas');cv.width=im.width;cv.height=im.height;const cx=cv.getContext('2d');cx.drawImage(im,0,0);
+  PALETTE.data=cx.getImageData(0,0,im.width,im.height).data;PALETTE.w=im.width;PALETTE.h=im.height;
+  const t=new THREE.Texture(im);t.flipY=false;t.encoding=THREE.LinearEncoding;t.magFilter=THREE.NearestFilter;t.needsUpdate=true;PALETTE.tex=t;}catch(e){}res();};
+  im.onerror=()=>res();im.src=PALETTE.url;});
+// 'oficial', 'antiga' (paleta de 256 px), 'altra' o 'desconeguda' (no s'ha pogut llegir la paleta)
+function paletteKind(image){if(!image)return 'altra';if(!PALETTE.data)return 'desconeguda';const w=image.width,h=image.height,legacy=w===256&&h===256&&PALETTE.w===512;
+  if(!legacy&&(w!==PALETTE.w||h!==PALETTE.h))return 'altra';
+  try{const cv=document.createElement('canvas');cv.width=w;cv.height=h;const cx=cv.getContext('2d');cx.drawImage(image,0,0);const d=cx.getImageData(0,0,w,h).data,P=PALETTE.data;let bad=0,n=0;
+    for(let y=0;y<h;y++)for(let x=0;x<w;x++){const k=(y*w+x)*4,j=(y*PALETTE.w+x)*4;for(let c=0;c<4;c++)if(d[k+c]!==P[j+c])return 'altra';}
+    return legacy?'antiga':'oficial';}catch(e){return 'desconeguda';}}
+// els models fets amb la paleta antiga s'adapten: les UV passen al quadrant de dalt a l'esquerra
+function remapLegacyUV(geo){if(!geo.attributes.uv||geo.userData.palRemap)return;const uv=geo.attributes.uv.clone(),fr=v=>v-Math.floor(v);
+  for(let i=0;i<uv.count;i++)uv.setXY(i,fr(uv.getX(i))*0.5,fr(uv.getY(i))*0.5);geo.setAttribute('uv',uv);geo.userData.palRemap=true;}
 // material cartoon per a models d'alumnes: les caselles magenta de la paleta es tornen del color del curs
 function studentMat(src,skinned,team){
-  const map=src&&src.map||null;if(map){map.encoding=THREE.LinearEncoding;map.magFilter=THREE.NearestFilter;map.needsUpdate=true;}
+  // mai es fa servir la textura del fitxer: sempre la paleta oficial
+  const map=src&&src.map?(PALETTE.tex||src.map):null;if(map&&map!==PALETTE.tex){map.encoding=THREE.LinearEncoding;map.magFilter=THREE.NearestFilter;map.needsUpdate=true;}
   const m=new THREE.MeshToonMaterial({map,color:map?0xffffff:(src&&src.color?src.color.getHex():0xcccccc),gradientMap:toonRamp,skinning:skinned,vertexColors:!!(src&&src.vertexColors)});
   m.userData.uTeam={value:new THREE.Color(team)};m.userData.uFlash={value:0};
   m.onBeforeCompile=sh=>{sh.uniforms.uTeam=m.userData.uTeam;sh.uniforms.uFlash=m.userData.uFlash;
@@ -1126,10 +1147,10 @@ function outlineMatFor(skinned,th){const m=new THREE.MeshBasicMaterial({color:0x
 // analitza un model carregat i el compara amb els requisits
 function analyzeModel(gltf,kind,bytes){
   const B=BUDGET[kind],root=gltf.scene;root.updateMatrixWorld(true);
-  let tris=0,meshes=0,skinned=false,bones=0;const mats=new Set(),texs=new Set();let teamHits=0;
+  let tris=0,meshes=0,skinned=false,bones=0;const mats=new Set(),texs=new Set(),uvless=new Set();let teamHits=0;
   root.traverse(o=>{if(!o.isMesh)return;meshes++;const g=o.geometry;tris+=(g.index?g.index.count:g.attributes.position.count)/3;
     if(o.isSkinnedMesh){skinned=true;bones=Math.max(bones,o.skeleton.bones.length);}
-    (Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{mats.add(m);if(m.map)texs.add(m.map);
+    (Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{mats.add(m);if(m.map)texs.add(m.map);if(!g.attributes.uv)uvless.add(o);
       if(!m.map&&m.color&&m.color.g<0.12&&Math.abs(m.color.r-m.color.b)<0.1&&m.color.r>0.2)teamHits++;
       if(m.map&&m.map.image&&g.attributes.uv&&teamHits<1){try{const im=m.map.image,cv=document.createElement('canvas');cv.width=im.width;cv.height=im.height;const cx=cv.getContext('2d');cx.drawImage(im,0,0);const d=cx.getImageData(0,0,cv.width,cv.height).data,uv=g.attributes.uv;
         for(let i=0;i<uv.count;i+=Math.max(1,uv.count/600|0)){let u=uv.getX(i),v=uv.getY(i);u=((u%1)+1)%1;v=((v%1)+1)%1;const px=Math.min(cv.width-1,u*cv.width|0),py=Math.min(cv.height-1,v*cv.height|0),k=(py*cv.width+px)*4;
@@ -1140,9 +1161,15 @@ function analyzeModel(gltf,kind,bytes){
   const clips=gltf.animations||[],found={};for(const k in CLIP_NAMES)found[k]=findClip(clips,k);
   const R=[];const add=(st,txt)=>R.push({st,txt});
   add(tris<=B.tris?(tris>B.tris*0.85?'warn':'ok'):'fail',`${tris.toLocaleString('ca')} triangles (màxim ${B.tris.toLocaleString('ca')})`);
-  add(mats.size<=1?'ok':mats.size<=3?'warn':'fail',`${mats.size} material${mats.size===1?'':'s'} (ideal: 1, amb la paleta)`);
-  if(texs.size===0)add(teamHits?'ok':'warn','Sense textura: es fan servir colors de material. Millor la paleta oficial.');
-  else add(texs.size>1||texMax>1024?'fail':texMax>256?'warn':'ok',`${texs.size} textura${texs.size===1?'':'es'} de ${texMax} px (paleta oficial: 256 px)`);
+  add(mats.size<=1?'ok':'fail',mats.size<=1?'Un sol material':`${mats.size} materials: cal un sol material amb la paleta`);
+  const pal=texs.size===1?paletteKind([...texs][0].image):texs.size?'altra':'cap';
+  if(pal==='cap')add('fail','Sense textura: cal la paleta oficial (paleta-castaween.png). No s\'admeten colors de material ni de vèrtex.');
+  else if(texs.size>1)add('fail',`${texs.size} textures: només s'admet la paleta oficial`);
+  else if(pal==='altra')add('fail',`La textura (${texMax} px) no és la paleta oficial. Descarrega paleta-castaween.png i fes-la servir sense modificar-la.`);
+  else if(pal==='antiga')add('warn','Paleta antiga de 256 px: el joc l\'adapta, però descarrega la nova per tenir degradats i ulls');
+  else if(pal==='desconeguda')add('warn','No s\'ha pogut comprovar la paleta: obre el joc des del web');
+  else add('ok','Paleta oficial (paleta-castaween.png)');
+  if(texs.size&&uvless.size)add('fail','Hi ha peces sense UV: totes han d\'estar mapejades a la paleta');
   add(teamHits?'ok':'warn',teamHits?'Té peces del color del curs (magenta)':'Cap peça amb el color del curs: pinta el mocador o el xal a les caselles magenta');
   if(skinned)add(bones<=B.bones?'ok':'fail',`${bones} ossos (màxim ${B.bones})`);else add('info','Sense esquelet: el joc l\'animarà automàticament (rebots i inclinació)');
   if(bytes)add(bytes/1024<=B.kb?'ok':'fail',`${Math.round(bytes/1024)} KB (màxim ${B.kb} KB)`);
@@ -1150,14 +1177,14 @@ function analyzeModel(gltf,kind,bytes){
   add(Math.abs(box.min.y)<=hM*0.06?'ok':'warn',Math.abs(box.min.y)<=hM*0.06?'Peus a terra (Z = 0 a Blender)':`Els peus són a ${box.min.y.toFixed(2)}: posa'ls a Z = 0 a Blender`);
   add(Math.hypot(ctr.x,ctr.z)<=hM*0.15?'ok':'warn',Math.hypot(ctr.x,ctr.z)<=hM*0.15?'Centrada a l\'origen':'No està centrada: posa l\'origen entre els peus');
   for(const k in B.clips){const c=found[k];if(c)add('ok',`Animació ${CLIP_LABEL[k]}: «${c.name}» (${c.duration.toFixed(2)} s)`);else if(skinned)add(B.clips[k]?'warn':'info',`Falta l'animació ${CLIP_LABEL[k]}: el joc en farà una d'automàtica`);}
-  return{tris,meshes,mats:mats.size,texs:texs.size,texMax,skinned,bones,size,box,ctr,clips,found,checks:R,ok:!R.some(r=>r.st==='fail')};}
+  return{tris,meshes,mats:mats.size,texs:texs.size,texMax,pal,paletteOk:pal==='oficial'||pal==='antiga',skinned,bones,size,box,ctr,clips,found,checks:R,ok:!R.some(r=>r.st==='fail')};}
 function prepAsset(gltf,kind,bytes){const info=analyzeModel(gltf,kind,bytes);const B=BUDGET[kind];
   const h=info.size.y||1,k=B.h/h;
-  gltf.scene.traverse(o=>{if(o.isMesh){addSmoothNormals(o.geometry);o.frustumCulled=false;}});
+  gltf.scene.traverse(o=>{if(o.isMesh){addSmoothNormals(o.geometry);o.frustumCulled=false;if(info.pal==='antiga')remapLegacyUV(o.geometry);}});
   return{kind,scene:gltf.scene,clips:gltf.animations||[],found:info.found,info,k,off:new THREE.Vector3(-info.ctr.x*k,-info.box.min.y*k,-info.ctr.z*k),th:0.024/k};}
 function loadGLB(url,kind){return new Promise((res,rej)=>{if(!gltfLoader)return rej(new Error('GLTFLoader no disponible'));
-  fetch(url).then(r=>{if(!r.ok)throw new Error(r.status+' '+url);return r.arrayBuffer();}).then(buf=>gltfLoader.parse(buf,url.replace(/[^/]*$/,''),g=>res(prepAsset(g,kind,buf.byteLength)),rej)).catch(rej);});}
-function parseGLB(buf,kind){return new Promise((res,rej)=>{if(!gltfLoader)return rej(new Error('GLTFLoader no disponible'));gltfLoader.parse(buf,'',g=>res(prepAsset(g,kind,buf.byteLength)),rej);});}
+  PALETTE.ready.then(()=>fetch(url)).then(r=>{if(!r.ok)throw new Error(r.status+' '+url);return r.arrayBuffer();}).then(buf=>gltfLoader.parse(buf,url.replace(/[^/]*$/,''),g=>res(prepAsset(g,kind,buf.byteLength)),rej)).catch(rej);});}
+function parseGLB(buf,kind){return new Promise((res,rej)=>{if(!gltfLoader)return rej(new Error('GLTFLoader no disponible'));PALETTE.ready.then(()=>gltfLoader.parse(buf,'',g=>res(prepAsset(g,kind,buf.byteLength)),rej));});}
 // instancia un model: clon amb esquelet propi, materials del curs, contorn i animacions
 function instAsset(A,teamColor,opt){opt=opt||{};
   const inst=THREE.SkeletonUtils?THREE.SkeletonUtils.clone(A.scene):A.scene.clone(true);
@@ -1195,13 +1222,19 @@ ASSETS.prop={};
 const PROP_NEUTRAL=0xff8a2a;
 // Both the legacy single model and the proposal array are accepted.
 function assetEntries(raw){return (Array.isArray(raw)?raw:[raw]).map(e=>typeof e==='string'?{fitxer:e}:e).filter(e=>e&&typeof e.fitxer==='string'&&e.fitxer.trim());}
+function modelURL(file){return /^https?:\/\//.test(file)?file:'assets/'+file;}
+async function appendReviewedModels(man){try{
+  await NET.config;if(!NET.url)return;const base=NET.url.replace(/^ws/,'http'),r=await fetch(base+'/api/models/approved',{cache:'no-store',signal:AbortSignal.timeout(6000)});if(!r.ok)return;
+  const approved=await r.json();man.castanyeres=[...(man.castanyeres||[]),...assetEntries(approved.castanyeres)];
+  for(const group of ['monstres','escenari']){man[group]||={};for(const [kind,models]of Object.entries(approved[group]||{})){if(!BUDGET[kind])continue;man[group][kind]=[...assetEntries(man[group][kind]),...assetEntries(models)];}}
+}catch(e){console.warn('Castaween · catàleg de revisió no disponible; es conserven els models locals.');}}
 const assetTurns={};
 function nextAsset(group,kind,id){const list=ASSETS[group][kind]||[];
   if(id!==undefined)return list.find(a=>a.id===id)||null;
   if(!list.length)return null;const key=group+':'+kind,n=assetTurns[key]||0;assetTurns[key]=n+1;return list[n%list.length];}
 async function loadProposals(raw,kind){const list=[],ids=new Set();for(const c of assetEntries(raw)){
   const id=c.id||c.fitxer;if(ids.has(id)){ASSETS.errors.push(kind+': id repetit '+id);continue;}
-  try{const A=await loadGLB('assets/'+c.fitxer,kind);Object.assign(A,{id,nom:c.nom||c.fitxer,autor:c.autor||'',curs:c.curs||''});list.push(A);ids.add(id);}catch(e){ASSETS.errors.push(c.fitxer+': '+e.message);}}
+  try{const A=await loadGLB(modelURL(c.fitxer),kind);Object.assign(A,{id,nom:c.nom||c.fitxer,autor:c.autor||'',curs:c.curs||''});list.push(A);ids.add(id);}catch(e){ASSETS.errors.push(c.fitxer+': '+e.message);}}
   return list;}
 function propAssignments(models,places,round){const groups=new Map();if(!models.length)return groups;places.forEach((pl,i)=>{const A=models[((round-1)*places.length+i)%models.length];if(!groups.has(A))groups.set(A,[]);groups.get(A).push(pl);});return groups;}
 // Static instances are batched by proposal, preserving instancing on mobile.
@@ -1240,6 +1273,7 @@ function applyUI(ui){if(!ui)return;
 async function loadAssets(){
   let man=null;try{const r=await fetch('assets/assets.json',{cache:'no-cache'});if(r.ok)man=await r.json();}catch(e){}
   if(!man){ASSETS.loaded=true;return;}
+  const reviewed=appendReviewedModels(man);
   try{applyUI(man.ui);}catch(e){}
   if(man.config){try{applyConfig(await (await fetch('assets/'+man.config,{cache:'no-cache'})).json());}catch(e){ASSETS.errors.push('config: '+e.message);}}
   const so=man.so||{};
@@ -1247,7 +1281,8 @@ async function loadAssets(){
   for(const k in (so.efectes||{}))if(SFX_FILE[k])jobs.push(fetchBuf('assets/'+so.efectes[k]).then(b=>{AU.raw.sfx[SFX_FILE[k]]=b;}).catch(e=>ASSETS.errors.push(so.efectes[k]+': '+e.message)));
   for(const k of['menu','partida','nit'])if(so.musica&&so.musica[k])jobs.push(fetchBuf('assets/'+so.musica[k]).then(b=>{AU.raw.mus[k]=b;}).catch(e=>ASSETS.errors.push(so.musica[k]+': '+e.message)));
   await Promise.all(jobs);audioDecodeAll();
-  for(const c of (man.castanyeres||[])){if(!c||!c.fitxer)continue;try{const A=await loadGLB('assets/'+c.fitxer,'castanyera');Object.assign(A,{id:c.id||c.fitxer,nom:c.nom||c.fitxer,autor:c.autor||'',curs:c.curs||''});ASSETS.cast.push(A);}catch(e){ASSETS.errors.push(c.fitxer+': '+e.message);}}
+  await reviewed;
+  for(const c of (man.castanyeres||[])){if(!c||!c.fitxer)continue;try{const A=await loadGLB(modelURL(c.fitxer),'castanyera');Object.assign(A,{id:c.id||c.fitxer,nom:c.nom||c.fitxer,autor:c.autor||'',curs:c.curs||''});ASSETS.cast.push(A);}catch(e){ASSETS.errors.push(c.fitxer+': '+e.message);}}
   const mm=man.monstres||{};for(const k of['carabassa','fantasma','carabassot'])if(mm[k])ASSETS.mon[k]=await loadProposals(mm[k],k);
   const es=man.escenari||{};for(const k in es){if(!BUDGET[k]||!BUDGET[k].prop||!es[k])continue;const models=await loadProposals(es[k],k);if(models.length)applyProp(k,models);}
   ASSETS.loaded=true;if(ASSETS.errors.length)console.warn('Castaween · assets amb errors:',ASSETS.errors);
@@ -1701,7 +1736,7 @@ const T={asset:null,kind:'castanyera',file:''};
  groups.forEach(([g,ks])=>{const og=document.createElement('optgroup');og.label=g;ks.forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=BUDGET[k].label;og.appendChild(o);});sel.appendChild(og);});
  sel.addEventListener('change',()=>{T.kind=sel.value;T.asset=null;$('#tOut').hidden=true;$('#tFile').value='';renderTaller();updatePreview();});}
 function renderTaller(){const B=BUDGET[T.kind];$('#tKind').value=T.kind;
-  $('#tBudget').innerHTML=`Màxim <b>${B.tris.toLocaleString('ca')} triangles</b>${B.bones?`, ${B.bones} ossos`:''} i <b>${B.kb} KB</b>. Textura: la paleta oficial de 256 px.${B.team?' Les caselles magenta prenen el color del curs.':''}`;
+  $('#tBudget').innerHTML=`Màxim <b>${B.tris.toLocaleString('ca')} triangles</b>${B.bones?`, ${B.bones} ossos`:''} i <b>${B.kb} KB</b>. Textura obligatòria: <b>paleta-castaween.png</b>, sense modificar-la; no se n'admet cap altra.${B.team?' Les caselles magenta prenen el color del curs.':''}`;
   const tb=$('#tTeams');tb.innerHTML='';TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='sw';b.style.setProperty('--c',t.css);b.title=t.name;b.setAttribute('aria-label',t.name);b.setAttribute('aria-pressed',i===pickTeam);
     b.addEventListener('click',()=>{pickTeam=i;renderTaller();updatePreview();});tb.appendChild(b);});tallerJson();}
 function slug(t){return (t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
@@ -1722,7 +1757,7 @@ function showChecks(A){const I=A.info,ic={ok:'✓',warn:'!',fail:'×',info:'i'};
   $('#tChecks').innerHTML=I.checks.map(c=>`<li class="${c.st}"><i>${ic[c.st]}</i><span>${esc(c.txt)}</span></li>`).join('');
   const an=$('#tAnims');an.innerHTML='';$('#tAnimRow').hidden=!A.clips.length;
   A.clips.forEach(c=>{const b=document.createElement('button');b.type='button';b.className='opt';b.textContent=c.name;b.addEventListener('click',()=>{const X=preview&&preview.userData.X;if(!X||!X.mixer)return;X.mixer.stopAllAction();const a=X.mixer.clipAction(c);a.reset();a.setLoop(THREE.LoopRepeat);a.play();});an.appendChild(b);});
-  const B=BUDGET[A.kind];$('#tUse').hidden=false;$('#tUse').textContent=A.kind==='castanyera'?'Juga amb aquest model':B.prop?"Posa-ho a l'escena":'Fes servir aquest monstre';}
+  const B=BUDGET[A.kind];$('#tUse').hidden=!I.paletteOk;$('#tUse').textContent=A.kind==='castanyera'?'Juga amb aquest model':B.prop?"Posa-ho a l'escena":'Fes servir aquest monstre';}
 $('#tUse').addEventListener('click',()=>{const A=T.asset;if(!A)return;sfx('weapon');
   if(A.kind==='castanyera'){Object.assign(A,{id:'local',nom:$('#tNom').value||'El teu model',autor:$('#tAutor').value||'Tu',curs:TEAMS[pickTeam].name});ASSETS.cast=ASSETS.cast.filter(a=>a.id!=='local');ASSETS.cast.push(A);S.look.model='local';showCard('custom');}
   else if(BUDGET[A.kind].prop){A.id='local-'+A.kind;applyProp(A.kind,[A]);$('#tUse').textContent='Fet: ja és a l\'escena';}

@@ -67,3 +67,21 @@ No s'ha fet una prova amb cinquanta mòbils físics. Cal una prova de Wi-Fi al c
 - Límit pràctic: si hi ha més propostes que llocs o aparicions, calen més rondes per veure-les totes. La càrrega inicial i la memòria creixen amb la quantitat i el pes dels models. Els fitxers de cada alumne s'han de publicar i registrar al manifest.
 - Revisió abans de publicar: es conserva la castanyera nova local com a model per defecte (1.450 triangles, un material, una textura, 150.424 bytes). Carrega i es veu al configurador sense errors de consola. El catàleg i el ZIP també la inclouen.
 - Guia d'entregues a `assets/guia-entregues.html`, revisada al navegador; inclou passos per a alumnat/professorat, JSON, exportació, alternança, publicació i resolució d'errors.
+
+## Paleta obligatòria · 24/10/2026
+
+- Nova `assets/paleta-castaween.png` de 512 × 512 px generada amb `tools/build-palette.py`: el quadrant de dalt a l'esquerra és idèntic píxel a píxel a la paleta antiga de 256 px; s'hi afegeixen 16 degradats (inclòs un degradat CURS) i 16 ulls. L'script comprova que no hi hagi colors "magenta" fora de la fila i el degradat CURS.
+- `node --test server/test/*.test.js`: 21 proves correctes en la verificació final. El servidor descodifica el PNG incrustat i compara el SHA-256 de tots els píxels RGBA amb la paleta oficial (`server/palette-signature.js`). Rebutja les referències sense textura, una paleta retocada (fins i tot un sol píxel), dues textures, una imatge que no és PNG i un material que no fa servir la paleta. Accepta la paleta oficial antiga de 256 px.
+- Joc en Chromium sense interfície: la castanyera nova i la plantilla (migrades amb `tools/migrate-palette.py`) passen com a «Paleta oficial»; el fitxer de prova amb paleta antiga passa amb avís i les UV queden dins del quadrant (màxim 0,406); la paleta retocada i el model amb colors per vèrtex surten en vermell i el botó per provar-los queda amagat. Tots els materials dels models de l'alumnat es dibuixen amb la textura oficial.
+- PDF de l'alumnat i ZIP de referències regenerats.
+
+## Entregues i aprovació · 24/10/2026
+
+- Les 21 proves inclouen autenticació, caducitat, CSRF, quotes, estructura GLB, privacitat dels fitxers pendents i publicació reversible.
+- Flux HTTP comprovat amb Wrangler local: obrir entregues, rebutjar paleta alterada, enviar GLB vàlid, verificar que el públic rep 404 i el professor el pot previsualitzar, aprovar i retirar.
+- Navegador: formulari real amb nom, curs, codi i GLB; comprovant d'enviament i aparició a Pendents. Previsualització privada amb rotació, confirmació de revisió i aprovació al panell.
+- Joc local amb el catàleg del Worker local: el model aprovat apareix entre els monstres sense modificar assets.json; cap error de càrrega a la prova.
+- PDF de cinc pàgines renderitzat i revisat visualment després d'actualitzar el circuit d'entrega. ZIP regenerat amb la guia i la paleta actuals.
+- Es conserven els canvis manuals de la paleta de 512 px, els GLB migrats i el mode espectador. La simulació i el protocol de les sales no s'han canviat en aquesta actualització.
+- Worker desplegat amb migració SQLite de ReviewStore (versió 794c36c8-4f2f-4fb1-b46f-ef29bae4d80e). La prova HTTP de producció passa les quatre comprovacions: paleta alterada rebutjada, pendent privat, aprovació pública i retirada. Acaba amb entregues tancades i cap model de prova aprovat.
+- Panell de producció comprovat al navegador amb sessió privada i previsualització del GLB retirat. El secret de revisió està configurat a Cloudflare i el fitxer local està ignorat per git.

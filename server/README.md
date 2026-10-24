@@ -64,7 +64,22 @@ Pitjor cas d'una ronda de 5 minuts amb 50 alumnes: tots canvien input contínuam
 
 La sala en espera/resultats emet 1 Hz: unes 180 peticions equivalents/hora, a més d'entrades i sortides. Els inputs que no canvien no s'envien, per tant l'ús real normalment és inferior al pitjor cas. Els ACK i les retransmissions sortints no afegeixen peticions. Amb l'assignació de 128 MB, fins i tot comptant tota la ronda com activa, el consum és inferior a 40 GB-s/ronda: el pressupost de peticions és el límit rellevant d'aquest càlcul. L'objecte no fa lectures/escriptures explícites de l'estat de joc a SQLite.
 
-## Desenvolupar i desplegar
+## Entregues i revisió de models
+
+- Alumnat: al menú del joc, **Envia el teu model GLB**, o obre [el formulari](https://castaween-relay.carrotrevoltstudio.workers.dev/models). Descarrega la paleta oficial, prepara el GLB i indica nom, curs, tipus i codi d'entrega de sis xifres.
+- Professorat: [panell privat](https://castaween-relay.carrotrevoltstudio.workers.dev/revisio). Entra amb la contrasenya, obre les entregues i comparteix el codi (caduca al cap de vuit hores). Selecciona una proposta, gira la previsualització i confirma que l'has revisada abans d'aprovar-la. Pots rebutjar-la amb un comentari o retornar-la a pendent.
+- Els fitxers pendents i rebutjats només són accessibles amb sessió de professor. L'aprovació els publica al catàleg del Worker; el joc els incorpora automàticament en recarregar. Recarregueu professor i mòbils abans de començar una sala. No cal editar JSON ni fer un push per cada entrega.
+- És obligatori un únic material amb la paleta oficial PNG incrustada, UV i cap altra textura. El servidor descodifica i compara **tots els píxels RGBA**: no es pot substituir ni retocar, encara que la compressió del PNG canviï. La paleta oficial antiga de 256 px continua sent compatible. Els pressupostos depenen del tipus de model; les referències d'escala sense textura s'han de texturitzar abans d'entregar.
+
+`ReviewStore` és un Durable Object SQLite separat, declarat a la migració `v2-model-reviews`. Desa fitxers i metadades, sense simular partides. No necessita R2 ni targeta per aquesta arquitectura. Les quotes de peticions, lectures, escriptures i emmagatzematge de Durable Objects són compartides amb les sales i la resta del compte: [límits oficials](https://developers.cloudflare.com/durable-objects/platform/limits/) i [preus oficials](https://developers.cloudflare.com/durable-objects/platform/pricing/). El càlcul de 12 rondes anterior reserva el pressupost al joc; les entregues i revisions també consumeixen peticions.
+
+Límits de l'aplicació: **500 entregues, 100 MB totals, 200 entregues/dia, 100 aprovades**, i 180 entregues/hora per IP (per permetre l'aula darrere una mateixa connexió). El màxim per GLB és de 500 KB i alguns tipus tenen un pressupost inferior. Es conserven també les propostes rebutjades; no hi ha encara un botó d'esborrat definitiu ni còpia de seguretat automàtica. Descarrega les entregues que vulguis conservar. Aprovar publica també el nom i el curs; fes servir noms adequats per al web públic.
+
+La contrasenya **no és al repositori**. En aquesta instal·lació es conserva a `server/.dev.vars`, ignorat per git: copia el valor després de `MODEL_REVIEW_PASSWORD=` per entrar. No el comparteixis amb l'alumnat. El codi d'entrega és diferent del codi de quatre xifres de les partides. Per configurar una instal·lació nova, crea aquest fitxer amb una contrasenya llarga (mínim 20 caràcters), executa `node tools/set-review-secret.cjs` des de l'arrel i desplega. L'eina envia el secret per entrada estàndard, sense mostrar-lo. La sessió dura vuit hores i fa servir cookie HttpOnly, SameSite i Secure en producció; els POST comproven l'origen i els intents de login estan limitats.
+
+Prova local: `npx wrangler dev --local --ip 127.0.0.1 --port 8787` des de `server/`, i `node server/test/serve.cjs --reviews` des de l'arrel. `node server/test/live-review.mjs` verifica el flux HTTP; per verificar producció, afegeix el domini HTTPS del Worker. La prova crea una proposta identificada com a prova, l'aprova breument i acaba rebutjant-la; restaura l'estat inicial d'obertura d'entregues.
+
+## Desenvolupar i desplegar el Worker
 
 Des de `server/`:
 
@@ -105,6 +120,6 @@ Els clients de prova no simulen el joc. Fes servir `close` per desconnectar-los.
 
 - No hi ha migració d'amfitrió ni recuperació d'una partida després de tancar l'ordinador del professor. Reconnectar un alumne crea una entrada nova, sense recuperar la plaça o els recursos anteriors.
 - El codi curt és una invitació d'aula, sense comptes ni contrasenyes. Qui el conegui pot entrar. Hi ha un màxim de 151 connexions per sala, incloent l'amfitrió, espectadors i cues.
-- Els models carregats només al Taller local no es transfereixen per WebSocket. Publica'ls a `assets/assets.json` perquè tots els dispositius els puguin veure; la personalització integrada sí que es comparteix.
+- Els models carregats només al Taller local no es transfereixen per WebSocket. Aprova'ls al panell d'entregues, o publica'ls a `assets/assets.json`, perquè tots els dispositius els puguin veure; la personalització integrada sí que es comparteix.
 - La fluïdesa depèn del professor, de la Wi-Fi i dels mòbils. La interpolació introdueix uns 100 ms visuals, a més del trajecte de xarxa. Si el navegador del professor limita l'activitat en segon pla o l'ordinador va lent, la simulació s'alenteix; cal mantenir-lo en primer pla.
 - Les proves de navegador amb tres alumnes i sockets addicionals no substitueixen una prova de càrrega amb 50 mòbils físics a la Wi-Fi del centre.

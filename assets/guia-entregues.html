@@ -6,12 +6,14 @@
 </head><body><main>
 <nav><a href="./">← Models i mides</a> · <a href="../">Obre el joc</a></nav>
 <h1>Com preparar i entregar models per a Castaween</h1>
+<p><a class="button" href="entregues.html">Envia el teu model GLB a revisió</a></p>
 <p><a class="button" href="guia-alumnat-castaween.pdf" download>Descarrega la guia per a l'alumnat · PDF</a></p>
 <p>Cada alumne pot presentar una castanyera, un monstre, un arbre o un objecte. Les propostes es guarden amb noms diferents i poden conviure dins del joc.</p>
-<p><a class="button" href="referencies/castaween-referencies.zip" download>Descarrega les referències i la paleta</a></p>
+<p><a class="button" href="paleta-castaween.png" download>Descarrega la paleta obligatòria · PNG</a> <a class="button" href="referencies/castaween-referencies.zip" download>Descarrega les referències i la paleta · ZIP</a></p>
+<p><strong>Tots els models s'han de texturitzar amb la paleta oficial <code>paleta-castaween.png</code>, sense modificar-la.</strong> És l'única textura admesa, perquè el joc mantingui la coherència gràfica. Els models amb una altra textura o sense textura no es poden provar al Taller ni entregar.</p>
 <section><h2>1. Acordeu què farà cadascú</h2>
 <p><strong>Professorat:</strong> repartiu els tipus de model i feu una llista amb alumne, curs, tipus, nom de la proposta i estat de revisió. Pot haver-hi diverses carabasses o diversos castanyers: cada proposta necessita un fitxer propi.</p>
-<p><strong>Alumnat:</strong> tria un tipus del Taller i descarrega'n la referència al <a href="./#resta-models">catàleg de models i mides</a>. El GLB de referència serveix per comparar l'escala. Per practicar esquelet i animació, fes servir la plantilla animada de castanyera.</p>
+<p><strong>Alumnat:</strong> descarrega la <a href="paleta-castaween.png" download>paleta obligatòria</a> i la seva <a href="paleta-guia.png">guia</a>. Tria un tipus del Taller i descarrega'n la referència al <a href="./#resta-models">catàleg de models i mides</a>. El GLB de referència serveix per comparar l'escala. Per practicar esquelet i animació, fes servir la plantilla animada de castanyera.</p>
 </section>
 <section><h2>2. Prepara Blender a escala</h2>
 <ol><li>A <strong>Scene Properties → Units</strong>: <strong>Metric</strong>, <strong>Unit Scale 1.000</strong>, <strong>Length Meters</strong>. Una unitat és un metre.</li>
@@ -20,9 +22,10 @@
 <li>Respecta l'alçada de la taula del teu tipus. La castanyera fa <strong>1,80 m</strong>; el castanyer, <strong>4,30 m</strong>; el pi, <strong>6 m</strong>. El marge ha de fer <strong>1,20 m de llarg en X</strong>. Amplada i fondària dels altres models orienten les proporcions.</li></ol>
 <p>Blender converteix els eixos de glTF automàticament: al GLB l'alçada és Y. No giris el model a mà després d'importar-lo.</p>
 </section>
-<section><h2>3. Compleix els requisits del joc</h2>
-<ul><li><strong>Un material i la paleta oficial</strong> de 256 × 256 px. A l'UV Editor, col·loca cada cara sobre la casella del seu color. La <a href="paleta-guia.png">guia de colors</a> t'ajuda a trobar-les.</li>
-<li>La fila magenta és el color variable. A les castanyeres, paradetes, fogueres i torradores es converteix en el color del curs; als monstres, en lila de Halloween. No cal una còpia per a cada curs.</li>
+<section id="requisits"><h2>3. Compleix els requisits del joc</h2>
+<ul><li><strong>Un material i la paleta oficial com a única textura</strong> (512 × 512 px). Obligatori: no s'admet cap altra textura, ni la paleta retocada, ni colors de material o de vèrtex. Material amb <em>Image Texture</em> → <em>Base Color</em>, interpolació <strong>Closest</strong>.</li>
+<li><strong>Colors plans:</strong> a l'UV Editor, escala l'illa a 0 (<code>S 0</code>) i posa-la al centre de la casella. <strong>Degradats:</strong> escala-la a 0 en vertical (<code>S Y 0</code>) i col·loca-la dins d'una franja; el costat clar és a l'esquerra. <strong>Ulls:</strong> modela un pla de 6–8 costats, projecta'l des de davant i encaixa'l dins d'una casella d'ull. La <a href="paleta-guia.png">guia de la paleta</a> té els codis i els noms.</li>
+<li>La fila magenta i el degradat CURS són el color variable. A les castanyeres, paradetes, fogueres i torradores es converteix en el color del curs; als monstres, en lila de Halloween. No cal una còpia per a cada curs.</li>
 <li>Compta <strong>triangles</strong>, no cares de Blender. Comprova el pressupost abans d'afegir detalls petits.</li>
 <li>Sense càmeres, llums, shape keys ni modificadors pendents. Exclou la referència de l'exportació.</li></ul>
 <div class="table"><table><thead><tr><th>Tipus</th><th>Triangles màxims</th><th>Pes màxim</th></tr></thead><tbody>
@@ -34,18 +37,24 @@
 <section><h2>4. Exporta i prova la proposta</h2>
 <ol><li>Desa el projecte <code>.blend</code> per poder corregir-lo. Selecciona el teu model i l'esquelet, si en té.</li>
 <li>Aplica <strong>Ctrl+A → All Transforms</strong>. Comprova de nou la mida i l'origen.</li>
-<li>A <strong>File → Export → glTF 2.0</strong>: <strong>glTF Binary (.glb)</strong>, <strong>Selected Objects</strong>, <strong>+Y Up</strong>, UVs, normals i materials. Activa animacions si n'hi ha. Desactiva Draco.</li>
+<li>A <strong>File → Export → glTF 2.0</strong>: <strong>glTF Binary (.glb)</strong>, <strong>Selected Objects</strong>, <strong>+Y Up</strong>, UVs, normals i materials amb <strong>Images: Automatic</strong> (la paleta queda dins del GLB). Activa animacions si n'hi ha. Desactiva Draco.</li>
 <li>Posa un nom únic en minúscules, sense accents ni espais: <code>3d-garcia-marta-carabassa.glb</code>. No entreguis tots els fitxers com <code>model.glb</code>.</li>
 <li>Obre <strong>Personatge → Taller de models</strong>, tria el tipus correcte i carrega el GLB. Revisa la figura, els colors, la mida i les animacions.</li>
 <li>Corregeix els punts vermells; revisa els grocs amb el professorat. Prova'l amb <strong>Juga amb aquest model</strong>, <strong>Fes servir aquest monstre</strong> o <strong>Posa-ho a l'escena</strong>, segons el tipus.</li>
 <li>Escriu el <strong>nom del model</strong> i l'<strong>autor/a</strong> i copia l'entrada de configuració del Taller.</li></ol>
-<p>El Taller és una prova local: <strong>no envia ni publica el GLB</strong>. Els companys el veuran després que el professorat l'afegeixi al projecte i el publiqui.</p>
+<p>El Taller és una prova local: <strong>no envia ni publica el GLB</strong>. Per entregar-lo, fes servir <strong>Envia el teu model GLB</strong> al menú del joc.</p>
 </section>
 <section><h2>5. Què entrega cada alumne</h2>
+<p>Obre <strong>Envia el teu model GLB</strong> al menú. Descarrega la paleta oficial i utilitza-la sense retocar-la com a única textura. Omple nom, curs, nom de la proposta i tipus; introdueix el <strong>codi d'entrega de 6 xifres</strong> que et dona el professor (no és el codi de la partida), selecciona el GLB i envia'l a revisió.</p>
+<p>El servidor comprova el fitxer i tots els píxels de la paleta incrustada. Un cop rebut queda <strong>pendent i privat</strong> fins que el professor l'aprovi. No cal editar ni entregar JSON en aquest flux.</p>
 <ul><li>El <code>.glb</code> validat, amb el nom únic.</li><li>El projecte <code>.blend</code> com a font editable, a la carpeta o plataforma de classe que indiqui el professorat.</li><li>Tipus de model, nom de la proposta, autor/a, curs i entrada JSON generada al Taller.</li></ul>
 <p>Exemple: <strong>Carabassa · La dentuda · Marta Garcia · 3D i videojocs</strong>, fitxer <code>3d-garcia-marta-carabassa.glb</code>.</p>
 </section>
-<section><h2>6. Professorat: afegeix totes les propostes</h2>
+<section><h2>6. Professorat: revisa i aprova des del panell</h2>
+<ol><li>Obre l'<strong>Accés del professor</strong> de la pantalla d'entrega i entra amb la contrasenya privada de revisió.</li><li>Prem <strong>Obre les entregues</strong> i comparteix amb la classe el codi de 6 xifres. Caduca al cap de 8 hores; també pots tancar les entregues abans.</li><li>Tria una proposta pendent. Comprova la figura, les mides, la textura i l'autoria; pots descarregar el GLB per obrir-lo a Blender.</li><li>Marca la comprovació i prem <strong>Aprova i afegeix al joc</strong>. O bé deixa un comentari i prem <strong>Rebutja</strong>. La decisió es pot canviar després.</li><li>Recarregueu el joc a l'ordinador del professor i als mòbils abans d'obrir una sala. Les propostes aprovades es carreguen i alternen automàticament.</li></ol>
+<p><strong>No cal editar el JSON, fer commit ni redesplegar res per cada aprovació.</strong> Les entregues es guarden a Cloudflare, separades del repositori. Desa una còpia dels GLB i dels projectes Blender que vulguis conservar com a font.</p>
+</section>
+<section><h2>Integració manual (alternativa opcional)</h2>
 <ol><li>Copia cada GLB a la carpeta que toca. Conserva les entregues dels altres alumnes:</li></ol>
 <pre>assets/
   castanyeres/   → castanyeres
@@ -82,7 +91,7 @@
 <p>Un fitxer que falla no impedeix carregar els dels companys. Si fallen totes les propostes d'un tipus, es fa servir el model integrat. Molts models pesants augmenten la càrrega inicial i la memòria: manteniu els límits del Taller.</p>
 </section>
 <section><h2>Si alguna cosa no surt</h2>
-<ul><li><strong>No apareix:</strong> comprova que GLB i JSON s'hagin publicat, el camí exacte, majúscules/minúscules i que l'ID no estigui repetit dins del tipus.</li><li><strong>Només el veig jo:</strong> carregar-lo al Taller no el publica; falta afegir-lo al manifest i fer push.</li><li><strong>Mida o orientació incorrectes:</strong> compara'l amb la referència, revisa l'origen, aplica transformacions i exporta amb +Y Up.</li><li><strong>El color del curs no canvia:</strong> revisa les UV de les peces variables sobre les caselles magenta de la paleta.</li><li><strong>No veig totes les variants:</strong> deixa que apareguin més exemplars o comença una altra ronda.</li><li><strong>El mòbil mostra un altre model:</strong> recarrega la versió publicada a tots els dispositius i torna a obrir la sala.</li></ul>
+<ul><li><strong>No apareix:</strong> comprova que GLB i JSON s'hagin publicat, el camí exacte, majúscules/minúscules i que l'ID no estigui repetit dins del tipus.</li><li><strong>Només el veig jo:</strong> carregar-lo al Taller no el publica; falta afegir-lo al manifest i fer push.</li><li><strong>Mida o orientació incorrectes:</strong> compara'l amb la referència, revisa l'origen, aplica transformacions i exporta amb +Y Up.</li><li><strong>El color del curs no canvia:</strong> revisa les UV de les peces variables sobre les caselles magenta de la paleta.</li><li><strong>«La textura no és la paleta oficial»:</strong> torna a descarregar <code>paleta-castaween.png</code>, carrega-la al material sense editar-la i exporta amb Images: Automatic.</li><li><strong>No veig totes les variants:</strong> deixa que apareguin més exemplars o comença una altra ronda.</li><li><strong>El mòbil mostra un altre model:</strong> recarrega la versió publicada a tots els dispositius i torna a obrir la sala.</li></ul>
 </section>
 <p><a href="./">Models i mides</a> · <a href="https://github.com/xavikai/castaween/blob/main/ASSETS.md">Guia tècnica completa</a> · <a href="../">Juga a Castaween</a></p>
 <p><small>Pots imprimir aquesta guia o desar-la com a PDF amb la funció d'impressió del navegador.</small></p>

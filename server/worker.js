@@ -1,8 +1,17 @@
 // A room stores connection metadata only. All game rules run in the host browser.
+import {UPLOAD_PAGE,REVIEW_PAGE,VIEWER_JS} from './model-pages.js';
+import {PALETTE_PNG_BASE64} from './palette-image.js';
+export {ReviewStore} from './review-store.js';
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/health") return Response.json({ ok: true, service: "castaween-relay" });
+    if(url.pathname==='/models/paleta-castaween.png'&&request.method==='GET')return new Response(Uint8Array.from(atob(PALETTE_PNG_BASE64),c=>c.charCodeAt(0)),{headers:{'Content-Type':'image/png','Content-Disposition':'attachment; filename="paleta-castaween.png"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
+    if(['/models','/revisio','/models/viewer.js'].includes(url.pathname)){
+      if(request.method!=='GET')return new Response('Method not allowed',{status:405});
+      return new Response(url.pathname==='/models'?UPLOAD_PAGE:url.pathname==='/revisio'?REVIEW_PAGE:VIEWER_JS,{headers:{'Content-Type':url.pathname.endsWith('.js')?'text/javascript; charset=utf-8':'text/html; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' data: blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"}});
+    }
+    if(url.pathname.startsWith('/api/models/'))return env.REVIEWS.get(env.REVIEWS.idFromName('classroom')).fetch(request);
     const match = /^\/room\/(\d{4})$/.exec(url.pathname);
     if (!match) return new Response("Castaween WebSocket relay", { status: 404 });
     if (request.headers.get("Upgrade")?.toLowerCase() !== "websocket") return new Response("WebSocket required", { status: 426 });

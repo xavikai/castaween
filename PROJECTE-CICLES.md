@@ -15,7 +15,7 @@ Castaween està pensat perquè cada cicle de CIFOG hi aporti una peça real del 
 - **Identitat de Castaween**: logo (`ui/logo`), que substitueix el títol del menú.
 - **Interfície i menú principal**: maquetes a Figma i després el full d'estil `ui/tema.css` (colors, tipografies, botons, marcador, barra de vida). Parteix de `ui/tema-exemple.css`.
 - **Iconografia**: armes, panellets, llenya, cursos.
-- **Paleta oficial**: poden redissenyar els 64 colors de `paleta-castaween.png`. Com que tots els models la fan servir, canviar-la canvia l'estil de tot el joc.
+- **Paleta oficial**: poden proposar el redisseny dels colors, els degradats i els ulls de `paleta-castaween.png`, mantenint-ne la distribució. És la textura obligatòria de tots els models: si el redisseny s'aprova, es regenera amb `tools/build-palette.py` i canvia l'estil de tot el joc a la vegada.
 - **Cartelleria** de la jornada de la Castanyada.
 - Treballa: disseny d'interfície per a mòbil, sistemes de color, jerarquia visual, CSS bàsic.
 
