@@ -18,11 +18,7 @@ Obre la pàgina de GitHub Pages del repositori al mòbil. Controls: joystick a l
 
 ## Material de l'alumnat
 
-**Entregues i revisió sense editar JSON:** al menú, **Envia el teu model GLB**. L'alumne descarrega la paleta oficial, introdueix nom, curs i codi d'entrega i envia el GLB. A l'[accés del professor](https://castaween-relay.carrotrevoltstudio.workers.dev/revisio) pots previsualitzar, aprovar o rebutjar. Només les propostes aprovades es carreguen al joc després de recarregar-lo. Configuració i contrasenya: [server/README.md](server/README.md#entregues-i-revisió-de-models).
-
-**[Guia pas a pas per preparar, entregar i publicar propostes](https://xavikai.github.io/castaween/assets/guia-entregues.html)**, amb instruccions per a l'alumnat i el professorat.
-
-**[Guia en PDF per passar a l'alumnat](https://xavikai.github.io/castaween/assets/guia-alumnat-castaween.pdf)**: cinc pàgines amb els passos de Blender, l'entrega, les mides dels 20 tipus de model i un annex de publicació per al professorat.
+**`carpeta-alumnat/`**: la carpeta per passar a la classe. Té la guia visual pas a pas en PDF, un fitxer d'inici de Blender ja preparat, la paleta i els models de referència. L'aplicació només serveix per jugar: crear i entregar models es fa a classe.
 
 Tot el que surt al joc es pot substituir per material fet a classe, sense tocar el codi:
 
@@ -30,11 +26,9 @@ Tot el que surt al joc es pot substituir per material fet a classe, sense tocar 
 - **`PROJECTE-CICLES.md`**: què pot aportar cada cicle (3D i videojocs, Disseny, Fotografia, Audiovisuals i Gràfica interactiva).
 - **`assets/assets.json`**: on es diu al joc quins fitxers ha de fer servir.
 
-Dins del joc, **Personatge → Taller de models** valida un `.glb` abans d'entregar-lo.
-
 Cada tipus de monstre, arbre i objecte admet diverses propostes a `assets/assets.json`, amb nom i autor. Les aparicions alternen els models per torns; l'escenari els reparteix pel mapa i renova la selecció a cada ronda. Vegeu **Diverses propostes per tipus** a [ASSETS.md](ASSETS.md).
 
-**[Descarrega els models i la guia d'escala](https://xavikai.github.io/castaween/assets/)**: castanyera actual i plantilla animada a **1,80 m**, més **19 models de monstres, arbres i objectes** amb les mides de referència. Hi ha descàrregues individuals i un [ZIP amb tot el conjunt](assets/referencies/castaween-referencies.zip). A Blender, treballa en metres amb **Unit Scale 1.000**; respecta l'alçada de cada model indicada al catàleg. Detalls a `assets/referencies/LLEGEIX-ME.md`.
+**[Descarrega els models i la guia d'escala](https://xavikai.github.io/castaween/assets/)**: castanyera de referència i plantilla animada a **1,80 m**, més **19 models de monstres, arbres i objectes** amb les mides de referència. Hi ha descàrregues individuals i un [ZIP amb tot el conjunt](assets/referencies/castaween-referencies.zip). A Blender, treballa en metres amb **Unit Scale 1.000**; respecta l'alçada de cada model indicada al catàleg. Detalls a `assets/referencies/LLEGEIX-ME.md`.
 
 ## Estructura
 

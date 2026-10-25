@@ -1,21 +1,18 @@
 {
-  "model": "Castanyera clàssica actual, sense complements opcionals",
-  "file": "castanyera-actual-referencia.glb",
+  "model": "Castanyera nova del projecte (model de referència del joc)",
+  "file": "../castanyeres/castanyera-nova.glb",
   "units": "metres",
   "height_m": 1.8,
-  "width_m": 1.023741,
-  "depth_m": 0.987933,
+  "width_m": 1.119,
+  "depth_m": 1.234,
   "up_gltf": "+Y",
   "front_gltf": "+Z",
   "up_blender": "+Z",
   "front_blender": "-Y",
   "origin": "centre de la base, a terra",
-  "triangles": 1529,
+  "triangles": 1450,
   "animated": false,
-  "source": "index.html: castGeometries + buildCastRig",
-  "geometry_source_sha256": "c403693b422dc265ed3287e835533d4783b58e2d97ef5d6e49a6c1f766623b2d",
-  "original_procedural_height": 2.2428,
-  "applied_scale": 0.802568219,
+  "texture": "paleta-castaween.png (512 px): colors plans, fila CURS i ull «Marró»",
   "student_triangle_budget": 1500,
-  "note": "Referència estàtica de proporcions i escala. No és una entrega optimitzada ni substitueix la plantilla animada amb paleta."
+  "note": "Referència de proporcions i escala. L'amplada i la fondària inclouen la faldilla i el cistell; no cal copiar exactament la silueta."
 }

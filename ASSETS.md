@@ -2,9 +2,9 @@
 
 Aquesta guia explica com substituir qualsevol element del joc (personatges, monstres, escenari, so, música i interfície) per material fet per l'alumnat, i quins requisits ha de complir perquè el joc vagi fluid al mòbil.
 
-Per començar a classe: [**guia pas a pas de preparació i entregues**](https://xavikai.github.io/castaween/assets/guia-entregues.html).
+Per començar a classe: la carpeta **`carpeta-alumnat/`** té tot el que necessita l'alumnat (guia visual en PDF, fitxer d'inici de Blender, paleta i models de referència). Comprimeix-la i passa-la a la classe.
 
-> **Paleta obligatòria.** Tots els models s'han de texturitzar amb [`paleta-castaween.png`](assets/paleta-castaween.png) ([guia de colors](assets/paleta-guia.png)), sense modificar-la. És l'única textura admesa: el Taller i el servidor d'entregues rebutgen qualsevol altra textura, i els models sense textura. Així tot el joc té el mateix estil gràfic.
+> **Paleta obligatòria.** Tots els models s'han de texturitzar amb [`paleta-castaween.png`](assets/paleta-castaween.png) ([guia de colors](assets/paleta-guia.png)), sense modificar-la. És l'única textura admesa: el joc sempre dibuixa els models amb la paleta oficial. Així tot el joc té el mateix estil gràfic.
 
 ## Com funciona
 
@@ -12,14 +12,14 @@ Per començar a classe: [**guia pas a pas de preparació i entregues**](https://
 
 La carpeta [**assets/ al web**](https://xavikai.github.io/castaween/assets/) té botons de descàrrega i instruccions per a Blender:
 
-- [**Model actual de referència (.glb)**](assets/plantilles/castanyera-actual-referencia.glb): la castanyera clàssica actual, normalitzada a **1,80 m**. Estàtica, per comparar mides i proporcions. Fa **1,024 m d'ample** i **0,988 m de fondària**. Té 1.529 triangles i colors per vèrtex; s'ha d'optimitzar i adaptar a la paleta si es fa servir com a base d'una entrega.
+- [**Castanyera de referència (.glb)**](assets/castanyeres/castanyera-nova.glb): l'única castanyera del joc, a **1,80 m**. Fa **1,119 m d'ample** i **1,234 m de fondària** (amb faldilla i cistell), 1.450 triangles i la paleta oficial com a única textura, ulls inclosos.
 - [**Plantilla animada (.glb)**](assets/plantilles/plantilla-castanyera.glb): també de **1,80 m**, amb la paleta oficial, esquelet i les quatre animacions.
 - [**Paleta obligatòria (.png)**](assets/paleta-castaween.png) i [**guia de la paleta**](assets/paleta-guia.png): l'única textura que es pot fer servir.
 - [**Instruccions d'escala**](assets/plantilles/LLEGEIX-ME.md) i [**mides exactes**](assets/plantilles/mides-castanyera.json).
 - **Monstres, arbres i objectes**: [19 models GLB al catàleg](https://xavikai.github.io/castaween/assets/#resta-models), [mides de cada model](assets/referencies/mides-models.json) i [instruccions](assets/referencies/LLEGEIX-ME.md). Inclou els tres monstres i tots els elements d'escenari substituïbles de la taula tècnica, ajustats a les alçades d'entrega. El tram de marge també fa **1,20 m de llarg (X)**. Són exemplars estàtics de les geometries integrades, amb els colors originals, sense efectes ni animacions; cal adaptar-los a la paleta i als límits si es reutilitzen com a entrega.
-- [**Descarrega tot el conjunt en ZIP**](assets/referencies/castaween-referencies.zip): els 19 models, la castanyera actual, la plantilla animada, les mides, les instruccions i la paleta.
+- [**Descarrega tot el conjunt en ZIP**](assets/referencies/castaween-referencies.zip): els 19 models, la castanyera de referència, la plantilla animada, les mides, les instruccions i la paleta.
 
-A Blender, feu servir **Metric · Unit Scale 1.000 · Meters**. La castanyera s'entrega a **1,80 m d'alt**, amb l'origen a terra. Amplada i fondària són orientatives per comparar siluetes. Els botons de descàrrega també són a **Personatge** i **Taller de models** del joc.
+A Blender, feu servir **Metric · Unit Scale 1.000 · Meters**. La castanyera s'entrega a **1,80 m d'alt**, amb l'origen a terra. Amplada i fondària són orientatives per comparar siluetes. Tot plegat també és a `carpeta-alumnat/`.
 
 Tot es configura des d'un sol fitxer: `assets/assets.json`. El joc el llegeix en arrencar i:
 
@@ -45,21 +45,20 @@ assets/
 
 > El joc s'ha d'obrir des d'un servidor (GitHub Pages o similar). Si s'obre `index.html` fent doble clic, el navegador no deixa llegir la carpeta `assets/` i el joc fa servir la versió integrada.
 
-## Per provar un model: el Taller
+## Material per a l'alumnat
 
-Al joc, **Personatge → Taller de models** (o **Opcions → Taller de models**):
+L'aplicació no té cap eina per crear, provar ni enviar models: això es treballa a classe. La carpeta `carpeta-alumnat/` conté:
 
-1. Tria què has modelat (castanyera, monstre o element d'escenari).
-2. Carrega el teu `.glb`.
-3. El Taller comprova tots els requisits d'aquesta guia (verd, groc o vermell), mostra el model amb el color de cada curs i reprodueix les animacions. Si la textura no és la paleta oficial, el model no es pot provar.
-4. Amb **Juga amb aquest model** el pots provar en una partida.
-5. A sota genera l'entrada que cal enganxar a `assets.json`.
+- `GUIA-castaween.pdf`: guia visual pas a pas (tria, Blender, pintar amb la paleta, ulls, color del curs, revisió, exportació i entrega).
+- `castaween-inici.blend`: fitxer de Blender preparat (metres, material `paleta` amb interpolació Closest, totes les referències en col·leccions bloquejades i estadístiques al visor). Necessita Blender 4.5 o més nou.
+- `paleta-castaween.png` i `paleta-guia.png`.
+- `models-referencia/`: la castanyera i els 19 models de monstres i escenari, ja pintats amb la paleta.
 
-El fitxer no surt del dispositiu. És l'eina per comprovar el model abans d'entregar-lo.
+Els fitxers font de la guia són a `tools/guia-alumnat/`.
 
 ## La paleta obligatòria
 
-Tots els models fan servir la mateixa textura, `paleta-castaween.png` (512 × 512 px). **És obligatòria i no es pot modificar ni substituir per cap altra.** Es descarrega des del [catàleg de models](https://xavikai.github.io/castaween/assets/), des de **Personatge** i des del **Taller de models**.
+Tots els models fan servir la mateixa textura, `paleta-castaween.png` (512 × 512 px). **És obligatòria i no es pot modificar ni substituir per cap altra.** És a `carpeta-alumnat/` i al [catàleg de models](https://xavikai.github.io/castaween/assets/).
 
 La textura té quatre zones:
 
@@ -79,7 +78,7 @@ Per què una sola textura obligatòria:
 - **Pes mínim.** La textura ocupa uns 40 KB i es comparteix entre tots els models.
 - **Color del curs automàtic.** La fila de baix dels colors plans i el degradat **CURS** (magenta) no surten mai magenta: el joc els substitueix pel color del curs de qui juga. El magenta clar dona el color clar i el fosc, el fosc.
 
-**Com es controla.** El Taller marca en vermell els models sense textura, amb una textura diferent o amb més d'un material, i no deixa provar-los. El servidor d'entregues també els rebutja. A més, el joc sempre dibuixa els models amb la paleta oficial, encara que el fitxer en porti una altra.
+**Com es controla.** El professor revisa els models abans d'afegir-los. A més, el joc sempre dibuixa els models amb la paleta oficial, encara que el fitxer en porti una altra.
 
 **Models fets amb la paleta antiga (256 px).** Continuen funcionant: els 64 colors són els mateixos i el joc els adapta sol. Per tenir degradats i ulls, el professorat pot actualitzar el GLB amb `python tools/migrate-palette.py model.glb`.
 
@@ -178,14 +177,10 @@ Mateixes regles. Les animacions són `camina` (bucle) i `ataca` (sense bucle). L
 
 ## Afegir un model al joc
 
-### Opció recomanada: entrega i aprovació en línia
-
-Al menú del joc, **Envia el teu model GLB** obre el formulari amb nom, curs, tipus i proposta. El professor obre les entregues des del seu panell privat i comparteix un codi de 6 xifres. Cal descarregar i usar la paleta oficial sense retocar-la. El servidor comprova tots els píxels del PNG incrustat (admet també la paleta oficial antiga de 256 px per compatibilitat), els límits i el format GLB. Les propostes pendents són privades. En aprovar-les entren automàticament al catàleg; en rebutjar-les o tornar-les a pendent en surten. Recarregueu tots els dispositius abans de començar la sala. No cal modificar `assets.json`.
-
-### Alternativa: integració manual al repositori
+### Integrar un model al repositori
 
 1. Copia el `.glb` a la carpeta que toca (`assets/castanyeres/`, `assets/monstres/` o `assets/escenari/`).
-2. Afegeix-lo a `assets/assets.json`. L'entrada la genera el Taller.
+2. Afegeix-lo a `assets/assets.json` seguint l'exemple de sota.
 
 ```json
 {
@@ -236,7 +231,7 @@ Cada clau de `monstres` i `escenari` pot contenir una **llista de propostes**, a
 - **Compatibilitat:** el camí únic antic (`"carabassa": "monstres/pol.glb"`) continua funcionant. També s'accepta una llista de camins. Si falta `id`, s'utilitza el camí del fitxer. Un ID repetit dins d'un tipus es descarta i queda registrat com a error.
 - **Errors:** un fitxer que falla no impedeix carregar els dels companys. Si no es carrega cap proposta d'un tipus, es conserva el model integrat. La càrrega i memòria augmenten amb el nombre de models; respecteu els pressupostos i eviteu variants duplicades del mateix fitxer.
 
-El Taller genera l'entrada amb les dades d'autoria per a qualsevol tipus de model. Les proves locals del Taller substitueixen temporalment aquell tipus només al dispositiu; per compartir les entregues, afegiu-les a les llistes del manifest i publiqueu els GLB.
+Per publicar les entregues, afegiu-les a les llistes del manifest i pugeu els GLB al repositori.
 
 ## So i música
 

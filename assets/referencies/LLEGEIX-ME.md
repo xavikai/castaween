@@ -30,4 +30,4 @@ Aquests fitxers són referències de mides, no entregues optimitzades. Per entre
 | panellet-referencia.glb | 0,550 | 0,682 | 0,695 | 164 / 200 | Panellet normal, sense halo, contorn lluminós ni feix de llum. |
 | llenya-referencia.glb | 0,240 | 0,469 | 0,180 | 68 / 80 | Tronc recollible actual, sense halo ni contorn lluminós. |
 
-El ZIP també inclou la castanyera actual i la plantilla animada d’1,80 m, amb la seva guia. Regeneració: node tools/export-world-references.cjs /ruta/a/three-r128.cjs; després node tools/package-references.cjs.
+El ZIP també inclou la castanyera de referència (assets/castanyeres/castanyera-nova.glb) i la plantilla animada d’1,80 m, amb la seva guia. Regeneració: node tools/export-world-references.cjs /ruta/a/three-r128.cjs; després node tools/package-references.cjs.

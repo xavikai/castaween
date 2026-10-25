@@ -188,7 +188,6 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
 .btn.big{font-size:22px;padding:18px 16px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.row3 .btn{font-size:12.5px;padding:13px 4px}
-.home-resources .btn{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;font-size:12px;padding:12px 8px;line-height:1.4}
 .card.custom{margin-top:auto;max-height:54vh;overflow-y:auto;gap:12px;padding-top:14px}
 .card.custom>*{flex-shrink:0}
 .sheet.menu.preview-mode{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(140px,34%) minmax(0,1fr);align-items:stretch;overflow:hidden;background:rgba(8,9,20,.12)}
@@ -324,56 +323,24 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
         <button class="btn big" id="playBtn">Mode en línia</button>
         <button class="btn ghost" id="specBtn">Mira una partida</button>
         <div class="row3"><button class="btn ghost" id="lookBtn">Personatge</button><button class="btn ghost" id="howBtn">Com es juga</button><button class="btn ghost" id="optBtn">Opcions</button></div>
-        <div class="two home-resources" role="group" aria-label="Recursos per a l'alumnat">
-          <a class="btn ghost" href="assets/index.html" target="_blank" rel="noopener">Models de referència ↗</a>
-          <a class="btn ghost" href="assets/guia-alumnat-castaween.pdf" download>Descarrega la guia PDF</a>
-        </div>
-        <a class="btn ghost filebtn" href="assets/entregues.html" target="_blank" rel="noopener">Envia el teu model GLB ↗</a>
       </div>
       <p class="credits">Un joc de la Castanyada fet amb l'alumnat de CIFOG · 3D i videojocs, Audiovisuals, Fotografia, Disseny i Gràfica interactiva</p>
     </div>
 
     <div class="card custom" id="custom" hidden>
-      <div class="cbar"><button class="back" data-go="home">← Menú</button><span><button class="back" id="tallerBtn">Taller de models</button> · <button class="back" id="rndLook">Aleatori</button></span></div>
+      <div class="cbar"><button class="back" data-go="home">← Menú</button></div>
       <h2>La teva castanyera</h2>
       <p class="hint2">Arrossega la figura per fer-la girar.</p>
-      <a class="btn ghost filebtn" href="assets/plantilles/castanyera-actual-referencia.glb" download>Descarrega el model de referència · 1,80 m</a>
-      <a class="btn ghost filebtn" href="assets/paleta-castaween.png" download>Descarrega la paleta obligatòria · PNG</a>
-      <a class="back" href="assets/" target="_blank" rel="noopener">Models i mides per a Blender ↗</a>
       <label class="label" for="nameIn">Nickname a l'arena</label>
       <input class="name" id="nameIn" maxlength="12" placeholder="Tu" autocomplete="off">
       <div class="lrow" id="modelRow"><div class="label">Model</div><div class="opts" id="lookModels"></div><p class="credit" id="modelCredit" hidden></p></div>
       <div id="lookRows"></div>
       <div class="label">Color del curs</div>
       <div class="opts" id="lookTeams"></div>
-      <p class="note">El mocador i el xal sempre porten el color del curs, perquè tothom et reconegui a l'arena.</p>
+      <p class="note">Les parts magenta de la castanyera prenen el color del teu curs, perquè tothom et reconegui a l'arena.</p>
       <button class="btn" id="saveLook">Desa la castanyera</button>
     </div>
 
-    <div class="card custom" id="taller" hidden>
-      <div class="cbar"><button class="back" data-go="custom">← Personatge</button><button class="back" data-go="home">Menú</button></div>
-      <h2>Taller de models</h2>
-      <a class="btn ghost filebtn" href="assets/plantilles/castanyera-actual-referencia.glb" download>Descarrega el model de referència · 1,80 m</a>
-      <a class="btn ghost filebtn" href="assets/paleta-castaween.png" download>Descarrega la paleta obligatòria · PNG</a>
-      <a class="back" href="assets/paleta-guia.png" target="_blank" rel="noopener">Guia de la paleta: colors, degradats i ulls ↗</a>
-      <a class="back" href="assets/" target="_blank" rel="noopener">Tots els models, plantilles i mides ↗</a>
-      <p class="note">Tots els models han de fer servir la paleta oficial com a única textura, perquè el joc tingui un estil coherent. Prova el teu model .glb abans d'entregar-lo: el joc comprova els requisits i el mostra amb el color del curs. El fitxer no surt del teu dispositiu.</p>
-      <label class="label" for="tKind">Què has modelat</label>
-      <select class="name" id="tKind"></select>
-      <p class="credit" id="tBudget"></p>
-      <label class="btn ghost filebtn">Tria el fitxer .glb<input type="file" id="tFile" accept=".glb,model/gltf-binary" hidden></label>
-      <div id="tOut" hidden>
-        <div class="verdict" id="tVerdict"></div>
-        <ul class="checks" id="tChecks"></ul>
-        <div class="lrow" id="tAnimRow"><div class="label">Animacions</div><div class="opts" id="tAnims"></div></div>
-        <div class="lrow"><div class="label">Color del curs</div><div class="opts" id="tTeams"></div></div>
-        <button class="btn" id="tUse"></button>
-        <div class="label">Entrada per a assets.json</div>
-        <div class="two"><input class="name" id="tNom" maxlength="30" placeholder="Nom del model" autocomplete="off"><input class="name" id="tAutor" maxlength="40" placeholder="Autor/a" autocomplete="off"></div>
-        <pre class="json" id="tJson"></pre>
-        <button class="btn ghost" id="tCopy">Copia l'entrada</button>
-      </div>
-    </div>
 
     <div class="card" id="howto" hidden>
       <button class="back" data-go="home">← Menú</button>
@@ -422,7 +389,6 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
       <label class="switch"><input type="checkbox" id="sndOn" checked><span></span><div>Efectes de so<small>Llançaments, impactes, explosions i recollides.</small></div></label>
       <label class="switch"><input type="checkbox" id="musOn" checked><span></span><div>Música<small>Ritme de batalla que s'accelera a la Nit de Difunts.</small></div></label>
       <label class="switch"><input type="checkbox" id="hq" checked><span></span><div>Efectes gràfics alts<small>Ombres i resplendor. Desactiva-ho si el mòbil va lent.</small></div></label>
-      <button class="btn ghost" id="tallerBtn2">Taller de models (.glb)</button>
       <label class="switch"><input type="checkbox" id="accel"><span></span><div>Temps accelerat ×6<small>Per provar: ronda de 50 s i torn de 15 s.</small></div></label>
       <div class="compare">
         <div class="now"><h4>Mode local</h4><ul><li>Tu i 49 bots</li><li>Entra sense cap codi de sala</li></ul></div>
@@ -748,7 +714,9 @@ const LOOK_OPTS={
   extra:{label:'Complement',type:'text',opts:[['cap','Cap'],['arracades','Arracades'],['flor','Flor'],['collaret','Collaret'],['berret','Barret de palla']]},
   bag:{label:'Porta',type:'text',opts:[['cistell','Cistell'],['paperina','Paperina'],['cassola','Cassola']]}};
 const DEFAULT_LOOK={skin:0xf6d4b0,hair:0xc9c4bc,scarf:'llis',apron:'crema',skirt:0x3a2418,glasses:'cap',extra:'cap',bag:'cistell',name:'',model:'castanyera-nova'};
-function randomLook(){const l={name:'',model:''};for(const k in LOOK_OPTS){const o=LOOK_OPTS[k].opts;l[k]=o[Math.floor(Math.random()*o.length)][0];}if(Math.random()<0.55)l.glasses='cap';if(Math.random()<0.4)l.extra='cap';return l;}
+function castModels(){return ASSETS.cast.filter(a=>a.id!=='local');}
+function defaultCastId(){const L=castModels();return(L.find(a=>a.id==='castanyera-nova')||L[0]||ASSETS.cast[0]||{id:''}).id;}
+function randomLook(){const l={name:'',model:defaultCastId()};for(const k in LOOK_OPTS){const o=LOOK_OPTS[k].opts;l[k]=o[Math.floor(Math.random()*o.length)][0];}if(Math.random()<0.55)l.glasses='cap';if(Math.random()<0.4)l.extra='cap';return l;}
 function castGeometries(t,look){look=Object.assign({},DEFAULT_LOOK,look||{});
   const key=[look.fringe===false?'nf':'f',t.id,look.skin,look.hair,look.scarf,look.apron,look.skirt,look.glasses,look.extra,look.bag].join('|');if(castGeo[key])return castGeo[key];
   const T=t.color,TD=new THREE.Color(t.color).multiplyScalar(0.62).getHex(),SKIN=look.skin,SKIN2=new THREE.Color(SKIN).multiplyScalar(0.9).getHex(),CREAM=0xefe4cc,BLOUSE=0xe6d8be,SKIRT=look.skirt,DARK=0x1c1410,HAIR=look.hair,GOLD=0xf2c230;
@@ -806,10 +774,10 @@ function buildCastRig(team,look){const rig=new THREE.Group(),G2=castGeometries(t
   const body=new THREE.Mesh(G2.body,castMat);rig.add(body);withOutline(body,G2.line);
   const shoulder=new THREE.Group();shoulder.position.set(0.32,1.13,0.02);shoulder.rotation.z=0.28;rig.add(shoulder);
   const arm=new THREE.Mesh(G2.arm,castMat);shoulder.add(arm);withOutline(arm);return{rig,body,arm,shoulder};}
-function buildAnyRig(team,look){const A=look&&look.model?castAsset(look.model):null;
+function buildAnyRig(team,look){const A=castAsset(look&&look.model)||castAsset(defaultCastId());
   if(A){const rig=new THREE.Group(),X=instAsset(A,team.color);rig.add(X.fit);const shoulder=new THREE.Group();rig.add(shoulder);return{rig,body:null,arm:null,shoulder,X};}
   return buildCastRig(team,look);}
-function botLook(t){if(ASSETS.cast.length&&Math.random()<0.7){const mine=ASSETS.cast.filter(a=>a.curs&&a.curs.toLowerCase()===t.name.toLowerCase());const A=pick(mine.length&&Math.random()<0.6?mine:ASSETS.cast);return{model:A.id};}return randomLook();}
+function botLook(t){const L=castModels();if(L.length){const mine=L.filter(a=>a.curs&&a.curs.toLowerCase()===t.name.toLowerCase());const A=pick(mine.length&&Math.random()<0.6?mine:L);return Object.assign({},DEFAULT_LOOK,{model:A.id});}return randomLook();}
 function makeCastanyera(team,isPlayer,look){
   const g=new THREE.Group();const R=buildAnyRig(team,look),rig=R.rig;g.add(rig);
   const bundle=new THREE.Group();bundle.position.set(0,0.98,-0.42);for(let i=0;i<3;i++){const l=new THREE.Mesh(logGeo,logM);l.position.set(0,i*0.17-0.17,0);l.rotation.y=Math.PI/2;bundle.add(l);}bundle.visible=false;rig.add(bundle);
@@ -1720,8 +1688,8 @@ addEventListener('blur',()=>{S.keys={};S.holding=false;S.joy.x=S.joy.y=0;NET.tap
 const tp=$('#teamPick');
 function renderPick(){tp.innerHTML='';TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.className='team-opt';b.style.setProperty('--c',t.css);b.setAttribute('aria-pressed',i===pickTeam);b.innerHTML=`<span class="sw"></span><b>${t.name}</b>`;b.addEventListener('click',()=>{pickTeam=i;renderPick();});tp.appendChild(b);});}
 renderPick();
-const CARDS=['home','custom','taller','howto','opts','step1','step2','onlineRoom'];
-function showCard(id){CARDS.forEach(c=>$('#'+c).hidden=c!==id);const hasPreview=id==='custom'||id==='taller';$('#lobby').classList.toggle('preview-mode',hasPreview);$('#previewArea').hidden=!hasPreview;$('#lobby').scrollTop=0;S.view=id;if(id==='step1'){const local=!!NET.offline;$('#nicknameIn').value=S.look.name||'';$('#nicknameErr').textContent='';$('#entrySteps').innerHTML=local?'<span class="on">1 · Nickname i curs</span><span>2 · Partida amb bots</span>':'<span class="on">1 · Nickname i curs</span><span>2 · Codi</span><span>3 · Arena</span>';$('#toCode').textContent=local?'Comença partida local':'Següent';}if(id==='custom'){renderLook();updatePreview();}else if(id==='taller'){renderTaller();updatePreview();}else if(preview)preview.visible=false;}
+const CARDS=['home','custom','howto','opts','step1','step2','onlineRoom'];
+function showCard(id){CARDS.forEach(c=>$('#'+c).hidden=c!==id);const hasPreview=id==='custom';$('#lobby').classList.toggle('preview-mode',hasPreview);$('#previewArea').hidden=!hasPreview;$('#lobby').scrollTop=0;S.view=id;if(id==='step1'){const local=!!NET.offline;$('#nicknameIn').value=S.look.name||'';$('#nicknameErr').textContent='';$('#entrySteps').innerHTML=local?'<span class="on">1 · Nickname i curs</span><span>2 · Partida amb bots</span>':'<span class="on">1 · Nickname i curs</span><span>2 · Codi</span><span>3 · Arena</span>';$('#toCode').textContent=local?'Comença partida local':'Següent';}if(id==='custom'){renderLook();updatePreview();}else if(id==='taller'){renderTaller();updatePreview();}else if(preview)preview.visible=false;}
 function showStep(n){showCard(n===1?'step1':'step2');}
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{audioInit();sfx('click');showCard(b.dataset.go);}));
 $('#playBtn').addEventListener('click',()=>{NET.offline=false;audioInit();sfx('click');S.spectator=false;showCard('step1');});
@@ -1729,51 +1697,17 @@ $('#specBtn').addEventListener('click',()=>{NET.offline=false;audioInit();sfx('c
 $('#howBtn').addEventListener('click',()=>{audioInit();sfx('click');showCard('howto');});
 $('#optBtn').addEventListener('click',()=>{audioInit();sfx('click');showCard('opts');});
 $('#lookBtn').addEventListener('click',()=>{audioInit();sfx('click');showCard('custom');});
-$('#tallerBtn').addEventListener('click',()=>{sfx('click');showCard('taller');});$('#tallerBtn2').addEventListener('click',()=>{sfx('click');showCard('taller');});
-// ----- Taller de models -----
-const T={asset:null,kind:'castanyera',file:''};
-{const sel=$('#tKind');const groups=[['Personatges',['castanyera']],['Monstres',['carabassa','fantasma','carabassot']],['Escenari',Object.keys(BUDGET).filter(k=>BUDGET[k].prop)]];
- groups.forEach(([g,ks])=>{const og=document.createElement('optgroup');og.label=g;ks.forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=BUDGET[k].label;og.appendChild(o);});sel.appendChild(og);});
- sel.addEventListener('change',()=>{T.kind=sel.value;T.asset=null;$('#tOut').hidden=true;$('#tFile').value='';renderTaller();updatePreview();});}
-function renderTaller(){const B=BUDGET[T.kind];$('#tKind').value=T.kind;
-  $('#tBudget').innerHTML=`Màxim <b>${B.tris.toLocaleString('ca')} triangles</b>${B.bones?`, ${B.bones} ossos`:''} i <b>${B.kb} KB</b>. Textura obligatòria: <b>paleta-castaween.png</b>, sense modificar-la; no se n'admet cap altra.${B.team?' Les caselles magenta prenen el color del curs.':''}`;
-  const tb=$('#tTeams');tb.innerHTML='';TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='sw';b.style.setProperty('--c',t.css);b.title=t.name;b.setAttribute('aria-label',t.name);b.setAttribute('aria-pressed',i===pickTeam);
-    b.addEventListener('click',()=>{pickTeam=i;renderTaller();updatePreview();});tb.appendChild(b);});tallerJson();}
-function slug(t){return (t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
-function tallerJson(){const f=T.file||(slug($('#tAutor').value)||'cognom-nom')+'.glb',B=BUDGET[T.kind];let j;
-  if(T.kind==='castanyera')j=JSON.stringify({id:slug($('#tNom').value||f.replace('.glb','')),nom:$('#tNom').value||'Nom del personatge',autor:$('#tAutor').value||'Nom Cognom',curs:TEAMS[pickTeam].name,fitxer:'castanyeres/'+f},null,2)+',';
-  else{const proposal={id:slug(f.replace(/\.glb$/,'')),nom:$('#tNom').value||B.label,autor:$('#tAutor').value||'Nom Cognom',curs:TEAMS[pickTeam].name,fitxer:(B.prop?'escenari/':'monstres/')+f};j=`"${T.kind}": [\n${JSON.stringify(proposal,null,2).split('\n').map(l=>'  '+l).join('\n')}\n]`;}
-  $('#tJson').textContent=(T.kind==='castanyera'?'// dins de "castanyeres": [ ... ]\n':B.prop?'// dins de "escenari": { ... }; afegeix la proposta a la llista existent del tipus\n':'// dins de "monstres": { ... }; afegeix la proposta a la llista existent del tipus\n')+j;}
-$('#tNom').addEventListener('input',tallerJson);$('#tAutor').addEventListener('input',tallerJson);
-$('#tCopy').addEventListener('click',()=>{const txt=$('#tJson').textContent.split('\n').slice(1).join('\n');const done=()=>{$('#tCopy').textContent='Copiat';setTimeout(()=>$('#tCopy').textContent="Copia l'entrada",1500);};
-  try{navigator.clipboard.writeText(txt).then(done,()=>{const r=document.createRange();r.selectNodeContents($('#tJson'));const sl=getSelection();sl.removeAllRanges();sl.addRange(r);});}catch(e){}});
-$('#tFile').addEventListener('change',async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;T.file=f.name.toLowerCase().replace(/\s+/g,'-');
-  $('#tOut').hidden=false;$('#tVerdict').className='verdict';$('#tVerdict').textContent='Llegint el model…';$('#tChecks').innerHTML='';
-  try{const A=await parseGLB(await f.arrayBuffer(),T.kind);T.asset=A;showChecks(A);updatePreview();sfx('pick');}
-  catch(err){T.asset=null;$('#tVerdict').className='verdict fail';$('#tVerdict').textContent='No s\'ha pogut llegir';$('#tChecks').innerHTML=`<li class="fail"><i>×</i><span>${esc(String(err&&err.message||err))}. Exporta-ho com a glTF Binary (.glb).</span></li>`;$('#tUse').hidden=true;$('#tAnimRow').hidden=true;}
-  tallerJson();});
-function showChecks(A){const I=A.info,ic={ok:'✓',warn:'!',fail:'×',info:'i'};
-  $('#tVerdict').className='verdict '+(I.ok?'ok':'fail');$('#tVerdict').textContent=I.ok?'A punt per entrar al joc':'Cal corregir els punts en vermell';
-  $('#tChecks').innerHTML=I.checks.map(c=>`<li class="${c.st}"><i>${ic[c.st]}</i><span>${esc(c.txt)}</span></li>`).join('');
-  const an=$('#tAnims');an.innerHTML='';$('#tAnimRow').hidden=!A.clips.length;
-  A.clips.forEach(c=>{const b=document.createElement('button');b.type='button';b.className='opt';b.textContent=c.name;b.addEventListener('click',()=>{const X=preview&&preview.userData.X;if(!X||!X.mixer)return;X.mixer.stopAllAction();const a=X.mixer.clipAction(c);a.reset();a.setLoop(THREE.LoopRepeat);a.play();});an.appendChild(b);});
-  const B=BUDGET[A.kind];$('#tUse').hidden=!I.paletteOk;$('#tUse').textContent=A.kind==='castanyera'?'Juga amb aquest model':B.prop?"Posa-ho a l'escena":'Fes servir aquest monstre';}
-$('#tUse').addEventListener('click',()=>{const A=T.asset;if(!A)return;sfx('weapon');
-  if(A.kind==='castanyera'){Object.assign(A,{id:'local',nom:$('#tNom').value||'El teu model',autor:$('#tAutor').value||'Tu',curs:TEAMS[pickTeam].name});ASSETS.cast=ASSETS.cast.filter(a=>a.id!=='local');ASSETS.cast.push(A);S.look.model='local';showCard('custom');}
-  else if(BUDGET[A.kind].prop){A.id='local-'+A.kind;applyProp(A.kind,[A]);$('#tUse').textContent='Fet: ja és a l\'escena';}
-  else{A.id='local-'+A.kind;ASSETS.mon[A.kind]=[A];$('#tUse').textContent='Fet: sortirà a la partida';}});
 // configurador de personatge
 S.look=Object.assign({},DEFAULT_LOOK);try{const sv=JSON.parse(localStorage.getItem('castaween-look')||'null');if(sv)Object.assign(S.look,sv);}catch(e){}
 let preview=null,spin=0,spinDrag=null;
 function previewSpot(){const t=TEAMS[pickTeam],ux=Math.cos(t.angle),uz=Math.sin(t.angle);return{x:t.base.x-ux*6.5,z:t.base.z-uz*6.5,face:Math.atan2(-ux,-uz)};}
 function updatePreview(){if(preview){scene.remove(preview);}const sp=previewSpot();preview=new THREE.Group();let R;
-  if(S.view==='taller'&&T.asset){const A=T.asset,rig=new THREE.Group(),X=instAsset(A,TEAMS[pickTeam].color);rig.add(X.fit);R={rig,shoulder:new THREE.Group(),X,h:BUDGET[A.kind].h};}
-  else R=buildAnyRig(TEAMS[pickTeam],S.look);
+  R=buildAnyRig(TEAMS[pickTeam],S.look);
   preview.add(R.rig);preview.userData=R;
   const sh=new THREE.Mesh(G.shadow,shadowM);sh.position.y=0.03;sh.scale.setScalar(1.1);preview.add(sh);preview.scale.setScalar(1.15);preview.position.set(sp.x,0,sp.z);markShadows(preview);scene.add(preview);}
 function renderLook(){const box=$('#lookRows');box.innerHTML='';$('#nameIn').value=S.look.name||'';
-  const mr=$('#lookModels');mr.innerHTML='';const models=[{id:'',nom:'Clàssica'}].concat(ASSETS.cast);$('#modelRow').hidden=models.length<2;
-  if(ASSETS.loaded&&S.look.model&&!castAsset(S.look.model))S.look.model='';
+  const mr=$('#lookModels');mr.innerHTML='';const models=ASSETS.cast.slice();$('#modelRow').hidden=models.length<2;
+  if(ASSETS.loaded&&!castAsset(S.look.model))S.look.model=defaultCastId();
   models.forEach(A=>{const b=document.createElement('button');b.type='button';b.className='opt';b.textContent=A.nom;b.setAttribute('aria-pressed',(S.look.model||'')===A.id);
     b.addEventListener('click',()=>{S.look.model=A.id;sfx('click');renderLook();updatePreview();});mr.appendChild(b);});
   const cur=castAsset(S.look.model);$('#modelCredit').hidden=!cur;if(cur)$('#modelCredit').innerHTML=`Model de <b>${esc(cur.autor||'alumnat')}</b>${cur.curs?' · '+esc(cur.curs):''}. El color del curs s'aplica sol.`;
@@ -1786,9 +1720,8 @@ function renderLook(){const box=$('#lookRows');box.innerHTML='';$('#nameIn').val
   const tb=$('#lookTeams');tb.innerHTML='';TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='sw';b.style.setProperty('--c',t.css);b.setAttribute('aria-label',t.name);b.title=t.name;b.setAttribute('aria-pressed',i===pickTeam);
     b.addEventListener('click',()=>{pickTeam=i;sfx('click');[...tb.children].forEach(c=>c.setAttribute('aria-pressed',c===b));renderPick();updatePreview();});tb.appendChild(b);});}
 $('#nameIn').addEventListener('input',e=>{S.look.name=e.target.value.trim().slice(0,12);});
-$('#rndLook').addEventListener('click',()=>{const n=S.look.name;S.look=randomLook();S.look.name=n;sfx('pick');renderLook();updatePreview();});
 $('#saveLook').addEventListener('click',()=>{try{localStorage.setItem('castaween-look',JSON.stringify(S.look));}catch(e){}sfx('heal');showCard('home');});
-$('#previewArea').addEventListener('pointerdown',e=>{if(S.view!=='custom'&&S.view!=='taller')return;e.preventDefault();spinDrag={x:e.clientX,s:spin};e.currentTarget.setPointerCapture(e.pointerId);});
+$('#previewArea').addEventListener('pointerdown',e=>{if(S.view!=='custom')return;e.preventDefault();spinDrag={x:e.clientX,s:spin};e.currentTarget.setPointerCapture(e.pointerId);});
 addEventListener('pointermove',e=>{if(spinDrag)spin=spinDrag.s+(e.clientX-spinDrag.x)*0.012;});
 addEventListener('pointerup',()=>{spinDrag=null;});
 addEventListener('pointercancel',()=>{spinDrag=null;});
@@ -1879,7 +1812,7 @@ function netHostMessage(m){
     if(m.construir||m.millorar){const saved=S.player;S.player=p;if(m.construir)tryPlayerBuild();if(m.millorar)tryPlayerUpgrade();S.player=saved;}
   }else if(m.t==='sync')netBroadcast(m.id);
 }
-function netLook(raw){const look=Object.assign({},DEFAULT_LOOK);for(const k in LOOK_OPTS)if(LOOK_OPTS[k].opts.some(o=>o[0]===raw[k]))look[k]=raw[k];if('model' in raw)look.model=raw.model&&castAsset(raw.model)?raw.model:'';look.fringe=raw.fringe!==false;return look;}
+function netLook(raw){const look=Object.assign({},DEFAULT_LOOK);for(const k in LOOK_OPTS)if(LOOK_OPTS[k].opts.some(o=>o[0]===raw[k]))look[k]=raw[k];if('model' in raw)look.model=raw.model&&castAsset(raw.model)?raw.model:defaultCastId();look.fringe=raw.fringe!==false;return look;}
 function netHuman(m,dt){const input=m.netInput||{mx:0,mz:0};const l=Math.hypot(input.mx,input.mz);if(l>.15)m.face=Math.atan2(input.mx,input.mz);moveEnt(m,l>.15?input.mx:0,l>.15?input.mz:0,PLAYER_SPEED,dt,.42);if(input.tir){const saved=S.player;S.player=m;tryPlayerThrow();S.player=saved;}}
 const netRound=n=>Number.isFinite(n)?Math.round(n*100)/100:0;
 function netId(o){if(!NET.ids.has(o))NET.ids.set(o,String(++NET.serial));return NET.ids.get(o);}
@@ -2076,7 +2009,7 @@ function animate(dt,now){
 }
 function updateCam(dt){
   const P=S.player;
-  if(S.phase==='lobby'&&(S.view==='custom'||S.view==='taller')&&preview){const sp=previewSpot(),rect=$('#previewArea').getBoundingClientRect(),first=!(camera.view&&camera.view.enabled),k=first?1:1-Math.exp(-dt*8),ph=(preview.userData.h||2.3)*1.15;
+  if(S.phase==='lobby'&&S.view==='custom'&&preview){const sp=previewSpot(),rect=$('#previewArea').getBoundingClientRect(),first=!(camera.view&&camera.view.enabled),k=first?1:1-Math.exp(-dt*8),ph=(preview.userData.h||2.3)*1.15;
     const focal=innerHeight/(2*Math.tan(camera.fov*Math.PI/360)),d=Math.max(ph*focal/(Math.max(1,rect.height)*.78),ph*.8*focal/(Math.max(1,rect.width)*.78));
     camera.setViewOffset(innerWidth,innerHeight,innerWidth/2-rect.left-rect.width/2,innerHeight/2-rect.top-rect.height/2,innerWidth,innerHeight);
     camPos.lerp(new THREE.Vector3(sp.x+Math.sin(sp.face)*d,ph*.52,sp.z+Math.cos(sp.face)*d),k);camLook.lerp(new THREE.Vector3(sp.x,ph*.5,sp.z),k);camera.position.copy(camPos);camera.lookAt(camLook);

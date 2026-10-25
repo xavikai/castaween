@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'assets','referencies');
 const files=fs.readdirSync(out).filter(f=>!f.endsWith('.zip')).sort().map(f=>['assets/referencies/'+f,path.join(out,f)]);
-for(const f of ['castanyera-actual-referencia.glb','plantilla-castanyera.glb','mides-castanyera.json','LLEGEIX-ME.md'])files.push(['assets/plantilles/'+f,path.join(root,'assets','plantilles',f)]);
+for(const f of ['plantilla-castanyera.glb','mides-castanyera.json','LLEGEIX-ME.md'])files.push(['assets/plantilles/'+f,path.join(root,'assets','plantilles',f)]);
 for(const f of ['paleta-castaween.png','paleta-guia.png'])files.push(['assets/'+f,path.join(root,'assets',f)]);
 files.push(['ASSETS.md',path.join(root,'ASSETS.md')]);
 files.push(['assets/guia-entregues.html',path.join(root,'assets','guia-entregues.html')]);

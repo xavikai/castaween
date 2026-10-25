@@ -118,7 +118,7 @@ story.append(PageBreak())
 title('Consulta / Escala i pressupostos', 'Mides de referència', 'Dimensions en metres a Blender. <b>Alt = Z · Ample = X · Fons = Y.</b> Respecta l’alçada d’entrega. Amplada i fondària són una referència de proporcions; el marge sí que ha de fer 1,20 m de llarg en X.')
 manifest=json.loads((ROOT/'assets/referencies/mides-models.json').read_text(encoding='utf-8'))
 cast=json.loads((ROOT/'assets/plantilles/mides-castanyera.json').read_text(encoding='utf-8'))
-models=[dict(name='Castanyera clàssica*', height_m=1.8,width_m=cast['width_m'],depth_m=cast['depth_m'],student_triangle_budget=1500,student_size_budget_kb=400)]+manifest['models']
+models=[dict(name='Castanyera*', height_m=1.8,width_m=cast['width_m'],depth_m=cast['depth_m'],student_triangle_budget=1500,student_size_budget_kb=400)]+manifest['models']
 def fmt(n): return f'{n:.3f}'.replace('.',',')
 headers=['Model','Alt','Ample','Fons','Triangles\nmàxims','KB\nmàxims']
 rows=[[p(t.replace('\n','<br/>'),'CellHeadGuide') for t in headers]]
@@ -126,7 +126,7 @@ for m in models:
     rows.append([p(escape(m['name']),'CellGuide'),fmt(m['height_m']),fmt(m['width_m']),fmt(m['depth_m']),f"{m['student_triangle_budget']:,}".replace(',','.'),str(m['student_size_budget_kb'])])
 t=Table(rows,colWidths=[177,51,57,57,82,W-424],repeatRows=1,rowHeights=[29]+[21]*20)
 t.setStyle(TableStyle([('FONTNAME',(0,0),(-1,-1),'Guide'),('FONTSIZE',(1,1),(-1,-1),8.7),('TEXTCOLOR',(0,1),(-1,-1),INK),('BACKGROUND',(0,0),(-1,0),INK),('ROWBACKGROUNDS',(0,1),(-1,-1),[colors.white,colors.HexColor('#f3f5f7')]),('VALIGN',(0,0),(-1,-1),'MIDDLE'),('LINEBELOW',(0,0),(-1,0),1,ORANGE),('LINEBELOW',(0,1),(-1,-1),.3,LINE),('LEFTPADDING',(0,0),(-1,-1),7),('RIGHTPADDING',(0,0),(-1,-1),5)]));story.extend([t,Spacer(1,12)])
-story.append(p('* La castanyera nova també s’entrega a 1,80 m; l’amplada i la fondària de la taula corresponen a la referència clàssica. No cal copiar exactament la silueta.', 'SmallGuide'))
+story.append(p('* Mides de la castanyera de referència del joc; l’amplada i la fondària inclouen la faldilla i el cistell. No cal copiar exactament la silueta.', 'SmallGuide'))
 story.append(p('Els arbres i les roques són exemplars de les variants del joc. Els límits de triangles i pes són per a l’entrega; alguns GLB de referència s’han d’optimitzar i adaptar a la paleta si es reutilitzen com a base.', 'SmallGuide'))
 body(link('Descarrega els GLB i les mides exactes',BASE+'assets/'))
 story.append(PageBreak())
