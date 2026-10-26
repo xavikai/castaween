@@ -4,7 +4,7 @@ Videojoc web 3D low poly per a mòbil, fet a CIFOG per la Castanyada. Cinc equip
 
 **Estat:** joc amb bots i mode en línia d'aula. El professor executa la simulació i Cloudflare retransmet els missatges WebSocket.
 
-**Joc:** https://xavikai.github.io/castaween/
+**Joc:** https://castaween.pages.dev/
 
 Professor: **Obre una sala (professor) → comparteix el codi → Comença**. Alumnes: **Mode en línia → nickname → codi**. Els equips tenen noms aleatoris a cada sala i cada alumne entra automàticament a l'equip amb menys gent (fins a 15 per equip; els bots completen fins a 10). Es pot canviar a `assets/config.json` → `places`. El nickname es veu damunt les castanyeres humanes i als avisos d'eliminació, per exemple «Pau elimina Marta». Es desa en aquest dispositiu i també es pot editar a **Personatge**.
 
@@ -14,7 +14,7 @@ Desplegament, protocol, límits gratuïts, proves i limitacions: [server/README.
 
 ## Jugar
 
-Obre la pàgina de GitHub Pages del repositori al mòbil. Controls: joystick a l'esquerra i botó LLANÇA a la dreta. A l'ordinador: WASD o fletxes, espai per llançar i B per construir.
+Obre https://castaween.pages.dev/ al mòbil. Controls: joystick a l'esquerra i botó LLANÇA a la dreta. A l'ordinador: WASD o fletxes, espai per llançar i B per construir.
 
 ## Material de l'alumnat
 
