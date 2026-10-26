@@ -32,11 +32,11 @@ test('deltas contain only changed fields; a joining snapshot preserves broadcast
   rows=new Map();c.netBroadcast();assert.equal(sent[3].del[0],'1');
 });
 
-function roomFixture(){
+function roomFixture({slots=10,botFill=10}={}){
   const t={id:0,active:[],members:[],queue:[]},S={cast:[],follow:null,player:null},NET={peers:new Map()};
   function add(human,id){const m={team:t,human,peer:id,state:'active',name:id,mesh:{g:{},bar:{g:{}}}};t.members.push(m);t.active.push(m);S.cast.push(m);return m;}
-  for(let i=0;i<10;i++)add(false,'bot'+i);
-  const c=run(code('netRemove','netLook'),{NET,S,TEAMS:[t],SLOTS:10,scene:{remove(){}},clearNameTag(){},leaveArena:m=>{t.active=t.active.filter(x=>x!==m);},dropCarry(){},spawn:m=>{m.state='active';t.active.push(m);},botLook:()=>({}),netLook:x=>x,netRoster(){},netBroadcast(){},netMember:(team,nom,look,id)=>{const m={team,name:nom,human:!!id,peer:id,state:'queue',mesh:{g:{},bar:{g:{}}}};t.members.push(m);S.cast.push(m);return m;}});
+  for(let i=0;i<botFill;i++)add(false,'bot'+i);
+  const c=run(html.slice(html.indexOf('const humansOf='),html.indexOf('function dropCarry('))+code('netRemove','netLook'),{NET,S,TEAMS:[t],SLOTS:slots,BOT_FILL:botFill,pick:items=>items[0],scene:{remove(){}},clearNameTag(){},leaveArena:m=>{t.active=t.active.filter(x=>x!==m);},dropCarry(){},spawn:m=>{m.state='active';t.active.push(m);},botLook:()=>({}),netLook:x=>x,netRoster(){},netBroadcast(){},netMember:(team,nom,look,id)=>{const m={team,name:nom,human:!!id,peer:id,state:'queue',mesh:{g:{},bar:{g:{}}}};t.members.push(m);S.cast.push(m);return m;}});
   return {c,t,S,NET};
 }
 test('ten human slots, FIFO waitlist, disconnect promotes queue then restores bot',()=>{
@@ -50,4 +50,25 @@ test('respawning human keeps their slot when an eleventh person joins',()=>{
   const p=NET.peers.get('p0');t.active=t.active.filter(x=>x!==p);p.state='respawning';
   c.netHostMessage({t:'join',id:'p10',curs:0,nom:'p10',look:{}});
   assert.equal(t.active.length,9);assert.equal(t.queue[0].peer,'p10');
+});
+
+
+test('fifteen human slots reserve respawns while bots only fill ten places',()=>{
+  const {c,t,NET}=roomFixture({slots:15,botFill:10});
+  for(let i=0;i<15;i++)c.netHostMessage({t:'join',id:'p'+i,nom:'p'+i,look:{}});
+  assert.equal(t.active.length,15);
+  assert.equal(t.members.filter(m=>!m.human).length,0);
+  const p=NET.peers.get('p0');t.active=t.active.filter(x=>x!==p);p.state='respawning';
+  c.netHostMessage({t:'join',id:'p15',nom:'p15',look:{}});
+  assert.equal(t.active.length,14);
+  assert.equal(t.queue[0].peer,'p15');
+  c.spawn(p);
+  assert.equal(t.active.length,15);
+  c.netHostMessage({t:'leave',id:'p1'});
+  assert.equal(t.active.length,15);
+  assert.equal(NET.peers.get('p15').state,'active');
+  for(let i=2;i<=7;i++)c.netHostMessage({t:'leave',id:'p'+i});
+  assert.equal(t.members.filter(m=>m.human).length,9);
+  assert.equal(t.members.filter(m=>!m.human).length,1);
+  assert.equal(t.active.length,10);
 });

@@ -1968,7 +1968,7 @@ function netHostMessage(m){
     const t=want&&(humansOf(want)<SLOTS||allFull)?want:teamForHuman(),look=netLook(m.look),bot=t.members.find(x=>!x.human);
     if(bot)netRemove(bot);
     const human=netMember(t,m.nom||'Alumne',look,m.id);NET.peers.set(m.id,human);
-    if(t.active.length<SLOTS)spawn(human);else{human.state='queue';human.mesh.g.visible=false;t.queue.push(human);}
+    if(t.members.filter(x=>x.state!=='queue').length<SLOTS)spawn(human);else{human.state='queue';human.mesh.g.visible=false;t.queue.push(human);}
     netRoster();netBroadcast(m.id);
   }else if(m.t==='leave'){
     const human=NET.peers.get(m.id);NET.peers.delete(m.id);if(!human)return;
