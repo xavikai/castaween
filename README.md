@@ -45,4 +45,6 @@ PROJECTE-CICLES.md
 
 ## Publicar
 
+Cloudflare Pages: repositori `xavikai/castaween`, branca de producció `main`, build `node tools/build-pages.cjs` i carpeta de sortida `public`. El build copia només els fitxers públics del joc i els materials de classe; exclou el servidor, les credencials i les eines. Amb la integració Git activada, cada push a `main` publica una versió nova.
+
 GitHub Pages: **Settings → Pages → Deploy from a branch → main / (root)**. El joc s'ha de servir des d'un servidor perquè pugui llegir la carpeta `assets/`; si s'obre `index.html` directament, fa servir els recursos integrats.
