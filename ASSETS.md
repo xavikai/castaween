@@ -76,7 +76,7 @@ Per què una sola textura obligatòria:
 - **Estil coherent.** Tots els models comparteixen colors, degradats i ulls, encara que els facin persones diferents.
 - **Rendiment.** Un sol material per model vol dir menys crides de dibuix: amb 50 personatges a la pantalla, és la diferència entre anar fluid o no.
 - **Pes mínim.** La textura ocupa uns 40 KB i es comparteix entre tots els models.
-- **Color del curs automàtic.** La fila de baix dels colors plans i el degradat **CURS** (magenta) no surten mai magenta: el joc els substitueix pel color del curs de qui juga. El magenta clar dona el color clar i el fosc, el fosc.
+- **Color del curs automàtic.** La fila de baix dels colors plans i el degradat **CURS** (magenta) no surten mai magenta: el joc els substitueix pel color de l'equip de qui juga. El magenta clar dona el color clar i el fosc, el fosc.
 
 **Com es controla.** El professor revisa els models abans d'afegir-los. A més, el joc sempre dibuixa els models amb la paleta oficial, encara que el fitxer en porti una altra.
 
@@ -118,7 +118,7 @@ Per què una sola textura obligatòria:
 | Panellet | 200 | — | 80 KB | 0,55 m |
 | Tronc de llenya | 80 | — | 40 KB | 0,24 m |
 
-**Per què aquests números.** En una partida hi ha 50 castanyeres a l'arena (10 per curs) i fins a 50 monstres a la vegada, i els elements d'escenari es repeteixen molts cops (hi ha uns 260 trams de marge i fins a 110 pins). Amb aquests límits, en el pitjor cas l'escena queda al voltant dels 250.000 triangles, que és el que un mòbil de gamma mitjana pot moure de manera fluida.
+**Per què aquests números.** En una partida hi ha unes 50 castanyeres a l'arena (10 per equip, fins a 75 si la sala és plena) i fins a 50 monstres a la vegada, i els elements d'escenari es repeteixen molts cops (hi ha uns 260 trams de marge i fins a 110 pins). Amb aquests límits, en el pitjor cas l'escena queda al voltant dels 250.000 triangles, que és el que un mòbil de gamma mitjana pot moure de manera fluida.
 
 El joc escala cada model a l'alçada de la taula. Tot i així, modelar a mida real evita sorpreses.
 
@@ -135,7 +135,7 @@ El joc escala cada model a l'alçada de la taula. Tot i així, modelar a mida re
 ### Castanyeres
 
 - Alçada 1,8 m. Les proporcions de cap gran funcionen millor.
-- El mocador o el xal han d'anar a la fila magenta o al degradat CURS, perquè es vegi de quin curs ets.
+- El mocador o el xal han d'anar a la fila magenta o al degradat CURS, perquè es vegi de quin equip ets.
 - Els ulls, a les caselles d'ulls de castanyera.
 - **Esquelet opcional.** Si no en té, el joc l'anima automàticament amb rebots i inclinació. Si en té, màxim 20 ossos.
 - **Animacions**, amb aquests noms exactes:
@@ -200,7 +200,7 @@ Mateixes regles. Les animacions són `camina` (bucle) i `ataca` (sense bucle). L
 }
 ```
 
-Les castanyeres apareixen al configurador (**Personatge → Model**) amb el nom de l'autor. Els bots també les fan servir, i prefereixen les del seu curs.
+Les castanyeres apareixen al primer pas d'entrada (**La teva castanyera**) i al configurador (**Personatge → Model**), amb el nom de l'autor. La tria es desa al dispositiu: l'alumne juga sempre amb la mateixa fins que en triï una altra. Els bots les van agafant per torns i **canvien de model cada cop que reapareixen**, així a cada partida surten les castanyeres de tothom.
 
 Claus de l'escenari: `castanyer`, `pi`, `casa`, `roca`, `marge`, `lapida`, `arbre-sec`, `carabassa-deco`, `cripta`, `portal`, `paradeta`, `foguera`, `torradora`, `caixa`, `panellet`, `llenya`.
 
@@ -225,7 +225,7 @@ Cada clau de `monstres` i `escenari` pot contenir una **llista de propostes**, a
 }
 ```
 
-- **Monstres, torradores, caixes, panellets i llenya:** les noves aparicions recorren les propostes per torns, sense sorteig que pugui deixar-ne alguna fora. Cada tipus té el seu torn independent. Les peces que ja són al camp mantenen el model fins que desapareixen.
+- **Monstres, torradores, caixes, panellets i llenya:** cada aparició nova agafa la proposta següent (si hi ha tres fantasmes, surten 1, 2, 3, 1, 2, 3…), sense sorteig que pugui deixar-ne alguna fora. Cada tipus té el seu torn independent. Les peces que ja són al camp mantenen el model fins que desapareixen.
 - **Arbres, edificis i escenari fix:** les propostes es reparteixen entre les posicions existents. A cada ronda es mostra el següent grup. Un portal amb tres propostes mostra la primera a la ronda 1, la segona a la ronda 2 i la tercera a la ronda 3. Si hi ha més propostes que llocs o aparicions, calen més rondes per veure-les totes.
 - **Mode en línia:** l'amfitrió tria la proposta dels elements dinàmics i n'envia l'ID als mòbils. Tothom ha de recarregar la mateixa versió publicada abans d'obrir o entrar a la sala.
 - **Compatibilitat:** el camí únic antic (`"carabassa": "monstres/pol.glb"`) continua funcionant. També s'accepta una llista de camins. Si falta `id`, s'utilitza el camí del fitxer. Un ID repetit dins d'un tipus es descarta i queda registrat com a error.
@@ -266,23 +266,41 @@ El joc ja porta tots els sons com a fitxers a `assets/so/`. Per substituir-ne un
 
 Normalitza el volum de tots els efectes al mateix nivell. Els sons d'impacte es reprodueixen amb una petita variació de to perquè no cansin.
 
-## Interfície i menú
+## Interfície i menú (alumnat de Disseny)
 
-A `assets.json`, apartat `ui`:
+L'alumnat de Disseny pot canviar **l'aspecte** de la interfície: textos, colors, lletres, cantonades i tres imatges. **La posició i la mida dels menús i dels botons no es poden canviar**, perquè el joc continuï funcionant bé al mòbil.
+
+### Com treballa l'alumnat
+
+1. Obre **`disseny.html`** del joc (per exemple `https://xavikai.github.io/castaween/disseny.html`).
+2. A la dreta hi ha el panell: **Colors**, **Lletres**, **Textos**, **Imatges** i **Entrega**. A l'esquerra es veu el joc de veritat, en format mòbil o ordinador, i es pot anar a cada pantalla (Inici, Entrada, Partida, Pausa, Resultats…).
+3. Tot es desa sol al navegador. A **Entrega** escriu el seu nom i descarrega un ZIP (`disseny-nom.zip`). Amb el mateix ZIP pot continuar en un altre ordinador (**Obre un ZIP per continuar**).
+
+Què es pot canviar:
+
+| Apartat | Què | Límits |
+|---|---|---|
+| Colors | 11 colors (principal, fons, targetes, panells, text, línies, Halloween, perill, vida) | Els panells i les línies poden ser transparents |
+| Lletres | Lletra dels títols i lletra del text, de Google Fonts | La mida del text no canvia |
+| Cantonades | De rectes a molt rodones | — |
+| Textos | Tots els textos dels menús, el HUD, la pausa i els resultats, i els botons d'entrada | Només `<b>`, `<i>`, `<small>` i `<br>`; la resta s'elimina |
+| Imatges | Logo del títol, fons del menú (imatge o vídeo) i icona del botó LLANÇA | Logo 300 KB, fons 800 KB (vídeo 3 MB), icona 100 KB. Sempre ocupen la mateixa caixa |
+
+### Com afegir un disseny al joc
+
+1. Descomprimeix el ZIP dins de `assets/ui/`. Queda una carpeta com `assets/ui/disseny-marta/` amb `tema.json`, `textos.json` i les imatges.
+2. **Per provar-lo** sense canviar res: obre el joc amb `?ui=ui/disseny-marta` (per exemple `index.html?ui=ui/disseny-marta`). Així podeu comparar els dissenys de la classe un per un.
+3. **Per fer-lo servir sempre**, a `assets.json`:
 
 ```json
-"ui": {
-  "css": "ui/tema.css",
-  "logo": "ui/logo-castaween.png",
-  "fons": "ui/fons-menu.mp4"
-}
+"ui": { "carpeta": "ui/disseny-marta" }
 ```
 
-- **`css`**: full d'estil que sobreescriu el del joc. Parteix de `ui/tema-exemple.css`, que té totes les variables de color i tipografia i la llista de peces de la interfície.
-- **`logo`**: imatge PNG o SVG amb fons transparent, que substitueix el títol del menú. Mida recomanada: 1200 × 400 px.
-- **`fons`**: fons del menú principal. Pot ser una imatge (JPG o WebP, 1080 × 1920 px en vertical) o un vídeo en bucle (MP4, sense so, menys de 3 MB).
+Els textos que l'alumne no ha tocat no surten a `textos.json` i es queden com al joc. Si en una versió nova del joc canvia algun text, el disseny no el tapa.
 
-El joc es juga en vertical al mòbil. Dissenyeu a 390 × 844 px i comproveu que res no quedi tapat pels botons de joc.
+### Opcions avançades (només professorat)
+
+Continuen funcionant les claus antigues `css` (full d'estil lliure), `logo` i `fons` dins de `ui`. Un full CSS lliure sí que pot moure i canviar mides; no el feu servir per a les entreges de l'alumnat.
 
 ## Equilibri del joc
 

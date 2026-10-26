@@ -1,0 +1,36 @@
+CASTAWEEN · FITXA D'ENTREGA
+
+Nom i cognoms:
+Curs / grup:
+Tipus de model:
+Nom de la proposta:
+Data:
+
+Fitxer GLB:
+Fitxer Blender:
+Versió de Blender:
+Triangles del model final (sense referències):
+Pes del GLB (KB):
+Alçada (m):
+Nombre d'ossos (0 si no té rig):
+Animacions incloses (o «cap»):
+
+Què he creat o modificat respecte de la referència?
+
+
+Recursos externs utilitzats i autoria / llicència (o «cap»):
+
+
+Comprovació final (marca amb X):
+[ ] Alçada i pressupost correctes.
+[ ] Base a terra, origen al centre i davant cap a -Y a Blender.
+[ ] Paleta oficial sense canvis, únic material i UV a totes les peces.
+[ ] Castanyera: zones CURS (o «no correspon»).
+[ ] Referències excloses de l'exportació.
+[ ] GLB reimportat i revisat en una escena buida.
+[ ] Projecte .blend amb recursos empaquetats.
+[ ] Dues captures: vista general i UV/material.
+
+Dificultats o punts que ha de revisar el professorat:
+
+

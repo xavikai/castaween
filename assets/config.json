@@ -37,5 +37,10 @@
   "bots": {
     "velocitat": 5.0,
     "cadencia": 1.5
+  },
+  "places": {
+    "_llegeix-me": "persones_per_equip: màxim d'alumnes per equip. bots_per_equip: fins a quantes castanyeres s'omplen amb bots si falten alumnes.",
+    "persones_per_equip": 15,
+    "bots_per_equip": 10
   }
 }

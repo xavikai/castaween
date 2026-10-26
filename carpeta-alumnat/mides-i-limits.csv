@@ -1,0 +1,21 @@
+﻿Tipus;Model;Alçada (m);Triangles màxims;Pes màxim (KB);Ossos màxims;Observacions
+castanyera;Castanyera;1,8;1500;400;20;
+carabassa;Carabassa;1,5;800;250;12;
+fantasma;Fantasma;1,9;800;250;12;
+carabassot;Carabassot;3,3;2000;500;20;
+castanyer;Castanyer;4,3;500;150;0;
+pi;Pi del bosc;6;200;80;0;
+casa;Casa del poble;4,6;800;250;0;
+roca;Roca;1,4;150;60;0;
+marge;Tram de marge (1,2 m);1,1;100;60;0;Llargada X = 1,20 m
+lapida;Làpida;0,85;150;60;0;
+arbre-sec;Arbre sec;3,2;300;100;0;
+carabassa-deco;Carabassa decorativa;0,65;300;100;0;
+cripta;Cripta;4;800;250;0;
+portal;Portal de Halloween;1,6;1500;400;0;
+paradeta;Paradeta de castanyes;3,6;1500;400;0;
+foguera;Foguera (olla);1;800;250;0;
+torradora;Torradora (defensa);1,3;600;200;0;
+caixa;Caixa d'armes;0,6;200;80;0;
+panellet;Panellet;0,55;200;80;0;
+llenya;Tronc de llenya;0,24;80;40;0;

@@ -1,0 +1,10 @@
+CASTAWEEN · PAQUETS DE CLASSE
+
+Comparteix castaween-alumnat.zip amb la classe.
+Conserva castaween-professorat.zip per preparar i revisar l’activitat.
+Paquet alumnat: 29 fitxers; guia visual de 12 pàgines i 20 models.
+Guia del professorat: 4 pàgines.
+
+SHA-256:
+castaween-alumnat.zip  2dfdbf74f6596a8db423a066eba0891861be39a65619366a2381bc6741cdc71c
+castaween-professorat.zip  5b715ef94814f622e84234c12cc57cd7e2821d012a2e3f658cff6c7ba7fb885f

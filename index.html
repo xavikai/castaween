@@ -15,6 +15,7 @@
   --line:rgba(244,234,214,.14); --danger:#ff5a4e; --hallow:#a35cff; --heal:#8fe07a; --wood:#c08a52;
   --display:'Bungee',Impact,'Arial Black',system-ui,sans-serif;
   --body:'Rubik',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --rad:1;
   color-scheme:dark;
 }
 [hidden]{display:none!important}
@@ -36,24 +37,26 @@ html,body{height:100%;margin:0;background:var(--night);color:var(--ink);font-fam
 .hud button{pointer-events:auto}
 .top{position:absolute;top:calc(env(safe-area-inset-top,0px) + 6px);left:calc(env(safe-area-inset-left,0px) + 8px);right:calc(env(safe-area-inset-right,0px) + 8px);display:flex;flex-direction:column;gap:4px}
 .bar{display:flex;align-items:center;gap:6px}
-.iconbtn{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--ink);display:grid;place-items:center;cursor:pointer;flex:none}
+.iconbtn{width:34px;height:34px;border-radius:calc(9px * var(--rad,1));border:1px solid var(--line);background:var(--panel);color:var(--ink);display:grid;place-items:center;cursor:pointer;flex:none}
 .iconbtn:focus-visible,.btn:focus-visible,.team-opt:focus-visible,.switch input:focus-visible+span,.code:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
-.clock{display:flex;align-items:baseline;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:0 10px;height:34px;align-items:center;box-sizing:border-box}
+.clock{display:flex;align-items:baseline;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:calc(9px * var(--rad,1));padding:0 10px;height:34px;align-items:center;box-sizing:border-box}
 .clock .r{white-space:nowrap;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .clock .t{font-family:var(--display);font-size:16px;font-variant-numeric:tabular-nums;line-height:1}
 .clock.night .t{color:var(--hallow)}
 .clock .x{font-size:10px;color:var(--ember);font-weight:700}
-.proto{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 7px;border-radius:999px;border:1.5px dashed var(--ember);color:var(--ember);background:rgba(14,17,34,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.proto{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 7px;border-radius:calc(999px * var(--rad,1));border:1.5px dashed var(--ember);color:var(--ember);background:rgba(14,17,34,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px}
-.chip{background:var(--panel);border-radius:7px;border-left:3px solid var(--c);padding:3px 5px;min-width:0;display:flex;align-items:baseline;justify-content:space-between;gap:3px;height:26px;box-sizing:border-box;transition:transform .2s;position:relative}
+.chip{background:var(--panel);border-radius:calc(7px * var(--rad,1));border-left:3px solid var(--c);padding:3px 5px;min-width:0;display:flex;align-items:baseline;justify-content:space-between;gap:3px;height:26px;box-sizing:border-box;transition:transform .2s;position:relative}
 .chip.me{box-shadow:inset 0 0 0 1.5px var(--c)}
 .chip.bump{transform:scale(1.08)}
 .chip.hit{background:rgba(255,90,78,.25)}
 .chip .n{font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .chip .s{font-family:var(--display);font-size:15px;line-height:1.2;font-variant-numeric:tabular-nums}
-.chip .m{position:absolute;right:2px;bottom:-7px;font-size:8.5px;font-weight:700;color:#2a1306;background:var(--c);border-radius:999px;padding:0 4px;line-height:12px;white-space:nowrap;font-variant-numeric:tabular-nums}.chip .m:empty{display:none}
+.chip .m{position:absolute;right:2px;bottom:-7px;font-size:8.5px;font-weight:700;color:#2a1306;background:var(--c);border-radius:calc(999px * var(--rad,1));padding:0 4px;line-height:12px;white-space:nowrap;font-variant-numeric:tabular-nums}.chip .m:empty{display:none}
 .feed{display:flex;flex-direction:column;align-items:center;gap:2px;max-width:100%}
-.feed div{font-size:10.5px;line-height:1.35;background:rgba(14,17,34,.66);padding:2px 7px;border-radius:6px;transition:opacity .5s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.feed div{font-size:10.5px;line-height:1.35;background:rgba(14,17,34,.66);padding:2px 7px;border-radius:calc(6px * var(--rad,1));transition:opacity .5s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.chip.lead::after{content:'👑';position:absolute;top:-8px;right:3px;font-size:12px;line-height:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.6))}
+.chip.lead{box-shadow:0 0 0 1.5px var(--c),0 0 14px color-mix(in srgb,var(--c) 45%,transparent)}
 .feed b{font-weight:700}
 .feed .rot{color:var(--muted)}
 .feed .pts{color:var(--wood);font-weight:700}
@@ -62,10 +65,10 @@ html,body{height:100%;margin:0;background:var(--night);color:var(--ink);font-fam
 .pill{font-size:10.5px;font-weight:700;border-radius:999px;padding:2px 8px;background:var(--panel);border:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
 .pill.wood{color:var(--wood)}
 .pill.rush{color:#2a1306;background:#ffd24a;border-color:#ffd24a}
-.hp{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:3px 7px 4px;box-sizing:border-box}
+.hp{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:calc(8px * var(--rad,1));padding:3px 7px 4px;box-sizing:border-box}
 .hp .row{display:flex;justify-content:space-between;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
 .hp .row b{color:var(--ink);font-variant-numeric:tabular-nums}
-.hp .track{height:7px;border-radius:4px;background:rgba(244,234,214,.12);overflow:hidden}
+.hp .track{height:7px;border-radius:calc(4px * var(--rad,1));background:rgba(244,234,214,.12);overflow:hidden}
 .hp .track i{display:block;height:100%;background:var(--heal);transition:width .15s}
 .hp.low .track i{background:var(--danger)}
 .turn{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:11px;white-space:nowrap;display:flex;align-items:center;gap:6px}
@@ -81,10 +84,10 @@ html,body{height:100%;margin:0;background:var(--night);color:var(--ink);font-fam
 .moni b{font-size:15px;font-weight:400;line-height:1;color:#ffb070}
 .moni:active{transform:translateY(3px);box-shadow:0 2px 0 #3a1018}
 .mini{position:absolute;right:calc(env(safe-area-inset-right,0px) + 8px);top:calc(env(safe-area-inset-top,0px) + 76px);width:64px;height:64px;border-radius:50%;background:rgba(14,17,34,.7);border:1px solid var(--line)}
-.build{position:absolute;right:calc(env(safe-area-inset-right,0px) + 12px);bottom:calc(env(safe-area-inset-bottom,0px) + 106px);width:88px;border:1.5px solid var(--wood);background:var(--panel);color:var(--ink);border-radius:12px;padding:5px 7px;font:inherit;font-size:10px;font-weight:700;line-height:1.2;text-align:center;cursor:pointer;touch-action:none}
+.build{position:absolute;right:calc(env(safe-area-inset-right,0px) + 12px);bottom:calc(env(safe-area-inset-bottom,0px) + 106px);width:88px;border:1.5px solid var(--wood);background:var(--panel);color:var(--ink);border-radius:calc(12px * var(--rad,1));padding:5px 7px;font:inherit;font-size:10px;font-weight:700;line-height:1.2;text-align:center;cursor:pointer;touch-action:none}
 .build.up.solo{bottom:calc(env(safe-area-inset-bottom,0px) + 106px)}
 .build.up{bottom:calc(env(safe-area-inset-bottom,0px) + 156px);border-color:#ffd24a}.build.up b{color:#ffd24a}
-.falert{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(200,40,40,.92);color:#fff;font-size:11.5px;font-weight:700;line-height:1.3;padding:4px 10px;border-radius:999px;pointer-events:none;animation:notein .25s}
+.falert{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(200,40,40,.92);color:#fff;font-size:11.5px;font-weight:700;line-height:1.3;padding:4px 10px;border-radius:calc(999px * var(--rad,1));pointer-events:none;animation:notein .25s}
 .falert:not(.on){display:none}
 .falert b{font-weight:800}
 .build b{display:block;font-family:var(--display);font-weight:400;font-size:11px;color:var(--wood)}
@@ -92,12 +95,12 @@ html,body{height:100%;margin:0;background:var(--night);color:var(--ink);font-fam
 .hint{position:absolute;left:calc(env(safe-area-inset-left,0px) + 14px);bottom:calc(env(safe-area-inset-bottom,0px) + 24px);font-size:10.5px;line-height:1.3;color:var(--muted);max-width:92px;transition:opacity .6s}
 .joy{position:absolute;width:100px;height:100px;margin:-50px 0 0 -50px;border-radius:50%;border:2px solid rgba(244,234,214,.3);background:rgba(14,17,34,.2);pointer-events:none}
 .joy i{position:absolute;left:50%;top:50%;width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;background:rgba(244,234,214,.5)}
-.msg{position:absolute;left:50%;top:30%;transform:translate(-50%,-50%);background:rgba(14,17,34,.86);border:1px solid var(--line);border-radius:12px;padding:9px 13px;text-align:center;width:min(270px,calc(100% - 48px));box-sizing:border-box}
+.msg{position:absolute;left:50%;top:30%;transform:translate(-50%,-50%);background:rgba(14,17,34,.86);border:1px solid var(--line);border-radius:calc(12px * var(--rad,1));padding:9px 13px;text-align:center;width:min(270px,calc(100% - 48px));box-sizing:border-box}
 .msg h3{margin:0 0 2px;font-family:var(--display);font-size:15px;font-weight:400;color:var(--ember)}
 .msg p{margin:0;font-size:11.5px;line-height:1.4}
 .banner{font-family:var(--display);font-size:clamp(15px,4.6vw,22px);line-height:1.1;color:var(--hallow);text-shadow:0 2px 0 #1a0b2e,0 0 10px rgba(14,17,34,.8);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;animation:notein .3s}.banner:not(.on){display:none}
 .sheet{position:absolute;inset:0;background:rgba(8,9,20,.72);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);overflow-y:auto;touch-action:pan-y;padding:calc(env(safe-area-inset-top,0px) + 20px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 24px) max(16px,env(safe-area-inset-left,0px));box-sizing:border-box}
-.card{max-width:460px;margin:0 auto;background:var(--panel-solid);border:1px solid var(--line);border-radius:18px;padding:22px 18px;display:flex;flex-direction:column;gap:16px}
+.card{max-width:460px;margin:0 auto;background:var(--panel-solid);border:1px solid var(--line);border-radius:calc(18px * var(--rad,1));padding:22px 18px;display:flex;flex-direction:column;gap:16px}
 .eyebrow{align-self:flex-start;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:999px;border:1.5px dashed var(--ember);color:var(--ember)}
 .steps{display:flex;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .steps span{flex:1;border-top:3px solid var(--line);padding-top:5px}
@@ -109,17 +112,17 @@ h2{margin:0;font-family:var(--display);font-weight:400;font-size:20px;text-wrap:
 .lead b{color:var(--ink);font-weight:500}
 .label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .goal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.goal div{border:1px solid var(--line);border-radius:10px;padding:8px;font-size:11.5px;line-height:1.35;color:var(--muted);min-width:0}
+.goal div{border:1px solid var(--line);border-radius:calc(10px * var(--rad,1));padding:8px;font-size:11.5px;line-height:1.35;color:var(--muted);min-width:0}
 .goal b{display:block;color:var(--ink);font-size:12.5px;margin-bottom:2px}
 .teams{display:flex;flex-direction:column;gap:6px}
-.team-opt{display:flex;align-items:center;gap:10px;text-align:left;background:rgba(244,234,214,.04);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--ink);font:inherit;cursor:pointer}
-.team-opt .sw{width:14px;height:28px;border-radius:5px;background:var(--c);flex:none}
+.team-opt{display:flex;align-items:center;gap:10px;text-align:left;background:rgba(244,234,214,.04);border:1.5px solid var(--line);border-radius:calc(12px * var(--rad,1));padding:10px 12px;color:var(--ink);font:inherit;cursor:pointer}
+.team-opt .sw{width:14px;height:28px;border-radius:calc(5px * var(--rad,1));background:var(--c);flex:none}
 .team-opt b{font-size:15px;font-weight:700}
 .team-opt[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent)}
-.code{font-family:var(--display);font-size:34px;letter-spacing:.3em;text-align:center;width:100%;box-sizing:border-box;padding:12px 8px 12px calc(8px + .3em);border-radius:12px;border:1.5px solid var(--line);background:rgba(244,234,214,.05);color:var(--ink)}
+.code{font-family:var(--display);font-size:34px;letter-spacing:.3em;text-align:center;width:100%;box-sizing:border-box;padding:12px 8px 12px calc(8px + .3em);border-radius:calc(12px * var(--rad,1));border:1.5px solid var(--line);background:rgba(244,234,214,.05);color:var(--ink)}
 .code.bad{border-color:var(--danger)}
 .err{margin:-8px 0 0;font-size:12.5px;color:var(--danger);min-height:1em}
-.screen{border:1.5px dashed var(--line);border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px}
+.screen{border:1.5px dashed var(--line);border-radius:calc(12px * var(--rad,1));padding:12px;display:flex;align-items:center;gap:12px}
 .screen .big{font-family:var(--display);font-size:26px;letter-spacing:.18em;color:var(--ember)}
 .screen p{margin:0;font-size:12px;line-height:1.4;color:var(--muted)}
 .switch{display:flex;align-items:center;gap:10px;font-size:13.5px;line-height:1.35;cursor:pointer}
@@ -129,12 +132,12 @@ h2{margin:0;font-family:var(--display);font-weight:400;font-size:20px;text-wrap:
 .switch input:checked+span{background:var(--ember)}
 .switch input:checked+span::after{transform:translateX(18px)}
 .switch small{display:block;color:var(--muted);font-size:12px}
-.btn{font-family:var(--display);font-size:16px;border:0;border-radius:12px;padding:14px 16px;cursor:pointer;background:var(--ember);color:#2a1306;box-shadow:0 4px 0 #7a3110}
+.btn{font-family:var(--display);font-size:16px;border:0;border-radius:calc(12px * var(--rad,1));padding:14px 16px;cursor:pointer;background:var(--ember);color:#2a1306;box-shadow:0 4px 0 #7a3110}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #7a3110}
 .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);box-shadow:none;font-size:14px}
 .btns{display:flex;flex-direction:column;gap:8px}
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.compare>div{border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.45;min-width:0}
+.compare>div{border-radius:calc(12px * var(--rad,1));padding:10px 12px;font-size:12.5px;line-height:1.45;min-width:0}
 .compare .now{border:1.5px dashed var(--ember)}
 .compare .later{border:1.5px solid var(--line);color:var(--muted)}
 .compare h4{margin:0 0 4px;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
@@ -147,18 +150,18 @@ table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:ta
 td,th{padding:7px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
 td.num,th.num{text-align:right}
-.tdot{display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--c);margin-right:6px;vertical-align:-1px}
+.tdot{display:inline-block;width:10px;height:10px;border-radius:calc(3px * var(--rad,1));background:var(--c);margin-right:6px;vertical-align:-1px}
 .qnames{color:var(--muted);font-size:11.5px}
 .winner{font-family:var(--display);font-size:26px;line-height:1.05;color:var(--c)}
 .stats{display:flex;gap:8px}
-.stats div{flex:1;border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
+.stats div{flex:1;border:1px solid var(--line);border-radius:calc(10px * var(--rad,1));padding:8px 10px;min-width:0}
 .stats b{display:block;font-family:var(--display);font-size:20px;font-weight:400}
 .stats span{font-size:11.5px;color:var(--muted)}
 @media (max-width:380px){.goal{grid-template-columns:1fr}}
 .sheet.menu{background:linear-gradient(180deg,rgba(8,9,20,.15),rgba(8,9,20,.55) 40%,rgba(8,9,20,.8));backdrop-filter:none;-webkit-backdrop-filter:none;display:flex;flex-direction:column;align-items:center;gap:14px}
 .menu .card{width:100%;box-sizing:border-box;background:rgba(23,26,49,.9)}
 .menu-top{width:100%;max-width:460px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.cifog{display:flex;align-items:center;gap:8px;background:rgba(14,17,34,.55);border:1px solid var(--line);border-radius:10px;padding:6px 12px;min-height:34px;box-sizing:border-box}
+.cifog{display:flex;align-items:center;gap:8px;background:rgba(14,17,34,.55);border:1px solid var(--line);border-radius:calc(10px * var(--rad,1));padding:6px 12px;min-height:34px;box-sizing:border-box}
 .cifog.text{background:rgba(244,234,214,.92);border-color:transparent}
 .cifog img{height:28px;width:auto;display:block}
 .cifog .wm{display:none;font-family:var(--body);font-weight:700;font-size:22px;letter-spacing:-.03em;color:#1a1a24;line-height:1}
@@ -168,7 +171,8 @@ td.num,th.num{text-align:right}
 .kicker{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ember)}
 .home h1{font-size:clamp(34px,calc((min(100vw,460px) - 80px) / 6.5),64px);line-height:.92;letter-spacing:0;white-space:nowrap;text-shadow:0 4px 0 #1a0b2e,0 0 30px rgba(255,138,42,.25)}
 .home h1 span{color:var(--ember)}
-.home h1.has-logo{text-shadow:none}.game-logo{display:block;max-width:100%;max-height:30vh;width:auto;height:auto}
+.home h1.has-logo{text-shadow:none}.game-logo{display:block;width:100%;height:clamp(56px,calc((min(100vw,460px) - 80px) / 4.2),100px);object-fit:contain;object-position:left center}
+.throw img.ticon{width:34px;height:34px;object-fit:contain}
 .menu-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background-size:cover;background-position:center;z-index:-1;pointer-events:none}
 .sheet.menu{isolation:isolate}
 select.name{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
@@ -178,13 +182,16 @@ select.name{appearance:none;-webkit-appearance:none;background-image:linear-grad
 .checks li{display:flex;gap:9px;align-items:flex-start;font-size:13px;line-height:1.4}
 .checks i{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:700;color:#14121e;margin-top:-1px}
 .checks .ok i{background:var(--heal)}.checks .warn i{background:#ffd24a}.checks .fail i{background:var(--danger)}.checks .info i{background:var(--muted)}
-.verdict{font-family:var(--display);font-size:17px;padding:10px 12px;border-radius:10px}
+.verdict{font-family:var(--display);font-size:17px;padding:10px 12px;border-radius:calc(10px * var(--rad,1))}
 .verdict.ok{background:rgba(143,224,122,.15);color:var(--heal)}.verdict.fail{background:rgba(255,90,78,.15);color:var(--danger)}
-.credit{margin:0;font-size:13px;color:var(--muted);line-height:1.45}.credit b{color:var(--ink)}
-pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);border:1px solid var(--line);font-size:11.5px;line-height:1.45;white-space:pre-wrap;word-break:break-all;color:var(--ink);user-select:text;-webkit-user-select:text}
+.credit{margin:0;font-size:13px;color:var(--muted);line-height:1.45}
+#startModelRow{margin:12px 0 4px}
+#startModels{max-height:132px;overflow-y:auto}
+.linkbtn{align-self:flex-start;background:none;border:0;padding:2px 0;color:var(--ember);font:inherit;font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.credit b{color:var(--ink)}
+pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));background:rgba(0,0,0,.35);border:1px solid var(--line);font-size:11.5px;line-height:1.45;white-space:pre-wrap;word-break:break-all;color:var(--ink);user-select:text;-webkit-user-select:text}
 .two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}.two .name{min-width:0;width:100%;box-sizing:border-box}
 .tagline{margin:0;font-size:15.5px;line-height:1.45;color:var(--ink);max-width:32ch}
-.stripe{display:flex;gap:4px}.stripe i{flex:1;height:6px;border-radius:3px;background:var(--c)}
+.stripe{display:flex;gap:4px}.stripe i{flex:1;height:6px;border-radius:calc(3px * var(--rad,1));background:var(--c)}
 .btn.big{font-size:22px;padding:18px 16px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.row3 .btn{font-size:12.5px;padding:13px 4px}
@@ -205,7 +212,7 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
 }
 .cbar{display:flex;justify-content:space-between}
 .hint2{margin:-8px 0 0;font-size:12px;color:var(--muted)}
-.name{font:inherit;font-size:16px;font-weight:500;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:rgba(244,234,214,.05);color:var(--ink)}
+.name{font:inherit;font-size:16px;font-weight:500;padding:10px 12px;border-radius:calc(10px * var(--rad,1));border:1.5px solid var(--line);background:rgba(244,234,214,.05);color:var(--ink)}
 .name:focus-visible{outline:2px solid var(--ember);outline-offset:1px}
 .lrow{display:flex;flex-direction:column;gap:6px}
 .opts{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none}
@@ -220,7 +227,7 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
 .back{align-self:flex-start;background:none;border:0;color:var(--muted);font:inherit;font-size:13px;font-weight:500;padding:4px 0;cursor:pointer}
 .back:hover,.back:focus-visible{color:var(--ink)}
 .loop{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.loop div{border:1px solid var(--line);border-radius:12px;padding:10px 9px;font-size:12px;line-height:1.38;color:var(--muted);min-width:0}
+.loop div{border:1px solid var(--line);border-radius:calc(12px * var(--rad,1));padding:10px 9px;font-size:12px;line-height:1.38;color:var(--muted);min-width:0}
 .loop b{display:block;color:var(--ink);font-size:14px;margin:6px 0 2px}
 .loop .n{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ember);color:#2a1306;font-family:var(--display);font-size:13px}
 .ctrl{display:flex;flex-direction:column;gap:8px}
@@ -228,7 +235,7 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
 .ctrl svg{width:40px;height:40px;flex:none;color:var(--ink)}
 .ctrl b{display:block;color:var(--ink);font-size:14px}
 .chips3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.chips3 div{border:1px solid var(--line);border-radius:12px;padding:9px;font-size:11.5px;line-height:1.38;color:var(--muted);min-width:0}
+.chips3 div{border:1px solid var(--line);border-radius:calc(12px * var(--rad,1));padding:9px;font-size:11.5px;line-height:1.38;color:var(--muted);min-width:0}
 .chips3 b{display:block;color:var(--ink);font-size:13px;margin:6px 0 2px}
 .ic{display:block;width:18px;height:18px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c)}
 .ic.big{width:24px;height:24px}
@@ -236,23 +243,23 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
 .spec{position:absolute;left:0;right:0;bottom:0;padding:10px max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 12px) max(12px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:8px;pointer-events:none;background:linear-gradient(transparent,rgba(8,9,20,.75) 35%)}
 .spec button{pointer-events:auto}
 .spec .who{display:flex;align-items:center;gap:8px}
-.spec .card2{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:5px}
+.spec .card2{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:calc(12px * var(--rad,1));padding:8px 10px;display:flex;flex-direction:column;gap:5px}
 .spec .nm{display:flex;justify-content:space-between;gap:8px;font-size:14px;font-weight:700;white-space:nowrap}
 .spec .nm span:first-child{overflow:hidden;text-overflow:ellipsis}
 .spec .nm small{font-weight:500;color:var(--c);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase}
-.spec .bar{height:7px;border-radius:4px;background:rgba(244,234,214,.12);overflow:hidden}.spec .bar i{display:block;height:100%;background:var(--heal);transition:width .15s}
+.spec .bar{height:7px;border-radius:calc(4px * var(--rad,1));background:rgba(244,234,214,.12);overflow:hidden}.spec .bar i{display:block;height:100%;background:var(--heal);transition:width .15s}
 .spec .meta{display:flex;gap:10px;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden}
 .spec .meta b{color:var(--ink);font-weight:600}
-.spec .nav{width:44px;height:58px;flex:none;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:20px;cursor:pointer}
+.spec .nav{width:44px;height:58px;flex:none;border-radius:calc(12px * var(--rad,1));border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:20px;cursor:pointer}
 .spec .row{display:flex;gap:6px;align-items:center}
-.spec .tm{flex:1;min-width:0;height:34px;border-radius:9px;border:1.5px solid var(--line);background:var(--panel);color:var(--c);font:inherit;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
+.spec .tm{flex:1;min-width:0;height:34px;border-radius:calc(9px * var(--rad,1));border:1.5px solid var(--line);background:var(--panel);color:var(--c);font:inherit;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
 .spec .tm[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 18%,var(--panel))}
-.spec .mode{flex:1;height:34px;border-radius:9px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.spec .mode{flex:1;height:34px;border-radius:calc(9px * var(--rad,1));border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
 .spec .mode[aria-pressed="true"]{border-color:var(--ember);background:rgba(255,138,42,.16)}
 .spec .nav:focus-visible,.spec .tm:focus-visible,.spec .mode:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
-.spechint{font-size:10.5px;color:var(--muted);background:rgba(14,17,34,.7);padding:3px 9px;border-radius:999px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+.spechint{font-size:10.5px;color:var(--muted);background:rgba(14,17,34,.7);padding:3px 9px;border-radius:calc(999px * var(--rad,1));white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
 .hud.spectating .status,.hud.spectating .throw,.hud.spectating .build,.hud.spectating .hint,.hud.spectating .tip{display:none!important}
-.tip{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 70px);width:min(250px,calc(100% - 200px));min-width:150px;box-sizing:border-box;background:rgba(14,17,34,.82);border:1px solid var(--ember);border-radius:10px;padding:5px 9px;font-size:11.5px;line-height:1.35;text-align:center;transition:opacity .4s;pointer-events:auto}
+.tip{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 70px);width:min(250px,calc(100% - 200px));min-width:150px;box-sizing:border-box;background:rgba(14,17,34,.82);border:1px solid var(--ember);border-radius:calc(10px * var(--rad,1));padding:5px 9px;font-size:11.5px;line-height:1.35;text-align:center;transition:opacity .4s;pointer-events:auto}
 .tip b{color:var(--ember);font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-right:4px}
 .notes{position:absolute;top:calc(env(safe-area-inset-top,0px) + 76px);left:calc(env(safe-area-inset-left,0px) + 8px);right:calc(env(safe-area-inset-right,0px) + 80px);display:flex;flex-direction:column;align-items:center;gap:3px;pointer-events:none}
 .notes>*{flex:none}
@@ -298,18 +305,18 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
     <div class="notes" id="notes">
       <div class="falert" id="fireAlert" aria-live="polite"></div>
       <div class="banner" id="banner"></div>
-      <div class="spechint" id="specHint" hidden>Mode espectador · toca una castanyera per seguir-la</div>
+      <div class="spechint" id="specHint" hidden data-t="partida.specHint">Mode espectador · toca una castanyera per seguir-la</div>
       <div class="feed" id="feed"></div>
     </div>
-    <div class="tip" id="tip" style="opacity:0" hidden><b>Consell</b><span id="tipTxt"></span></div>
-    <div class="hint" id="hint">Arrossega a l'esquerra per moure't</div>
+    <div class="tip" id="tip" style="opacity:0" hidden><b data-t="partida.b1">Consell</b><span id="tipTxt"></span></div>
+    <div class="hint" id="hint" data-t="partida.hint">Arrossega a l'esquerra per moure't</div>
     <div class="status">
       <div class="pills"><span class="pill wood" id="carry">0 llenya</span><span class="pill rush" id="wpPill" hidden></span></div>
-      <div class="hp" id="hpBox"><div class="row"><span>Vida</span><b id="hpTxt">100</b></div><div class="track"><i id="hpBar"></i></div></div>
+      <div class="hp" id="hpBox"><div class="row"><span data-t="partida.span1">Vida</span><b id="hpTxt">100</b></div><div class="track"><i id="hpBar"></i></div></div>
       <div class="turn" id="turn" hidden><span class="dot"></span><span id="turnTxt"></span></div>
     </div>
     <canvas class="mini" id="mini" width="176" height="176" aria-label="Mapa de l'arena"></canvas>
-        <button class="build" id="buildBtn" hidden><b>Torradora</b><span id="buildTxt">8 llenya</span></button>
+        <button class="build" id="buildBtn" hidden><b data-t="partida.b2">Torradora</b><span id="buildTxt">8 llenya</span></button>
     <button class="build up" id="upBtn" hidden><b id="upLbl">Millora</b><span id="upTxt"></span></button>
     <button class="throw" id="throwBtn" aria-label="Llança una castanya">
       <svg viewBox="0 0 24 24"><path d="M12 2.5c3.2 0 8.5 4.6 8.5 10.2 0 4.6-3.8 8.3-8.5 8.3s-8.5-3.7-8.5-8.3C3.5 7.1 8.8 2.5 12 2.5z" fill="#4a230f"/><path d="M4.3 15.2c1.8 1.4 4.6 2.3 7.7 2.3s5.9-.9 7.7-2.3c-.8 3.3-4 5.8-7.7 5.8s-6.9-2.5-7.7-5.8z" fill="#d9a873"/><path d="M9 6.5c1-1.3 2-1.9 3-2" stroke="#8a5530" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
@@ -322,7 +329,7 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
         <button class="nav" id="specNext" aria-label="Castanyera següent">›</button>
       </div>
       <div class="row" id="specTeams"></div>
-      <div class="row"><button class="mode" id="specAuto" aria-pressed="true">Càmera automàtica</button><button class="mode" id="specOver" aria-pressed="false">Vista general</button></div>
+      <div class="row"><button class="mode" id="specAuto" aria-pressed="true" data-t="espectador.specAuto">Càmera automàtica</button><button class="mode" id="specOver" aria-pressed="false" data-t="espectador.specOver">Vista general</button></div>
     </div>
     <div class="joy" id="joy" hidden><i id="knob"></i></div>
     <div class="msg" id="msg" hidden><h3 id="msgH"></h3><p id="msgP"></p></div>
@@ -331,148 +338,148 @@ pre.json{margin:0;padding:10px;border-radius:10px;background:rgba(0,0,0,.35);bor
   <div class="sheet menu" id="lobby">
     <div class="menu-top">
       <div class="cifog" id="cifogLogo"><img src="data:image/png;base64,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" alt="CIFOG" width="157" height="63"><span class="wm">cifog</span></div>
-      <span class="eyebrow">Castaween · aula</span>
+      <span class="eyebrow" data-t="menu.span1">Castaween · aula</span>
     </div>
 
-    <div class="preview-area" id="previewArea" role="img" aria-label="Vista prèvia del personatge" hidden><span>Arrossega per girar el personatge</span></div>
+    <div class="preview-area" id="previewArea" role="img" aria-label="Vista prèvia del personatge" hidden data-t="menu.previewArea"><span>Arrossega per girar el personatge</span></div>
     <div class="card home" id="home">
       <div class="title">
-        <span class="kicker">31 d'octubre · Castanyada</span>
-        <h1>Casta<span>ween</span></h1>
-        <p class="tagline">Halloween vol apagar la Castanyada. Les castanyeres no s'hi deixaran.</p>
+        <span class="kicker" data-t="inici.span1">31 d'octubre · Castanyada</span>
+        <h1 data-t="inici.h11">Casta<span>ween</span></h1>
+        <p class="tagline" data-t="inici.p1">Halloween vol apagar la Castanyada. Les castanyeres no s'hi deixaran.</p>
       </div>
       <div class="stripe" aria-hidden="true"><i style="--c:#3ec7e0"></i><i style="--c:#e8507f"></i><i style="--c:#f2c230"></i><i style="--c:#63d471"></i><i style="--c:#a57bff"></i></div>
       <div class="btns">
-        <button class="btn big" id="playBtn">Mode en línia</button>
-        <button class="btn ghost" id="specBtn">Mira una partida</button>
-        <div class="row3"><button class="btn ghost" id="lookBtn">Personatge</button><button class="btn ghost" id="howBtn">Com es juga</button><button class="btn ghost" id="optBtn">Opcions</button></div>
+        <button class="btn big" id="playBtn" data-t="inici.playBtn">Mode en línia</button>
+        <button class="btn ghost" id="specBtn" data-t="inici.specBtn">Mira una partida</button>
+        <div class="row3"><button class="btn ghost" id="lookBtn" data-t="inici.lookBtn">Personatge</button><button class="btn ghost" id="howBtn" data-t="inici.howBtn">Com es juga</button><button class="btn ghost" id="optBtn" data-t="inici.optBtn">Opcions</button></div>
       </div>
-      <p class="credits">Un joc de la Castanyada fet amb l'alumnat de CIFOG · 3D i videojocs, Audiovisuals, Fotografia, Disseny i Gràfica interactiva</p>
+      <p class="credits" data-t="inici.p2">Un joc de la Castanyada fet amb l'alumnat de CIFOG · 3D i videojocs, Audiovisuals, Fotografia, Disseny i Gràfica interactiva</p>
     </div>
 
     <div class="card custom" id="custom" hidden>
-      <div class="cbar"><button class="back" data-go="home">← Menú</button></div>
-      <h2>La teva castanyera</h2>
-      <p class="hint2">Arrossega la figura per fer-la girar.</p>
-      <label class="label" for="nameIn">Nickname a l'arena</label>
-      <input class="name" id="nameIn" maxlength="12" placeholder="Tu" autocomplete="off">
-      <div class="lrow" id="modelRow"><div class="label">Model</div><div class="opts" id="lookModels"></div><p class="credit" id="modelCredit" hidden></p></div>
+      <div class="cbar"><button class="back" id="customBack" data-go="home">← Menú</button></div>
+      <h2 data-t="personatge.h21">La teva castanyera</h2>
+      <p class="hint2" data-t="personatge.p1">Arrossega la figura per fer-la girar.</p>
+      <label class="label" for="nameIn" data-t="personatge.label1">Nickname a l'arena</label>
+      <input class="name" id="nameIn" maxlength="12" placeholder="Tu" autocomplete="off" data-tp="personatge.nameIn-pista">
+      <div class="lrow" id="modelRow"><div class="label" data-t="personatge.div1">Model</div><div class="opts" id="lookModels"></div><p class="credit" id="modelCredit" hidden></p></div>
       <div id="lookRows"></div>
-      <div class="label">Color del curs</div>
+      <div class="label" data-t="personatge.div2">Color de prova</div>
       <div class="opts" id="lookTeams"></div>
-      <p class="note">Les parts magenta de la castanyera prenen el color del teu curs, perquè tothom et reconegui a l'arena.</p>
-      <button class="btn" id="saveLook">Desa la castanyera</button>
+      <p class="note" data-t="personatge.p2">Les parts magenta de la castanyera prenen el color de l'equip que et toqui, perquè tothom et reconegui a l'arena. Aquí pots provar com queda amb cada color.</p>
+      <button class="btn" id="saveLook" data-t="personatge.saveLook">Desa la castanyera</button>
     </div>
 
 
     <div class="card" id="howto" hidden>
-      <button class="back" data-go="home">← Menú</button>
-      <h2>Com es juga</h2>
-      <p class="lead">Halloween surt del cementiri per apagar les fogueres. Cada curs alimenta la seva. <b>Guanya el curs amb la foguera més gran quan s'acaben els 5 minuts.</b></p>
+      <button class="back" data-go="home" data-t="com-es-juga.button1">← Menú</button>
+      <h2 data-t="com-es-juga.h21">Com es juga</h2>
+      <p class="lead" data-t="com-es-juga.p1">Halloween surt del cementiri per apagar les fogueres. Cada equip alimenta la seva. <b>Guanya l'equip amb la foguera més gran quan s'acaben els 5 minuts.</b></p>
       <div class="loop">
-        <div><span class="n">1</span><b>Caça</b>Llança castanyes als monstres de Halloween.</div>
-        <div><span class="n">2</span><b>Recull</b>Cada monstre deixa llenya. L'agafes passant-hi per sobre (màxim 10).</div>
-        <div><span class="n">3</span><b>Alimenta</b>Entra a l'anell de la foguera del teu curs i la llenya s'hi afegeix sola.</div>
+        <div data-t="com-es-juga.div1"><span class="n">1</span><b>Caça</b>Llança castanyes als monstres de Halloween.</div>
+        <div data-t="com-es-juga.div2"><span class="n">2</span><b>Recull</b>Cada monstre deixa llenya. L'agafes passant-hi per sobre (màxim 10).</div>
+        <div data-t="com-es-juga.div3"><span class="n">3</span><b>Alimenta</b>Entra a l'anell de la foguera del teu equip i la llenya s'hi afegeix sola.</div>
       </div>
-      <div class="label">Controls</div>
+      <div class="label" data-t="com-es-juga.div4">Controls</div>
       <div class="ctrl">
-        <div><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="2.5" opacity=".5"/><circle cx="26" cy="15" r="8" fill="currentColor"/></svg><span><b>Moure't</b>Arrossega el polze a la meitat esquerra de la pantalla.</span></div>
-        <div><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#ff8a2a"/><path d="M20 10c4 0 9 5 9 11 0 5-4 9-9 9s-9-4-9-9c0-6 5-11 9-11z" fill="#4a230f"/></svg><span><b>Llançar</b>Mantén premut LLANÇA. Apunta sol al cercle taronja.</span></div>
-        <div><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="14" width="28" height="20" rx="3" fill="#6b6458"/><rect x="5" y="20" width="30" height="4" fill="#ff8a2a"/><rect x="11" y="6" width="5" height="10" fill="#2b2522"/></svg><span><b>Torradora</b>A la teva base apareix el botó. Costa 8 de llenya i dispara sola. Amb més llenya la millores: nivell 2 (12) tira castanyes de foc i nivell 3 (18) hi afegeix moniatos que esclaten.</span></div>
+        <div><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="2.5" opacity=".5"/><circle cx="26" cy="15" r="8" fill="currentColor"/></svg><span data-t="com-es-juga.span1"><b>Moure't</b>Arrossega el polze a la meitat esquerra de la pantalla.</span></div>
+        <div><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#ff8a2a"/><path d="M20 10c4 0 9 5 9 11 0 5-4 9-9 9s-9-4-9-9c0-6 5-11 9-11z" fill="#4a230f"/></svg><span data-t="com-es-juga.span2"><b>Llançar</b>Mantén premut LLANÇA. Apunta sol al cercle taronja.</span></div>
+        <div><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="14" width="28" height="20" rx="3" fill="#6b6458"/><rect x="5" y="20" width="30" height="4" fill="#ff8a2a"/><rect x="11" y="6" width="5" height="10" fill="#2b2522"/></svg><span data-t="com-es-juga.span3"><b>Torradora</b>A la teva base apareix el botó. Costa 8 de llenya i dispara sola. Amb més llenya la millores: nivell 2 (12) tira castanyes de foc i nivell 3 (18) hi afegeix moniatos que esclaten.</span></div>
       </div>
-      <p class="ctrls">A l'ordinador: WASD o fletxes per moure't, espai per llançar i B per construir.</p>
-      <p class="ctrls"><b>Mira una partida</b>: mode espectador. Toca una castanyera per seguir-la, canvia amb ‹ ›, tria un curs, o deixa la càmera automàtica que va on hi ha més acció. La vista general mostra tota l'arena (arrossega per moure-la). Teclat: fletxes, 1–5, A i V.</p>
-      <div class="label">Halloween</div>
+      <p class="ctrls" data-t="com-es-juga.p2">A l'ordinador: WASD o fletxes per moure't, espai per llançar i B per construir.</p>
+      <p class="ctrls" data-t="com-es-juga.p3"><b>Mira una partida</b>: mode espectador. Arrossega per moure la càmera i fes zoom amb la roda o pessigant. Toca un equip per anar a la seva foguera, toca una castanyera per seguir-la (o canvia amb ‹ ›), o deixa la càmera automàtica, que va on hi ha més acció i de tant en tant ensenya les fogueres. La vista general mostra tota l'arena (arrossega per moure-la). Teclat: fletxes, 1–5, A i V.</p>
+      <div class="label" data-t="com-es-juga.div5">Halloween</div>
       <div class="chips3">
-        <div><i class="ic" style="--c:#e8731c"></i><b>Carabassa</b>4 cops · 1 llenya</div>
-        <div><i class="ic" style="--c:#dfe6ff"></i><b>Fantasma</b>3 cops · travessa obstacles</div>
-        <div><i class="ic big" style="--c:#a35cff"></i><b>Carabassot</b>Surt 3 cops per ronda. Deixa 5 llenya i un bazooka</div>
+        <div data-t="com-es-juga.div6"><i class="ic" style="--c:#e8731c"></i><b>Carabassa</b>4 cops · 1 llenya</div>
+        <div data-t="com-es-juga.div7"><i class="ic" style="--c:#dfe6ff"></i><b>Fantasma</b>3 cops · travessa obstacles</div>
+        <div data-t="com-es-juga.div8"><i class="ic big" style="--c:#a35cff"></i><b>Carabassot</b>Surt 3 cops per ronda. Deixa 5 llenya i un bazooka</div>
       </div>
-      <div class="label">Armes de les caixes</div>
+      <div class="label" data-t="com-es-juga.div9">Armes de les caixes</div>
       <div class="chips3">
-        <div><i class="ic" style="--c:#ff5a1e"></i><b>Castanyes de foc</b>12 trets. Fan més mal i cremen.</div>
-        <div><i class="ic" style="--c:#ffd24a"></i><b>Ràfega</b>30 castanyes molt ràpides.</div>
-        <div><i class="ic" style="--c:#c4566a"></i><b>Bazooka de moniato</b>3 trets que esclaten i deixen puré que crema.</div>
+        <div data-t="com-es-juga.div10"><i class="ic" style="--c:#ff5a1e"></i><b>Castanyes de foc</b>12 trets. Fan més mal i cremen.</div>
+        <div data-t="com-es-juga.div11"><i class="ic" style="--c:#ffd24a"></i><b>Ràfega</b>30 castanyes molt ràpides.</div>
+        <div data-t="com-es-juga.div12"><i class="ic" style="--c:#c4566a"></i><b>Bazooka de moniato</b>3 trets que esclaten i deixen puré que crema.</div>
       </div>
-      <div class="label">Rivals i ajudes</div>
+      <div class="label" data-t="com-es-juga.div13">Rivals i ajudes</div>
       <ul class="rules">
-        <li><b>Qui ataca la teva foguera:</b> els monstres de Halloween (van sobretot a la foguera més gran) i les castanyeres dels altres cursos. Quan passa surt un avís vermell i el minimapa marca la teva base.</li>
-        <li>Tu també pots atacar castanyeres i fogueres d'altres cursos. Cada impacte a una foguera rival en fa caure llenya que pots robar.</li>
-        <li>Si caus, deixes a terra la llenya que portaves i tornes a la base en 3 s.</li>
-        <li><b>Panellet</b>: +35 de vida. El <b>daurat</b> et posa la vida plena.</li>
-        <li>L'últim minut és la <b>Nit de Difunts</b>: el doble de monstres i la llenya entregada val doble.</li>
-        <li>Cada curs té sempre 10 castanyeres. Si n'hi ha menys, juguen bots. Si el curs és ple, esperes a la cua i entres quan cau algú (torn màxim de 90 s).</li>
+        <li data-t="com-es-juga.li1"><b>Qui ataca la teva foguera:</b> els monstres de Halloween (van sobretot a la foguera més gran) i les castanyeres dels altres equips. Quan passa surt un avís vermell i el minimapa marca la teva base.</li>
+        <li data-t="com-es-juga.li2">Tu també pots atacar castanyeres i fogueres d'altres equips. Cada impacte a una foguera rival en fa caure llenya que pots robar.</li>
+        <li data-t="com-es-juga.li3">Si caus, deixes a terra la llenya que portaves i tornes a la base en 3 s.</li>
+        <li data-t="com-es-juga.li4"><b>Panellet</b>: +35 de vida. El <b>daurat</b> et posa la vida plena.</li>
+        <li data-t="com-es-juga.li5">L'últim minut és la <b>Nit de Difunts</b>: el doble de monstres i la llenya entregada val doble.</li>
+        <li data-t="com-es-juga.li6">Els equips tenen noms a l'atzar i entres al que tingui menys gent. Cada equip pot tenir fins a 15 persones; si n'hi ha menys de 10, la resta són bots. Només si tots són plens esperes a la cua (torn màxim de 90 s).</li>
       </ul>
-      <button class="btn" data-go="step1">Ja ho tinc, a jugar</button>
+      <button class="btn" data-go="step1" data-t="com-es-juga.button2">Ja ho tinc, a jugar</button>
     </div>
 
     <div class="card" id="opts" hidden>
-      <button class="back" data-go="home">← Menú</button>
-      <h2>Opcions</h2>
-      <label class="switch"><input type="checkbox" id="sndOn" checked><span></span><div>Efectes de so<small>Llançaments, impactes, explosions i recollides.</small></div></label>
-      <label class="switch"><input type="checkbox" id="musOn" checked><span></span><div>Música<small>Ritme de batalla que s'accelera a la Nit de Difunts.</small></div></label>
-      <label class="switch"><input type="checkbox" id="hq" checked><span></span><div>Efectes gràfics alts<small>Ombres i resplendor. Desactiva-ho si el mòbil va lent.</small></div></label>
-      <label class="switch"><input type="checkbox" id="accel"><span></span><div>Temps accelerat ×6<small>Per provar: ronda de 50 s i torn de 15 s.</small></div></label>
+      <button class="back" data-go="home" data-t="opcions.button1">← Menú</button>
+      <h2 data-t="opcions.h21">Opcions</h2>
+      <label class="switch"><input type="checkbox" id="sndOn" checked><span></span><div data-t="opcions.div1">Efectes de so<small>Llançaments, impactes, explosions i recollides.</small></div></label>
+      <label class="switch"><input type="checkbox" id="musOn" checked><span></span><div data-t="opcions.div2">Música<small>Ritme de batalla que s'accelera a la Nit de Difunts.</small></div></label>
+      <label class="switch"><input type="checkbox" id="hq" checked><span></span><div data-t="opcions.div3">Efectes gràfics alts<small>Ombres i resplendor. Desactiva-ho si el mòbil va lent.</small></div></label>
+      <label class="switch"><input type="checkbox" id="accel"><span></span><div data-t="opcions.div4">Temps accelerat ×6<small>Per provar: ronda de 50 s i torn de 15 s.</small></div></label>
       <div class="compare">
-        <div class="now"><h4>Mode local</h4><ul><li>Tu i 49 bots</li><li>Entra sense cap codi de sala</li></ul></div>
-        <div class="later"><h4>Mode en línia</h4><ul><li>Codi del professor per entrar</li><li>Les persones substitueixen bots</li><li>Cua compartida per curs</li></ul></div>
+        <div class="now"><h4 data-t="opcions.h41">Mode local</h4><ul><li data-t="opcions.li1">Tu i 49 bots</li><li data-t="opcions.li2">Entra sense cap codi de sala</li></ul></div>
+        <div class="later"><h4 data-t="opcions.h42">Mode en línia</h4><ul><li data-t="opcions.li3">Codi del professor per entrar</li><li data-t="opcions.li4">Les persones substitueixen bots</li><li data-t="opcions.li5">Equips equilibrats automàticament</li></ul></div>
       </div>
-      <button class="btn" data-go="home">Fet</button>
+      <button class="btn" data-go="home" data-t="opcions.button2">Fet</button>
     </div>
 
     <div class="card" id="step1" hidden>
-      <button class="back" data-go="home">← Menú</button>
-      <div class="steps" id="entrySteps"><span class="on">1 · Nickname i curs</span><span>2 · Codi</span><span>3 · Arena</span></div>
-      <label class="label" for="nicknameIn">El teu nickname</label>
-      <input class="name" id="nicknameIn" maxlength="12" placeholder="Ex.: CastanyaNinja" autocomplete="nickname" aria-describedby="nicknameHelp nicknameErr">
-      <p class="note" id="nicknameHelp">Màxim 12 caràcters. Es veurà damunt la teva castanyera i a les eliminacions.</p>
+      <button class="back" data-go="home" data-t="entrada.button1">← Menú</button>
+      <div class="steps" id="entrySteps"><span class="on">1 · Nickname</span><span>2 · Codi</span><span>3 · Arena</span></div>
+      <label class="label" for="nicknameIn" data-t="entrada.label1">El teu nickname</label>
+      <input class="name" id="nicknameIn" maxlength="12" placeholder="Ex.: CastanyaNinja" autocomplete="nickname" aria-describedby="nicknameHelp nicknameErr" data-tp="entrada.nicknameIn-pista">
+      <p class="note" id="nicknameHelp" data-t="entrada.nicknameHelp">Màxim 12 caràcters. Es veurà damunt la teva castanyera i a les eliminacions.</p>
       <p class="err" id="nicknameErr" role="alert"></p>
-      <h2>Tria el teu curs</h2>
-      <div class="teams" id="teamPick"></div>
+      <div class="lrow" id="startModelRow" hidden><div class="label" data-t="entrada.div1">La teva castanyera</div><div class="opts" id="startModels"></div><p class="credit" id="startCredit"></p><button type="button" class="linkbtn" id="startSee" data-t="entrada.startSee">Mira-la en 3D i personalitza-la →</button></div>
+      <p class="note" data-t="entrada.p1">L'equip te'l toca a l'atzar quan entres a la sala.</p>
       <div class="btns"><button class="btn" id="toCode">Següent</button></div>
     </div>
 
     <div class="card" id="step2" hidden>
-      <button class="back" id="backBtn">← Canvia de curs</button>
-      <div class="steps"><span class="on">1 · Curs</span><span class="on">2 · Codi</span><span>3 · Arena</span></div>
+      <button class="back" id="backBtn">← Canvia el nickname</button>
+      <div class="steps" data-t="codi.div1"><span class="on">1 · Nickname</span><span class="on">2 · Codi</span><span>3 · Arena</span></div>
       <h2 id="codeTitle">Entra a la sala</h2>
-      <div class="screen"><div class="big" id="roomCode">0000</div><p>Pantalla de la sala, simulada. Al joc real, el codi apareix a la pantalla de l'aula quan el professor obre la partida.</p></div>
-      <label class="label" for="codeIn">Codi de la sala</label>
-      <input class="code" id="codeIn" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="····">
+      <div class="screen"><div class="big" id="roomCode">0000</div><p data-t="codi.p1">Pantalla de la sala, simulada. Al joc real, el codi apareix a la pantalla de l'aula quan el professor obre la partida.</p></div>
+      <label class="label" for="codeIn" data-t="codi.label1">Codi de la sala</label>
+      <input class="code" id="codeIn" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="····" data-tp="codi.codeIn-pista">
       <p class="err" id="codeErr"></p>
-      <label class="switch" id="simFullRow"><input type="checkbox" id="simFull"><span></span><div>Simula que el teu curs ja és ple<small>10 persones jugant i 2 esperant. Entraràs a la cua en la posició 3.</small></div></label>
+      <label class="switch" id="simFullRow"><input type="checkbox" id="simFull"><span></span><div data-t="codi.div2">Simula que la sala és plena<small>Tots els equips tenen 15 persones i 2 més esperen. Entraràs a la cua en la posició 3.</small></div></label>
       <div class="btns"><button class="btn" id="joinBtn">Entra a l'arena</button></div>
     </div>
   </div>
 
   <div class="sheet" id="pause" hidden>
     <div class="card">
-      <span class="eyebrow">Pausa · regles de la sala</span>
-      <h2>Regles de l'arena</h2>
+      <span class="eyebrow" data-t="pausa.span1">Pausa · regles de la sala</span>
+      <h2 data-t="pausa.h21">Regles de l'arena</h2>
       <ul class="rules">
-        <li>Rondes de <b>5 minuts</b>. Guanya el curs amb <b>més llenya a la foguera</b>.</li>
-        <li>Els monstres deixen llenya: 1 per carabassa o fantasma, 5 pel Carabassot. Si caus, deixes a terra la que portes.</li>
-        <li>Cada castanya que impacta en una foguera rival en fa caure 1 de llenya. Halloween també ataca les fogueres, sobretot la més gran.</li>
-        <li>Torradora: costa <b>8 de llenya</b> de la foguera, màxim 3 per curs. Es millora al nivell 2 (<b>12</b>) i al 3 (<b>18</b>): dispara més ràpid, més lluny i amb foc.</li>
-        <li>La foguera l'ataquen els monstres i les castanyeres dels altres cursos.</li>
-        <li>Caixes d'armes pel camp: <b>castanyes de foc</b> (12, cremen), <b>ràfega</b> (30 castanyes ràpides) i <b>bazooka de moniato</b> (3 trets, esclata i deixa puré que crema i alenteix).</li>
-        <li>Panellets: <b>+35 de vida</b>. El daurat que deixa el Carabassot dona la vida plena.</li>
-        <li>L'últim minut és la <b>Nit de Difunts</b>: el doble de monstres i la llenya entregada val doble.</li>
-        <li>Cada curs té sempre <b>10 castanyeres</b>. Els bots ocupen les places buides. Si el curs és ple, esperes a la cua i entres quan cau algú. Hi ha un torn màxim de 90 s només si hi ha cua.</li>
+        <li data-t="pausa.li1">Rondes de <b>5 minuts</b>. Guanya l'equip amb <b>més llenya a la foguera</b>.</li>
+        <li data-t="pausa.li2">Els monstres deixen llenya: 1 per carabassa o fantasma, 5 pel Carabassot. Si caus, deixes a terra la que portes.</li>
+        <li data-t="pausa.li3">Cada castanya que impacta en una foguera rival en fa caure 1 de llenya. Halloween també ataca les fogueres, sobretot la més gran.</li>
+        <li data-t="pausa.li4">Torradora: costa <b>8 de llenya</b> de la foguera, màxim 3 per equip. Es millora al nivell 2 (<b>12</b>) i al 3 (<b>18</b>): dispara més ràpid, més lluny i amb foc.</li>
+        <li data-t="pausa.li5">La foguera l'ataquen els monstres i les castanyeres dels altres equips.</li>
+        <li data-t="pausa.li6">Caixes d'armes pel camp: <b>castanyes de foc</b> (12, cremen), <b>ràfega</b> (30 castanyes ràpides) i <b>bazooka de moniato</b> (3 trets, esclata i deixa puré que crema i alenteix).</li>
+        <li data-t="pausa.li7">Panellets: <b>+35 de vida</b>. El daurat que deixa el Carabassot dona la vida plena.</li>
+        <li data-t="pausa.li8">L'últim minut és la <b>Nit de Difunts</b>: el doble de monstres i la llenya entregada val doble.</li>
+        <li data-t="pausa.li9">Els <b>equips tenen noms a l'atzar</b> i cada alumne entra al que té menys gent, així queden equilibrats. Fins a <b>15 persones</b> per equip; si n'hi ha menys de 10, els bots completen l'equip. Només si tots són plens hi ha cua, amb un torn màxim de 90 s.</li>
       </ul>
       <div class="label">Estat de la sala <span id="pauseCode"></span></div>
       <div style="overflow-x:auto"><table id="pauseTable"></table></div>
-      <div class="btns"><button class="btn" id="resumeBtn">Continua</button><button class="btn ghost" id="quitBtn">Surt de la sala</button></div>
+      <div class="btns"><button class="btn" id="resumeBtn" data-t="pausa.resumeBtn">Continua</button><button class="btn ghost" id="quitBtn" data-t="pausa.quitBtn">Surt de la sala</button></div>
     </div>
   </div>
 
   <div class="sheet" id="results" hidden>
     <div class="card">
       <span class="eyebrow" id="resEyebrow">Final de la ronda 1</span>
-      <div><div class="label">Foguera més gran</div><div class="winner" id="resWinner"></div></div>
-      <div class="stats"><div><b id="resMine">0</b><span>Llenya que has entregat</span></div><div><b id="resMvp">–</b><span id="resMvpL">Millor castanyera</span></div></div>
+      <div><div class="label" data-t="resultats.div1">Foguera més gran</div><div class="winner" id="resWinner"></div></div>
+      <div class="stats"><div><b id="resMine">0</b><span data-t="resultats.span1">Llenya que has entregat</span></div><div><b id="resMvp">–</b><span id="resMvpL">Millor castanyera</span></div></div>
       <div style="overflow-x:auto"><table id="resTable"></table></div>
-      <div class="btns"><button class="btn" id="nextBtn">Següent ronda</button><button class="btn ghost" id="lobbyBtn">Surt de la sala</button></div>
+      <div class="btns"><button class="btn" id="nextBtn" data-t="resultats.nextBtn">Següent ronda</button><button class="btn ghost" id="lobbyBtn" data-t="resultats.lobbyBtn">Surt de la sala</button></div>
     </div>
   </div>
 </div>
@@ -493,13 +500,20 @@ const $=s=>document.querySelector(s);
 const rand=(a,b)=>a+Math.random()*(b-a);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const TEAMS=[
-  {name:'3D i videojocs',short:'3D',color:0x3ec7e0,css:'#3ec7e0'},
-  {name:'Audiovisuals',short:'AV',color:0xe8507f,css:'#e8507f'},
-  {name:'Fotografia',short:'Foto',color:0xf2c230,css:'#f2c230'},
-  {name:'Disseny',short:'Disseny',color:0x63d471,css:'#63d471'},
-  {name:'Gràfica interactiva',short:'GI',color:0xa57bff,css:'#a57bff'},
+  {name:'Blau',short:'Blau',color:0x3ec7e0,css:'#3ec7e0'},
+  {name:'Rosa',short:'Rosa',color:0xe8507f,css:'#e8507f'},
+  {name:'Groc',short:'Groc',color:0xf2c230,css:'#f2c230'},
+  {name:'Verd',short:'Verd',color:0x63d471,css:'#63d471'},
+  {name:'Lila',short:'Lila',color:0xa57bff,css:'#a57bff'},
 ];
-const SLOTS=10,ROUND=300,TURN=90,RESPAWN=3,ARENA_R=42,MAXHP=100,PSPEED=16,GRAV=18,BASE_R=33,NIGHT=60,MONI_MAX=3,MONI_R=2.8;
+// Els cinc noms d'equip: a cada sala (o partida local) es reparteixen a l'atzar entre els colors.
+const TEAM_NAMES=['Torracastanyes','Escalfabraguetes','Torracollons','Pocavergonyes','Escalfacadires'];
+// noms llargs: es redueix la lletra (i es treuen les majúscules) fins que hi caben
+function fitLabel(el,max,tries=0){el.dataset.fit=max;el.style.fontSize='';el.style.textTransform='';el.style.letterSpacing='';if(!el.clientWidth){if(tries<40)setTimeout(()=>fitLabel(el,max,tries+1),250);return;}
+  for(const up of [true,false]){if(!up){el.style.textTransform='none';}for(let f=max;f>=7;f-=0.5){el.style.fontSize=f+'px';el.style.letterSpacing=f<max?'0':'';if(el.scrollWidth<=el.clientWidth+0.5)return;}}}
+addEventListener('resize',()=>{clearTimeout(fitLabel.t);fitLabel.t=setTimeout(()=>document.querySelectorAll('[data-fit]').forEach(el=>fitLabel(el,+el.dataset.fit)),150);});
+function rollTeamNames(){const pool=TEAM_NAMES.slice();for(const t of TEAMS){const n=pool.splice(Math.floor(Math.random()*pool.length),1)[0];t.short=n;t.name='Els '+n;drawSign(t);}}
+let SLOTS=15,BOT_FILL=10;const ROUND=300,TURN=90,RESPAWN=3,ARENA_R=42,MAXHP=100,PSPEED=16,GRAV=18,BASE_R=33,NIGHT=60,MONI_MAX=3,MONI_R=2.8;
 const TOWER_LV=[null,{cost:8,hp:80,cd:1.0,range:9.5,dmg:10,kind:'nut',label:'Castanyes'},{cost:12,hp:130,cd:0.65,range:11,dmg:13,kind:'fire',label:'Castanyes de foc'},{cost:18,hp:180,cd:0.5,range:12.5,dmg:16,kind:'fire',splash:3,label:'Foc i moniatos'}];
 const CARRY_MAX=10,TOWER_COST=8,TOWER_MAX=3,PVP_DMG=12,TOWER_DMG=10,FIRE_R=1.5,DELIVER_R=3.2,START_STOCK=10;
 const BOT={speed:5.0,cd:1.5,engage:14},PLAYER_SPEED=5.6;
@@ -627,9 +641,11 @@ const potGeo=new THREE.CylinderGeometry(1.3,0.9,0.9,8),rimGeo=new THREE.TorusGeo
 const potM=M(0x3a3330),rimM=M(0x55473f),flameMs=[B(0xff8a2a),B(0xffc04a),B(0xff5a1e)];
 const logGeo=new THREE.CylinderGeometry(0.11,0.11,0.6,5);logGeo.rotateZ(Math.PI/2);const logM=M(0x8a5a30),logEndM=M(0xd9a873);
 const woodM=M(0x7a5232),woodDark=M(0x5a3a22),creamCloth=M(0xeadfc6),sackM=M(0x9a7a50),nutPileM=M(0x5a2f16);
-function signTex(t){const c=document.createElement('canvas');c.width=256;c.height=72;const x=c.getContext('2d');x.fillStyle='#2b1a10';x.fillRect(0,0,256,72);x.strokeStyle=t.css;x.lineWidth=6;x.strokeRect(4,4,248,64);
-  x.fillStyle='#f4ead6';x.font='700 30px Rubik, system-ui, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('Castanyes',128,27);x.fillStyle=t.css;x.font='700 18px Rubik, system-ui, sans-serif';x.fillText(t.name.toUpperCase(),128,54);
-  const tx=new THREE.CanvasTexture(c);tx.anisotropy=2;return tx;}
+function signTex(t){const c=document.createElement('canvas');c.width=256;c.height=72;const tx=new THREE.CanvasTexture(c);tx.anisotropy=2;t.sign={c,tx};drawSign(t);return tx;}
+// es torna a pintar quan l'equip rep un nom nou
+function drawSign(t){if(!t.sign)return;const c=t.sign.c,x=c.getContext('2d');x.fillStyle='#2b1a10';x.fillRect(0,0,256,72);x.strokeStyle=t.css;x.lineWidth=6;x.strokeRect(4,4,248,64);
+  x.fillStyle='#f4ead6';x.font='700 30px Rubik, system-ui, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('Castanyes',128,27);x.fillStyle=t.css;const nm=t.name.toUpperCase();let fs=18;do{x.font=`700 ${fs}px Rubik, system-ui, sans-serif`;}while(x.measureText(nm).width>236&&--fs>9);x.fillText(nm,128,54);
+  t.sign.tx.needsUpdate=true;}
 const lanterns=[],houseParts={walls:[],roofs:[],doors:[],wins:[],chims:[]},stringPts=[];
 TEAMS.forEach(t=>{
   t.mat=M(t.color);t.barM=B(t.color,{depthWrite:false});
@@ -800,7 +816,10 @@ function buildCastRig(team,look){const rig=new THREE.Group(),G2=castGeometries(t
 function buildAnyRig(team,look){const A=castAsset(look&&look.model)||castAsset(defaultCastId());
   if(A){const rig=new THREE.Group(),X=instAsset(A,team.color);rig.add(X.fit);const shoulder=new THREE.Group();rig.add(shoulder);return{rig,body:null,arm:null,shoulder,X};}
   return buildCastRig(team,look);}
-function botLook(t){const L=castModels();if(L.length){const mine=L.filter(a=>a.curs&&a.curs.toLowerCase()===t.name.toLowerCase());const A=pick(mine.length&&Math.random()<0.6?mine:L);return Object.assign({},DEFAULT_LOOK,{model:A.id});}return randomLook();}
+// els bots van agafant les castanyeres entregades per torns, perquè surtin les de tothom
+let castTurn=Math.floor(Math.random()*1000);
+function nextCastModel(){const L=castModels();return L.length?L[castTurn++%L.length]:null;}
+function botLook(t){const A=nextCastModel();if(A){return Object.assign({},DEFAULT_LOOK,{model:A.id});}return randomLook();}
 function makeCastanyera(team,isPlayer,look){
   const g=new THREE.Group();const R=buildAnyRig(team,look),rig=R.rig;g.add(rig);
   const bundle=new THREE.Group();bundle.position.set(0,0.98,-0.42);for(let i=0;i<3;i++){const l=new THREE.Mesh(logGeo,logM);l.position.set(0,i*0.17-0.17,0);l.rotation.y=Math.PI/2;bundle.add(l);}bundle.visible=false;rig.add(bundle);
@@ -1161,7 +1180,7 @@ function analyzeModel(gltf,kind,bytes){
   else if(pal==='desconeguda')add('warn','No s\'ha pogut comprovar la paleta: obre el joc des del web');
   else add('ok','Paleta oficial (paleta-castaween.png)');
   if(texs.size&&uvless.size)add('fail','Hi ha peces sense UV: totes han d\'estar mapejades a la paleta');
-  add(teamHits?'ok':'warn',teamHits?'Té peces del color del curs (magenta)':'Cap peça amb el color del curs: pinta el mocador o el xal a les caselles magenta');
+  add(teamHits?'ok':'warn',teamHits?'Té peces del color de l\'equip (magenta)':'Cap peça amb el color de l\'equip: pinta el mocador o el xal a les caselles magenta');
   if(skinned)add(bones<=B.bones?'ok':'fail',`${bones} ossos (màxim ${B.bones})`);else add('info','Sense esquelet: el joc l\'animarà automàticament (rebots i inclinació)');
   if(bytes)add(bytes/1024<=B.kb?'ok':'fail',`${Math.round(bytes/1024)} KB (màxim ${B.kb} KB)`);
   const hM=size.y;add(kind!=='castanyera'||(hM>1.4&&hM<2.3)?'ok':'warn',`Alçada ${hM.toFixed(2)} unitats${kind==='castanyera'?' (modela-la a 1,8 m; el joc l\'escala igualment)':''}`);
@@ -1254,18 +1273,58 @@ async function fetchBuf(url){const r=await fetch(url);if(!r.ok)throw new Error(r
 function applyConfig(cfg){if(!cfg)return;const A={foc:'fire',rafega:'rush',bazooka:'bazooka'},AF={municio:'ammo',cadencia:'cd'},MN={carabassa:'pumpkin',fantasma:'ghost',carabassot:'boss'},MF={vida:'hp',velocitat:'speed',mal:'dmg',llenya:'drop'};
   for(const k in (cfg.armes||{}))if(WEAP[A[k]])for(const f in cfg.armes[k])if(AF[f])WEAP[A[k]][AF[f]]=+cfg.armes[k][f];
   for(const k in (cfg.monstres||{}))if(MON[MN[k]])for(const f in cfg.monstres[k])if(MF[f])MON[MN[k]][MF[f]]=+cfg.monstres[k][f];
-  if(cfg.bots){if(cfg.bots.velocitat)BOT.speed=+cfg.bots.velocitat;if(cfg.bots.cadencia)BOT.cd=+cfg.bots.cadencia;}}
-// ----- tema de la interfície -----
+  if(cfg.bots){if(cfg.bots.velocitat)BOT.speed=+cfg.bots.velocitat;if(cfg.bots.cadencia)BOT.cd=+cfg.bots.cadencia;}
+  if(cfg.places){const pl=cfg.places,n=(v,a,b)=>Math.max(a,Math.min(b,Math.round(+v)));if(pl.persones_per_equip)SLOTS=n(pl.persones_per_equip,1,30);if(pl.bots_per_equip!=null)BOT_FILL=n(pl.bots_per_equip,0,30);BOT_FILL=Math.min(BOT_FILL,SLOTS);}}
+// ----- Disseny: textos, tema i imatges (només l'aspecte; la posició i la mida dels elements no es poden canviar) -----
+const UI={base:null,tema:null,textos:null,imgs:{},folder:''};
+// textos que el joc escriu sol: també es poden canviar des de textos.json
+const DYN_TEXTS={'entrada.pas1':'1 · Nickname','entrada.pas2':'2 · Codi','entrada.pas2-local':'2 · Partida amb bots','entrada.pas3':'3 · Arena','entrada.seguent':'Següent','entrada.comenca-local':'Comença partida local','codi.titol':'Entra a la sala','codi.titol-espectador':'Mira la sala','codi.entra':"Entra a l'arena",'codi.entra-espectador':'Entra com a espectador','partida.llanca':'LLANÇA'};
+const T=k=>{const v=UI.textos&&UI.textos[k];return typeof v==='string'?v.replace(/<[^>]*>/g,'').slice(0,60):DYN_TEXTS[k];};
+const THEME_VARS={fons:'--night',panell:'--panel',targeta:'--panel-solid',text:'--ink','text-secundari':'--muted',accent:'--ember','accent-fosc':'--ember-deep',linies:'--line',perill:'--danger',halloween:'--hallow',vida:'--heal'};
+const THEME_DEFAULT={colors:{fons:'#0e1122',panell:'rgba(16,18,36,.84)',targeta:'#171a31',text:'#f4ead6','text-secundari':'#aaa3bb',accent:'#ff8a2a','accent-fosc':'#c9561a',linies:'rgba(244,234,214,.14)',perill:'#ff5a4e',halloween:'#a35cff',vida:'#8fe07a'},tipografies:{titols:'Bungee',text:'Rubik'},cantonades:1,imatges:{}};
+const textPrefix=el=>{let n=0;for(const c of el.childNodes){if(c.nodeType===1&&((c.tagName==='I'&&c.classList.contains('ic'))||(c.tagName==='SPAN'&&c.classList.contains('n'))))n++;else if(c.nodeType===3&&!c.textContent.trim())n++;else break;}return n;};
+function captureTexts(){const m=Object.assign({},DYN_TEXTS);document.querySelectorAll('[data-t]').forEach(el=>{const k=el.dataset.t,n=textPrefix(el),w=document.createElement('div');[...el.childNodes].slice(n).forEach(c=>w.appendChild(c.cloneNode(true)));m[k]=w.innerHTML.replace(/\s+/g,' ').trim();});document.querySelectorAll('[data-tp]').forEach(el=>{m[el.dataset.tp]=el.getAttribute('placeholder')||'';});return m;}
+// només s'accepten <b>, <i>, <small>, <br> i <span class="..."> dins dels textos
+function cleanFrag(html){const t=document.createElement('template');t.innerHTML=String(html);const ok={B:1,I:1,SMALL:1,BR:1,EM:1,STRONG:1,SPAN:1};
+  (function walk(n){for(const c of [...n.childNodes]){if(c.nodeType===1){if(!ok[c.tagName]){c.replaceWith(document.createTextNode(c.textContent));continue;}const cl=c.tagName==='SPAN'?c.getAttribute('class'):null;for(const a of [...c.attributes])c.removeAttribute(a.name);if(cl&&/^[\w -]{1,40}$/.test(cl))c.setAttribute('class',cl);walk(c);}else if(c.nodeType!==3)c.remove();}})(t.content);return t.content;}
+function applyTexts(map){if(!UI.base)UI.base=captureTexts();map=Object.assign({},UI.base,map||{});UI.textos=map;
+  document.querySelectorAll('[data-t]').forEach(el=>{const v=map[el.dataset.t];if(typeof v!=='string')return;const n=textPrefix(el);[...el.childNodes].slice(n).forEach(c=>c.remove());el.appendChild(cleanFrag(v));});
+  document.querySelectorAll('[data-tp]').forEach(el=>{const v=map[el.dataset.tp];if(typeof v==='string')el.setAttribute('placeholder',v.slice(0,40));});}
+const fontLinks={};
+function loadFont(name){if(!name||fontLinks[name]||/^(Bungee|Rubik)$/.test(name))return;const l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+encodeURIComponent(name).replace(/%20/g,'+')+':wght@400;700&display=swap';l.onerror=()=>{const l2=document.createElement('link');l2.rel='stylesheet';l2.href='https://fonts.googleapis.com/css2?family='+encodeURIComponent(name).replace(/%20/g,'+')+'&display=swap';document.head.appendChild(l2);};document.head.appendChild(l);fontLinks[name]=l;}
+function applyTheme(t){t=t||{};const R=document.documentElement.style,c=Object.assign({},THEME_DEFAULT.colors,t.colors||{});UI.tema=t;
+  for(const k in THEME_VARS){const v=String(c[k]||'').trim();if(v&&CSS.supports('color',v))R.setProperty(THEME_VARS[k],v);}
+  const f=Object.assign({},THEME_DEFAULT.tipografies,t.tipografies||{}),safe=n=>typeof n==='string'&&/^[A-Za-z0-9 ]{2,40}$/.test(n.trim())?n.trim():null;
+  const ft=safe(f.titols),fb=safe(f.text);if(ft){loadFont(ft);R.setProperty('--display',`'${ft}',Impact,'Arial Black',system-ui,sans-serif`);}if(fb){loadFont(fb);R.setProperty('--body',`'${fb}',system-ui,-apple-system,'Segoe UI',sans-serif`);}
+  const rd=Number(t.cantonades);R.setProperty('--rad',String(Number.isFinite(rd)?clamp(rd,0,2):1));
+  for(const tm of TEAMS)drawSign(tm);}
+// imatges: logo del títol, fons del menú i icona del botó de llançar. Sempre ocupen la mateixa caixa.
+let h1Orig=null;
+function applyImages(im){im=im||{};UI.imgs=im;const h=document.querySelector('.home h1');if(h1Orig===null)h1Orig=h.innerHTML;
+  if(im.logo){const img=new Image();img.className='game-logo';img.alt='Castaween';img.onload=()=>{h.textContent='';h.appendChild(img);h.classList.add('has-logo');};img.src=im.logo;}else if(h.classList.contains('has-logo')){h.innerHTML=h1Orig;h.classList.remove('has-logo');if(UI.textos)applyTexts(UI.textos);}
+  const lob=$('#lobby');lob.querySelectorAll('.menu-bg').forEach(e=>e.remove());
+  if(im.fons){if(/\.(mp4|webm)(\?|$)|^data:video/i.test(im.fons)){const v=document.createElement('video');Object.assign(v,{src:im.fons,autoplay:true,muted:true,loop:true,playsInline:true});v.className='menu-bg';lob.prepend(v);v.play().catch(()=>{});}
+    else{const d=document.createElement('div');d.className='menu-bg';d.style.backgroundImage=`url("${String(im.fons).replace(/"/g,'%22')}")`;lob.prepend(d);}}
+  const tb=$('#throwBtn'),svg=tb.querySelector('svg');tb.querySelectorAll('img.ticon').forEach(e=>e.remove());
+  if(im.icona_llanca){const i=new Image();i.className='ticon';i.alt='';i.src=im.icona_llanca;svg.style.display='none';tb.prepend(i);}else svg.style.display='';}
+// carpeta d'un disseny (p. ex. ui/marta): tema.json + textos.json + imatges que indica el tema
+async function loadUIFolder(folder){folder=String(folder||'').replace(/^\/+|\/+$/g,'');if(!/^ui(\/[\w-]+)*$/.test(folder))return;UI.folder=folder;const base='assets/'+folder+'/';
+  const get=async f=>{try{const r=await fetch(base+f,{cache:'no-cache'});return r.ok?await r.json():null;}catch(e){ASSETS.errors.push(folder+'/'+f+': '+e.message);return null;}};
+  const [tema,textos]=await Promise.all([get('tema.json'),get('textos.json')]);
+  if(tema){applyTheme(tema);const im={},src=tema.imatges||{};for(const k of['logo','fons','icona_llanca'])if(typeof src[k]==='string'&&/^[\w.-]+$/.test(src[k]))im[k]=base+src[k];applyImages(im);}
+  if(textos)applyTexts(textos);}
 function applyUI(ui){if(!ui)return;
   if(ui.css){const l=document.createElement('link');l.rel='stylesheet';l.href='assets/'+ui.css;document.head.appendChild(l);}
   if(ui.logo){const h=document.querySelector('.home h1');const im=new Image();im.className='game-logo';im.alt='Castaween';im.onload=()=>{h.textContent='';h.appendChild(im);h.classList.add('has-logo');};im.src='assets/'+ui.logo;}
   if(ui.fons){const lob=$('#lobby');if(/\.(mp4|webm)$/i.test(ui.fons)){const v=document.createElement('video');Object.assign(v,{src:'assets/'+ui.fons,autoplay:true,muted:true,loop:true,playsInline:true});v.className='menu-bg';lob.prepend(v);v.play().catch(()=>{});}
     else{const d=document.createElement('div');d.className='menu-bg';d.style.backgroundImage=`url("assets/${ui.fons}")`;lob.prepend(d);}}}
 async function loadAssets(){
+  const qs=new URLSearchParams(location.search),uiParam=qs.get('ui');
   let man=null;try{const r=await fetch('assets/assets.json',{cache:'no-cache'});if(r.ok)man=await r.json();}catch(e){}
-  if(!man){ASSETS.loaded=true;return;}
+  if(!man){if(uiParam){try{await loadUIFolder(uiParam);}catch(e){}}ASSETS.loaded=true;return;}
   const reviewed=appendReviewedModels(man);
   try{applyUI(man.ui);}catch(e){}
+  try{const f=uiParam||(man.ui&&man.ui.carpeta);if(f)await loadUIFolder(f);}catch(e){ASSETS.errors.push('ui: '+e.message);}
   if(man.config){try{applyConfig(await (await fetch('assets/'+man.config,{cache:'no-cache'})).json());}catch(e){ASSETS.errors.push('config: '+e.message);}}
   const so=man.so||{};
   const jobs=[];
@@ -1294,15 +1353,15 @@ function clearRound(){
 }
 function clearWorld(){for(const m of S.cast){clearNameTag(m.mesh);scene.remove(m.mesh.g);scene.remove(m.mesh.bar.g);}S.cast=[];clearRound();}
 function buildRoom(){
-  clearWorld();S.player=null;const names=shuffle(NAMES.slice());let ni=0;
+  clearWorld();rollTeamNames();S.player=null;const names=shuffle(NAMES.slice());let ni=0;
   TEAMS.forEach(t=>{t.active=[];t.queue=[];t.members=[];t.stock=START_STOCK;t.hitT=0;t.delivered=0;
     const mk=(human,isP)=>{const look=isP?S.look:botLook(t);const m={name:isP?(S.look.name||'Tu'):(names[ni++]||('Bot '+ni)),look,team:t,human,isPlayer:isP,state:'queue',hp:MAXHP,turn:0,kills:0,delivered:0,carry:0,weapon:null,ammo:0,burn:0,burnBy:null,cd:0,inv:0,flash:0,respawn:0,rush:0,throwAnim:0,role:'c',
       pos:new THREE.Vector3(),vel:new THREE.Vector3(),face:0,phase:Math.random()*6,ai:{t:0,target:null,strafe:Math.random()<.5?1:-1,dist:rand(6,9),raid:null},mesh:makeCastanyera(t,isP,look)};
       t.members.push(m);S.cast.push(m);if(isP)S.player=m;return m;};
-    if(S.spectator){for(let i=0;i<SLOTS;i++)mk(false,false);}
-    else if(t.id===S.pTeam&&S.simFull){for(let i=0;i<12;i++)mk(true,false);mk(true,true);} // 10 jugant + 2 esperant + tu
-    else if(t.id===S.pTeam){mk(true,true);for(let i=0;i<SLOTS-1;i++)mk(false,false);}
-    else for(let i=0;i<SLOTS;i++)mk(false,false);
+    if(S.spectator){for(let i=0;i<BOT_FILL;i++)mk(false,false);}
+    else if(t.id===S.pTeam&&S.simFull){for(let i=0;i<SLOTS+2;i++)mk(true,false);mk(true,true);} // sala plena: SLOTS jugant + 2 esperant + tu
+    else if(t.id===S.pTeam){mk(true,true);for(let i=0;i<BOT_FILL-1;i++)mk(false,false);}
+    else for(let i=0;i<BOT_FILL;i++)mk(false,false);
     t.members.forEach(m=>{if(t.active.length<SLOTS)spawn(m);else{m.state='queue';t.queue.push(m);}});
   });
   // espectador: una "castanyera fantasma" que no és a l'arena, perquè la resta del codi tingui S.player
@@ -1311,11 +1370,17 @@ function buildRoom(){
 function spawnPoint(t){for(let k=0;k<12;k++){const a=t.angle+Math.PI+rand(-1.3,1.3),r=rand(2.2,3.4);const x=t.base.x+Math.cos(a)*r,z=t.base.z+Math.sin(a)*r;
   if(!S.cast.some(o=>o.state==='active'&&Math.hypot(o.pos.x-x,o.pos.z-z)<0.9))return{x,z};}return{x:t.base.x*0.88,z:t.base.z*0.88};}
 function freeRole(t,except){const c={c:0,d:0,a:0};for(const m of t.active)if(m!==except)c[m.role]++;const need={c:5,d:3,a:2};for(const r of['c','d','a'])if(c[r]<need[r])return r;return 'c';}
-function spawn(m){const t=m.team,p=spawnPoint(t);m.pos.set(p.x,0,p.z);m.vel.set(0,0,0);m.state='active';m.hp=MAXHP;m.turn=0;m.inv=1.5;m.cd=0.4;m.rush=0;m.carry=0;m.weapon=null;m.ammo=0;m.burn=0;m.face=Math.atan2(-p.x,-p.z);m.ai.target=null;
+function spawn(m){const t=m.team,p=spawnPoint(t);
+  if(!m.human&&S.phase==='play'&&m.mesh&&castModels().length>1){const A=nextCastModel();if(A&&A.id!==(m.look&&m.look.model)){m.look=Object.assign({},m.look||DEFAULT_LOOK,{model:A.id});const o=m.mesh;clearNameTag(o);scene.remove(o.g);if(o.bar)scene.remove(o.bar.g);m.mesh=makeCastanyera(t,false,m.look);}}
+  m.pos.set(p.x,0,p.z);m.vel.set(0,0,0);m.state='active';m.hp=MAXHP;m.turn=0;m.inv=1.5;m.cd=0.4;m.rush=0;m.carry=0;m.weapon=null;m.ammo=0;m.burn=0;m.face=Math.atan2(-p.x,-p.z);m.ai.target=null;
   m.role=freeRole(t,m);if(m.role==='a'){const others=TEAMS.filter(o=>o!==t);m.ai.raid=others[Math.floor(Math.random()*others.length)];}
   if(!t.active.includes(m))t.active.push(m);m.mesh.g.visible=true;if(S.phase==='play'){shock(p.x,p.z,1.6,t.color);sparks(p.x,0.3,p.z,8,t.color,2.5);if(m.isPlayer)sfx('spawn');}m.mesh.g.position.set(p.x,0,p.z);}
 function leaveArena(m){const t=m.team,i=t.active.indexOf(m);if(i>=0)t.active.splice(i,1);m.mesh.g.visible=false;m.mesh.bar.g.visible=false;if(m.isPlayer)aimMarker.visible=false;}
 function swapOut(m){const t=m.team;leaveArena(m);const next=t.queue.shift();m.state='queue';t.queue.push(m);if(next)spawn(next);return next;}
+// Places: fins a SLOTS persones per equip. Els bots només omplen fins a BOT_FILL.
+const humansOf=t=>t.members.filter(m=>m.human).length;
+// Cada alumne nou va a l'equip amb menys persones (empats a l'atzar). Si tots són plens, a la cua més curta.
+function teamForHuman(){const open=TEAMS.filter(t=>humansOf(t)<SLOTS);const L=open.length?open:TEAMS,key=open.length?humansOf:t=>t.queue.length;const min=Math.min(...L.map(key));return pick(L.filter(t=>key(t)===min));}
 function dropCarry(m){const n=m.carry;if(!n)return;if(n>=2&&S.player&&S.player.state==='active'&&Math.hypot(S.player.pos.x-m.pos.x,S.player.pos.z-m.pos.z)<14)hint('rival');for(let i=0;i<n;i++){const a=Math.random()*6.283,v=rand(2,4.5);dropLog(m.pos.x,m.pos.z,Math.cos(a)*v,Math.sin(a)*v,rand(5,7.5),1.2);}
   m.carry=0;if(n>=2){popText(m.pos.x,2.8,m.pos.z,`+${n} llenya a terra!`,'wood');shock(m.pos.x,m.pos.z,2.6,0xffb030);}}
 function downCast(m,byTxt){
@@ -1547,24 +1612,26 @@ function towerUpdate(tw,dt){
 /* ---------- entrada ---------- */
 const touch=$('#touch'),joyEl=$('#joy'),knob=$('#knob'),throwBtn=$('#throwBtn'),buildBtn=$('#buildBtn');
 touch.addEventListener('pointerdown',e=>{if(S.phase!=='play')return;
-  if(S.spectator){SP.drag={x:e.clientX,y:e.clientY,px:SP.pan.x,pz:SP.pan.z,moved:false,id:e.pointerId};try{touch.setPointerCapture(e.pointerId);}catch(_){}return;}
+  if(S.spectator){SP.ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});if(SP.ptrs.size===1)SP.drag={x:e.clientX,y:e.clientY,lx:e.clientX,ly:e.clientY,moved:false,id:e.pointerId};else if(SP.drag)SP.drag.moved=true;try{touch.setPointerCapture(e.pointerId);}catch(_){}return;}
   if(e.clientX<innerWidth*0.6&&!S.joy.on){S.joy={on:true,id:e.pointerId,ox:e.clientX,oy:e.clientY,x:0,y:0};joyEl.style.left=e.clientX+'px';joyEl.style.top=e.clientY+'px';knob.style.transform='';joyEl.hidden=false;try{touch.setPointerCapture(e.pointerId);}catch(_){}}
   else if(e.clientX>=innerWidth*0.6)tryPlayerThrow();});
-touch.addEventListener('pointermove',e=>{if(S.spectator&&SP.drag){const dx=e.clientX-SP.drag.x,dy=e.clientY-SP.drag.y;if(Math.hypot(dx,dy)>8)SP.drag.moved=true;if(SP.over&&SP.drag.moved){const k=0.12;SP.pan.x=SP.drag.px-dx*k;SP.pan.z=SP.drag.pz-dy*k;}return;}if(!S.joy.on||e.pointerId!==S.joy.id)return;let dx=e.clientX-S.joy.ox,dy=e.clientY-S.joy.oy;const l=Math.hypot(dx,dy),max=50;if(l>max){dx*=max/l;dy*=max/l;}S.joy.x=dx/max;S.joy.y=dy/max;knob.style.transform=`translate(${dx}px,${dy}px)`;});
+touch.addEventListener('pointermove',e=>{if(S.spectator&&SP.ptrs.has(e.pointerId)){specPointerMove(e);return;}if(!S.joy.on||e.pointerId!==S.joy.id)return;let dx=e.clientX-S.joy.ox,dy=e.clientY-S.joy.oy;const l=Math.hypot(dx,dy),max=50;if(l>max){dx*=max/l;dy*=max/l;}S.joy.x=dx/max;S.joy.y=dy/max;knob.style.transform=`translate(${dx}px,${dy}px)`;});
 const endJoy=e=>{if(e.pointerId!==S.joy.id)return;S.joy.on=false;S.joy.x=S.joy.y=0;joyEl.hidden=true;};
-touch.addEventListener('pointerup',e=>{if(S.spectator&&SP.drag){const d=SP.drag;SP.drag=null;if(!d.moved){let best=null,bd=48;const v=new THREE.Vector3();
+touch.addEventListener('pointerup',e=>{if(S.spectator&&SP.ptrs.has(e.pointerId)){SP.ptrs.delete(e.pointerId);const d=SP.drag;if(SP.ptrs.size)return;SP.drag=null;if(d&&!d.moved){let best=null,bd=48;const v=new THREE.Vector3();
     for(const m of specList()){v.set(m.pos.x,1.4,m.pos.z).project(camera);const sx=(v.x*0.5+0.5)*innerWidth,sy=(-v.y*0.5+0.5)*innerHeight,dd=Math.hypot(sx-e.clientX,sy-e.clientY);if(dd<bd){bd=dd;best=m;}}
-    if(best){specFollow(best);sfx('click');}}return;}endJoy(e);});touch.addEventListener('pointercancel',endJoy);
+    if(best){specFollow(best);sfx('click');}}return;}endJoy(e);});touch.addEventListener('pointercancel',e=>{if(S.spectator){SP.ptrs.delete(e.pointerId);if(!SP.ptrs.size)SP.drag=null;return;}endJoy(e);});
+touch.addEventListener('wheel',e=>{if(!S.spectator||S.phase!=='play')return;e.preventDefault();specZoom(Math.exp(e.deltaY*0.0015));},{passive:false});
 throwBtn.addEventListener('pointerdown',e=>{e.preventDefault();S.holding=true;throwBtn.classList.add('down');tryPlayerThrow();});
 ['pointerup','pointercancel','pointerleave'].forEach(ev=>throwBtn.addEventListener(ev,()=>{S.holding=false;throwBtn.classList.remove('down');}));
 buildBtn.addEventListener('pointerdown',e=>{e.preventDefault();tryPlayerBuild();});
 const upBtn=$('#upBtn');upBtn.addEventListener('pointerdown',e=>{e.preventDefault();tryPlayerUpgrade();});
-addEventListener('keydown',e=>{if(e.target&&e.target.tagName==='INPUT')return;S.keys[e.code]=true;if(e.code==='Space'){S.holding=true;tryPlayerThrow();if(S.phase==='play')e.preventDefault();}if(e.code==='KeyB')tryPlayerBuild();if(e.code==='KeyU')tryPlayerUpgrade();if(S.spectator&&S.phase==='play'){if(e.code==='ArrowRight')specStep(1);if(e.code==='ArrowLeft')specStep(-1);if(e.code==='KeyA')$('#specAuto').click();if(e.code==='KeyV')$('#specOver').click();const n=+e.key;if(n>=1&&n<=5)specTeams.children[n-1].click();}if(e.code==='Escape'&&S.phase==='play')openPause();});
+addEventListener('keydown',e=>{if(e.target&&(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)||e.target.isContentEditable||e.target.closest&&e.target.closest('#dz')))return;S.keys[e.code]=true;if(e.code==='Space'){S.holding=true;tryPlayerThrow();if(S.phase==='play')e.preventDefault();}if(e.code==='KeyB')tryPlayerBuild();if(e.code==='KeyU')tryPlayerUpgrade();if(S.spectator&&S.phase==='play'){if(e.code==='ArrowRight')specStep(1);if(e.code==='ArrowLeft')specStep(-1);if(e.code==='KeyA')$('#specAuto').click();if(e.code==='KeyV'||e.key==='0')$('#specOver').click();const n=+e.key;if(n>=1&&n<=5)specTeams.children[n-1].click();if(e.key==='+'||e.code==='NumpadAdd')specZoom(0.8);if(e.key==='-'||e.code==='NumpadSubtract')specZoom(1.25);
+    const pk={KeyW:[0,-1],KeyS:[0,1],KeyQ:[-1,0],KeyE:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.code];if(pk){specToFree();SP.pan.x+=pk[0]*4*SP.zoom;SP.pan.z+=pk[1]*4*SP.zoom;e.preventDefault();}}if(e.code==='Escape'&&S.phase==='play')openPause();});
 addEventListener('keyup',e=>{S.keys[e.code]=false;if(e.code==='Space')S.holding=false;});
 
 /* ---------- HUD ---------- */
 const board=$('#board'),chips=[];
-TEAMS.forEach(t=>{const d=document.createElement('div');d.className='chip';d.style.setProperty('--c',t.css);d.title=t.name;d.innerHTML=`<div class="n">${t.short.length>5?t.short.slice(0,3):t.short}</div><div class="s">0</div><div class="m"></div>`;board.appendChild(d);chips.push({el:d,s:d.querySelector('.s'),m:d.querySelector('.m')});});
+TEAMS.forEach(t=>{const d=document.createElement('div');d.className='chip';d.style.setProperty('--c',t.css);d.title=t.name;d.innerHTML=`<div class="n">${t.short}</div><div class="s">0</div><div class="m"></div>`;board.appendChild(d);chips.push({el:d,n:d.querySelector('.n'),s:d.querySelector('.s'),m:d.querySelector('.m')});});
 function bump(i){const c=chips[i].el;c.classList.add('bump');setTimeout(()=>c.classList.remove('bump'),200);}
 const feedEl=$('#feed');
 function addFeed(html,tail,pts){const d=document.createElement('div');d.innerHTML=html+(tail?`<span class="rot">${tail}</span>`:'')+(pts?` <span class="pts">${pts}</span>`:'');feedEl.prepend(d);while(feedEl.children.length>3)feedEl.lastChild.remove();setTimeout(()=>{d.style.opacity='0';setTimeout(()=>d.remove(),500);},3200);}
@@ -1609,28 +1676,63 @@ const HSEEN=new Set();const HQUEUE=[];let hintT=0;
 function hint(k){if(S.spectator||HSEEN.has(k))return;HSEEN.add(k);HQUEUE.push(HINTS[k]);}
 $('#tip').addEventListener('pointerdown',e=>{e.stopPropagation();if(hintT>0.4)hintT=0.4;}); // toca el consell per amagar-lo
 /* ---------- mode espectador ---------- */
-const SP={auto:true,over:false,t:0,pan:new THREE.Vector3(),drag:null};
-const specTeams=$('#specTeams');TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.className='tm';b.style.setProperty('--c',t.css);b.textContent=t.short;b.setAttribute('aria-label','Segueix '+t.name);
-  b.addEventListener('click',()=>{const L=t.active;if(!L.length)return;const cur=S.follow&&S.follow.team===t?L.indexOf(S.follow):-1;specFollow(L[(cur+1)%L.length]);});specTeams.appendChild(b);});
+// mode 'follow': segueix una castanyera · mode 'free': càmera lliure (foguera d'un equip, vista general o arrossegant)
+const SP={auto:true,over:false,t:0,pan:new THREE.Vector3(),drag:null,ptrs:new Map(),mode:'follow',zoom:1,team:null,shot:0};
+// zoom perquè hi càpiguen les cinc fogueres (radi ~38) segons la forma de la pantalla
+// espai de pantalla que no tapen els marcadors (dalt) ni el panell d'espectador (baix)
+function specInsets(){const H=innerHeight,top=Math.min(H*0.3,($('#board').getBoundingClientRect().bottom||0)+8),sp=$('#spec'),bot=sp.hidden?0:Math.min(H*0.4,H-sp.getBoundingClientRect().top);return{top,bot,frac:Math.max(0.35,(H-top-bot)/H)};}
+function overZoom(){const I=specInsets(),v0=camera.fov*Math.PI/360,v=Math.atan(Math.tan(v0)*I.frac),h=Math.atan(Math.tan(v0)*camera.aspect),half=Math.min(v,h),b=portrait?{y:15.5,z:14.5}:{y:12,z:12.5};return clamp(43/Math.tan(half)/Math.hypot(b.y,b.z*0.25),2,12);}
+const ZOOM_MIN=0.5;
+const specTeams=$('#specTeams');TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.className='tm';b.style.setProperty('--c',t.css);b.textContent=t.short;b.setAttribute('aria-label','Foguera de '+t.name);
+  b.addEventListener('click',()=>specBase(t));specTeams.appendChild(b);});
 function specList(){const L=[];TEAMS.forEach(t=>L.push(...t.active));return L;}
-function specFollow(m,keepAuto){if(!m)return;S.follow=m;if(!keepAuto)SP.auto=false;SP.over=false;syncSpecBtns();}
+function specFollow(m,keepAuto){if(!m)return;S.follow=m;SP.mode='follow';SP.team=null;SP.over=false;if(SP.zoom>2)SP.zoom=1;if(!keepAuto)SP.auto=false;syncSpecBtns();}
+function specFree(x,z,zoom,team,keepAuto){SP.mode='free';SP.pan.set(x,0,z);if(zoom)SP.zoom=zoom;SP.team=team||null;SP.over=false;if(!keepAuto)SP.auto=false;syncSpecBtns();}
+function specBase(t,keepAuto){specFree(t.base.x*0.9,t.base.z*0.9,1.7,t,keepAuto);}
+function specOverview(keepAuto){specFree(0,0,overZoom(),null,keepAuto);SP.over=true;syncSpecBtns();}
+// en arrossegar, la càmera es queda on mira i passa a lliure
+function specToFree(){if(SP.mode!=='free'||SP.team||SP.over){SP.mode='free';SP.pan.set(camLook.x,0,camLook.z);SP.team=null;SP.over=false;}SP.auto=false;syncSpecBtns();}
+function specZoom(f){SP.zoom=clamp(SP.zoom*f,ZOOM_MIN,overZoom()*1.15);}
+function specPointerMove(e){const prev=SP.ptrs.get(e.pointerId);
+  if(SP.ptrs.size>=2){const [a,b]=[...SP.ptrs.values()],d0=Math.hypot(a.x-b.x,a.y-b.y);SP.ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});const [c,d]=[...SP.ptrs.values()],d1=Math.hypot(c.x-d.x,c.y-d.y);if(d0>10&&d1>10)specZoom(d0/d1);return;}
+  SP.ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});const g=SP.drag;if(!g)return;
+  if(!g.moved&&Math.hypot(e.clientX-g.x,e.clientY-g.y)>8){g.moved=true;specToFree();}
+  if(!g.moved)return;
+  const dist=camera.position.distanceTo(camLook),wpp=2*dist*Math.tan(camera.fov*Math.PI/360)/innerHeight,pitch=Math.atan2(camera.position.y-camLook.y,Math.max(0.1,camera.position.z-camLook.z));
+  SP.pan.x-=(e.clientX-prev.x)*wpp;SP.pan.z-=(e.clientY-prev.y)*wpp/Math.max(0.5,Math.sin(pitch));}
+function teamRank(){return TEAMS.slice().sort((a,b)=>b.stock-a.stock);}
+function leaderTeam(){const r=teamRank();return r[0]&&r[0].stock>0&&(!r[1]||r[1].stock<r[0].stock)?r[0]:null;}
 function specStep(d){const L=specList();if(!L.length)return;let i=L.indexOf(S.follow);i=(i+d+L.length)%L.length;specFollow(L[i]);}
-function syncSpecBtns(){$('#specAuto').setAttribute('aria-pressed',SP.auto);$('#specOver').setAttribute('aria-pressed',SP.over);
-  [...specTeams.children].forEach((b,i)=>b.setAttribute('aria-pressed',!SP.over&&!!S.follow&&S.follow.team===TEAMS[i]));}
+function syncSpecBtns(){[...specTeams.children].forEach((b,i)=>{const t=TEAMS[i];if(t&&b.textContent!==t.short){b.textContent=t.short;b.setAttribute('aria-label','Foguera de '+t.name);fitLabel(b,11);}});$('#specAuto').setAttribute('aria-pressed',SP.auto);$('#specOver').setAttribute('aria-pressed',SP.over);
+  [...specTeams.children].forEach((b,i)=>b.setAttribute('aria-pressed',SP.team===TEAMS[i]));}
 $('#specPrev').addEventListener('click',()=>specStep(-1));$('#specNext').addEventListener('click',()=>specStep(1));
-$('#specAuto').addEventListener('click',()=>{SP.auto=!SP.auto;if(SP.auto){SP.over=false;SP.t=0;}syncSpecBtns();});
-$('#specOver').addEventListener('click',()=>{SP.over=!SP.over;if(SP.over){SP.auto=false;SP.pan.set(0,0,0);}syncSpecBtns();});
+$('#specAuto').addEventListener('click',()=>{SP.auto=!SP.auto;if(SP.auto){SP.t=0;SP.zoom=1;}syncSpecBtns();});
+$('#specOver').addEventListener('click',()=>{if(SP.over)specFollow(S.follow||pick(specList()));else specOverview();});
 // director automàtic: busca on hi ha més acció
 function actionScore(m){let s=0;for(const mo of S.mons){const d=Math.hypot(mo.pos.x-m.pos.x,mo.pos.z-m.pos.z);if(d<9)s+=mo.type==='boss'?6:1;}
   for(const t of TEAMS)if(t!==m.team)for(const c of t.active){if(Math.hypot(c.pos.x-m.pos.x,c.pos.z-m.pos.z)<8)s+=1.5;}
   s+=m.carry*0.25+(m.weapon?2:0)+(m.hp<40?1.5:0);if(Math.hypot(m.pos.x,m.pos.z)>ARENA_R-6)s-=2;return s;}
 const specRing=new THREE.Mesh(new THREE.RingGeometry(0.75,0.95,24),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.9,depthWrite:false}));specRing.geometry.rotateX(-Math.PI/2);specRing.visible=false;scene.add(specRing);
-function specUpdate(dt){specRing.visible=!!(S.spectator&&S.phase==='play'&&S.follow&&S.follow.state==='active'&&!SP.over);if(specRing.visible){specRing.position.set(S.follow.pos.x,0.06,S.follow.pos.z);specRing.scale.setScalar(1.3+Math.sin(performance.now()/250)*0.08);}
+function specUpdate(dt){specRing.visible=!!(S.spectator&&S.phase==='play'&&S.follow&&S.follow.state==='active'&&SP.mode==='follow');if(specRing.visible){specRing.position.set(S.follow.pos.x,0.06,S.follow.pos.z);specRing.scale.setScalar(1.3+Math.sin(performance.now()/250)*0.08);}
   if(!S.spectator||S.phase!=='play')return;
   if(S.follow&&S.follow.state!=='active'&&S.follow.state!=='respawning')S.follow=null;
   if(!S.follow)S.follow=pick(specList());
-  if(SP.auto){SP.t-=dt;if(SP.t<=0){SP.t=6;let best=S.follow,bs=S.follow&&S.follow.state==='active'?actionScore(S.follow)+2:-1e9;for(const m of specList()){const sc=actionScore(m)+Math.random()*0.5;if(sc>bs){bs=sc;best=m;}}if(best!==S.follow){S.follow=best;syncSpecBtns();}}}}
-function updateSpecHud(){const m=S.follow;if(!m)return;const t=m.team;$('#specCard').style.setProperty('--c',t.css);$('#specName').textContent=m.name;$('#specTeam').textContent=t.short;
+  if(SP.auto){SP.t-=dt;if(SP.t<=0){SP.t=6;SP.shot++;
+    // de tant en tant ensenya fogueres: la que ataquen, la que guanya o la vista general
+    const hit=TEAMS.filter(t=>t.hitT>0).sort((a,b)=>b.hitT-a.hitT)[0];
+    if(hit&&SP.team!==hit&&Math.random()<0.6){specBase(hit,true);SP.t=5;return;}
+    if(SP.shot%4===0){if(SP.shot%8===0)specOverview(true);else specBase(leaderTeam()||pick(TEAMS),true);SP.t=5;return;}
+    let best=SP.mode==='follow'?S.follow:null,bs=best&&best.state==='active'?actionScore(best)+2:-1e9;for(const m of specList()){const sc=actionScore(m)+Math.random()*0.5;if(sc>bs){bs=sc;best=m;}}
+    if(best&&(best!==S.follow||SP.mode!=='follow'))specFollow(best,true);}}}
+function updateSpecHud(){
+  if(SP.mode==='free'){const rank=teamRank(),t=SP.team,top=Math.max(1,rank[0].stock);
+    if(t){const pos=rank.indexOf(t)+1,tie=rank.filter(o=>o.stock===t.stock).length>1;$('#specCard').style.setProperty('--c',t.css);$('#specName').textContent='Foguera · '+t.name;$('#specTeam').textContent=tie?'empat':pos+(pos===1?'r':pos===2?'n':pos===3?'r':'t')+' lloc';
+      $('#specHp').style.width=(t.stock/top*100)+'%';const tw=S.towers.filter(w=>w.team===t).length,h=t.active.filter(m=>m.human).length;
+      $('#specMeta').innerHTML=`<span>Llenya <b>${t.stock}</b></span><span>Torradores <b>${tw}/${TOWER_MAX}</b></span><span>Persones <b>${h}</b></span><span>Rondes <b>${t.wins}</b></span>`;}
+    else{const L=leaderTeam();$('#specCard').style.setProperty('--c',L?L.css:'var(--ember)');$('#specName').textContent=SP.over?'Vista general':'Càmera lliure';$('#specTeam').textContent=L?'guanya '+L.short:'empat';$('#specHp').style.width='0%';
+      $('#specMeta').innerHTML=rank.slice(0,3).map((o,i)=>`<span>${i+1}. <b style="color:${o.css}">${esc(o.short)}</b> ${o.stock}</span>`).join('');}
+    syncSpecBtns();return;}
+  const m=S.follow;if(!m)return;const t=m.team;$('#specCard').style.setProperty('--c',t.css);$('#specName').textContent=m.name;$('#specTeam').textContent=t.short;
   $('#specHp').style.width=(m.state==='active'?Math.max(0,m.hp)/MAXHP*100:0)+'%';
   const w=m.weapon?`<span>${WEAP[m.weapon].label} <b>×${m.ammo}</b></span>`:'';
   $('#specMeta').innerHTML=m.state==='active'?`<span>Llenya <b>${m.carry}/${CARRY_MAX}</b></span><span>Entregada <b>${m.delivered}</b></span><span>Monstres <b>${m.kills}</b></span>${w}`:`<span>Ha caigut · torna en <b>${Math.max(0,Math.ceil(m.respawn))} s</b></span>`;
@@ -1640,13 +1742,13 @@ function updateHud(dt){updateTips(dt);if(FA.t>0){FA.t-=dt;if(FA.t<=0)$('#fireAle
   if(bannerT>0){bannerT-=dt;if(bannerT<=0)$('#banner').classList.remove('on');}
   hudT-=dt;if(hudT>0)return;hudT=0.1;
   $('#timeLbl').textContent=fmt(S.time);$('#roundLbl').textContent=S.night?'Nit de Difunts':'Ronda '+S.round;$('#clock').classList.toggle('night',S.night);
-  TEAMS.forEach((t,i)=>{chips[i].s.textContent=t.stock;chips[i].m.textContent=t.queue.length?`cua ${t.queue.length}`:'';chips[i].el.classList.toggle('me',!S.spectator&&t.id===S.pTeam);chips[i].el.classList.toggle('hit',t.hitT>0);});
+  const LEAD=leaderTeam();TEAMS.forEach((t,i)=>{if(chips[i].n.textContent!==t.short){chips[i].n.textContent=t.short;chips[i].el.title=t.name;fitLabel(chips[i].n,10);drawSign(t);}chips[i].el.classList.toggle('lead',t===LEAD);chips[i].s.textContent=t.stock;chips[i].m.textContent=t.queue.length?`cua ${t.queue.length}`:'';chips[i].el.classList.toggle('me',!S.spectator&&t.id===S.pTeam);chips[i].el.classList.toggle('hit',t.hitT>0);});
   if(S.spectator){drawMini();updateSpecHud();return;}
   const P=S.player,t=P.team;
   const hr=P.state==='active'?P.hp/MAXHP:0;$('#hpBar').style.width=(hr*100)+'%';$('#hpTxt').textContent=P.state==='active'?Math.max(0,Math.ceil(P.hp)):0;$('#hpBox').classList.toggle('low',hr<0.3);
   $('#carry').textContent=`${P.carry}/${CARRY_MAX} llenya`;$('#carry').classList.toggle('full',P.carry>=CARRY_MAX);
   {const w=P.state==='active'?P.weapon:null,W=w&&WEAP[w];$('#wpPill').hidden=!w;if(w){$('#wpPill').textContent=`${W.label} · ${P.ammo}`;$('#wpPill').style.background=W.col;$('#wpPill').style.borderColor=W.col;}
-   $('#throwLbl').textContent=w?W.label.toUpperCase():'LLANÇA';$('#throwAm').hidden=!w;$('#throwAm').textContent=w?`×${P.ammo}`:'';
+   $('#throwLbl').textContent=w?W.label.toUpperCase():T('partida.llanca');$('#throwAm').hidden=!w;$('#throwAm').textContent=w?`×${P.ammo}`:'';
    throwBtn.style.background=w?`radial-gradient(circle at 35% 30%,${W.grad})`:'';throwBtn.style.boxShadow=w?`0 6px 0 ${W.shadow},0 10px 24px rgba(0,0,0,.45)`:'';}
   drawMini();
   const atBase=P.state==='active'&&Math.hypot(P.pos.x-t.base.x,P.pos.z-t.base.z)<6;const nT=S.towers.filter(w=>w.team===t).length;
@@ -1659,7 +1761,7 @@ function updateHud(dt){updateTips(dt);if(FA.t>0){FA.t-=dt;if(FA.t<=0)$('#fireAle
     flashMsg(null);throwBtn.disabled=false;
   }else if(P.state==='queue'){
     const pos=t.queue.indexOf(P)+1;turn.hidden=false;turn.classList.remove('warn');$('#turnTxt').innerHTML=`En espera · <b>${pos} de ${t.queue.length}</b>`;
-    flashMsg('Sala plena · en espera',`${t.name} ja té 10 castanyeres. Ets la ${pos}a de la cua. Entres quan caigui algú del teu curs o se li acabi el torn de 90 s.`);throwBtn.disabled=true;
+    flashMsg('Sala plena · en espera',`Tots els equips tenen ${SLOTS} castanyeres. Ets la ${pos}a de la cua de ${t.name}. Entres quan caigui algú del teu equip o se li acabi el torn de 90 s.`);throwBtn.disabled=true;
   }else{turn.hidden=true;flashMsg('Has caigut',`La llenya que portaves ha quedat a terra. Tornes a la foguera en ${Math.ceil(P.respawn)} s.`);throwBtn.disabled=true;}
 }
 
@@ -1669,14 +1771,14 @@ async function startGame(){
   await assetsReady;
   audioInit();S.tipT=0;S.tipI=-1;
   applyQuality($('#hq').checked);
-  S.pTeam=pickTeam;S.simFull=NET.role==='host'?false:$('#simFull').checked;S.clock=NET.role==='host'?1:$('#accel').checked?6:1;$('#accLbl').hidden=S.clock===1;
+  S.pTeam=Math.floor(Math.random()*TEAMS.length);S.simFull=NET.role==='host'?false:$('#simFull').checked;S.clock=NET.role==='host'?1:$('#accel').checked?6:1;$('#accLbl').hidden=S.clock===1;
   TEAMS.forEach(t=>t.wins=0);S.round=1;if(NET.role!=='host')buildRoom();resetRound();
   S.phase='play';$('#lobby').hidden=true;$('#results').hidden=true;$('#hud').hidden=false;feedEl.innerHTML='';hudT=0;
   $('#connectionLabel').textContent=NET.role?`Sala ${S.code}`:'Amb bots';
   $('#hud').classList.toggle('spectating',!!S.spectator);$('#spec').hidden=!S.spectator;$('#specHint').hidden=!S.spectator;
-  if(S.spectator){addFeed(NET.offline?'Mires una partida local amb bots':`Mires la sala ${S.code}`,' · mode espectador');banner('Mode espectador','var(--ember)');setTimeout(()=>{$('#specHint').hidden=true;},6000);syncSpecBtns();return;}
-  if(S.simFull){addFeed(`Sala ${S.code} · ${teamTag(S.player.team)} és ple`,' · entres a la cua');}
-  else{addFeed(NET.offline?'Partida local · contra bots':`Has entrat a la sala ${S.code}`,NET.offline?'': ' · substitueixes un bot');banner('Alimenta la foguera!','var(--ember)');}
+  if(S.spectator){addFeed(NET.offline?'Mires una partida local amb bots':`Mires la sala ${S.code}`,' · mode espectador');banner('Mode espectador','var(--ember)');setTimeout(()=>{$('#specHint').hidden=true;},9000);syncSpecBtns();return;}
+  if(S.simFull){addFeed(`Sala ${S.code} · tots els equips són plens`,` · entres a la cua de ${teamTag(S.player.team)}`);}
+  else{addFeed(NET.offline?`Partida local · jugues amb ${teamTag(S.player.team)}`:`Has entrat a la sala ${S.code}`,NET.offline?'': ' · substitueixes un bot');banner(`Ets dels ${S.player.team.short}!`,S.player.team.css);}
 }
 function endRound(){
   sfx('end');$('#tip').style.opacity='0';
@@ -1686,7 +1788,7 @@ function endRound(){
   $('#resEyebrow').textContent=`Final de la ronda ${S.round} · ${NET.offline?'partida local':'sala '+S.code}`;
   let mvp=null;for(const m of S.cast)if(!mvp||m.delivered>mvp.delivered)mvp=m;
   $('#resMine').textContent=S.spectator?'–':S.player.delivered;$('#resMvp').textContent=mvp&&mvp.delivered?mvp.name:'–';$('#resMvpL').textContent=mvp&&mvp.delivered?`Millor castanyera · ${mvp.delivered} de llenya (${mvp.team.short})`:'Millor castanyera';
-  $('#resTable').innerHTML='<tr><th>#</th><th>Curs</th><th class="num">Llenya</th><th class="num">Rondes</th></tr>'+sorted.map((t,i)=>`<tr><td>${i+1}</td><td><span class="tdot" style="--c:${t.css}"></span>${t.name}${t.id===S.pTeam?' (tu)':''}</td><td class="num">${t.stock}</td><td class="num">${t.wins}</td></tr>`).join('');
+  $('#resTable').innerHTML='<tr><th>#</th><th>Equip</th><th class="num">Llenya</th><th class="num">Rondes</th></tr>'+sorted.map((t,i)=>`<tr><td>${i+1}</td><td><span class="tdot" style="--c:${t.css}"></span>${t.name}${t.id===S.pTeam?' (tu)':''}</td><td class="num">${t.stock}</td><td class="num">${t.wins}</td></tr>`).join('');
   $('#results').hidden=false;
 }
 function nextRound(){
@@ -1699,7 +1801,7 @@ function nextRound(){
 }
 function openPause(){if(S.phase!=='play')return;if(NET.role==='client')NET.localPaused=true;else S.phase='paused';S.holding=false;S.joy.on=false;S.joy.x=S.joy.y=0;S.keys={};joyEl.hidden=true;
   $('#pauseCode').textContent=NET.offline?'· partida local':'· codi '+S.code;
-  $('#pauseTable').innerHTML='<tr><th>Curs</th><th class="num">Persones</th><th class="num">Bots</th><th>En espera</th></tr>'+TEAMS.map(t=>{const h=t.active.filter(m=>m.human).length;return `<tr><td><span class="tdot" style="--c:${t.css}"></span>${t.short}</td><td class="num">${h}</td><td class="num">${t.active.length-h}</td><td class="qnames">${t.queue.length?t.queue.map(m=>m.isPlayer?'<b style="color:var(--ink)">Tu</b>':esc(m.name)).join(', '):'–'}</td></tr>`;}).join('');
+  $('#pauseTable').innerHTML='<tr><th>Equip</th><th class="num">Persones</th><th class="num">Bots</th><th>En espera</th></tr>'+TEAMS.map(t=>{const h=t.active.filter(m=>m.human).length;return `<tr><td><span class="tdot" style="--c:${t.css}"></span>${t.short}</td><td class="num">${h}</td><td class="num">${t.active.length-h}</td><td class="qnames">${t.queue.length?t.queue.map(m=>m.isPlayer?'<b style="color:var(--ink)">Tu</b>':esc(m.name)).join(', '):'–'}</td></tr>`;}).join('');
   $('#pause').hidden=false;}
 $('#pauseBtn').addEventListener('click',openPause);
 $('#resumeBtn').addEventListener('click',()=>{NET.localPaused=false;$('#pause').hidden=true;if(NET.role!=='client')S.phase='play';});
@@ -1708,14 +1810,20 @@ $('#quitBtn').addEventListener('click',toLobby);$('#lobbyBtn').addEventListener(
 document.addEventListener('visibilitychange',()=>{if(document.hidden){if(NET.role==='client'){S.holding=false;S.keys={};S.joy.x=S.joy.y=0;NET.tap=false;setTimeout(()=>netInputs(performance.now()),110);}else if(NET.role!=='host')openPause();}});
 addEventListener('blur',()=>{S.keys={};S.holding=false;S.joy.x=S.joy.y=0;NET.tap=false;});
 
-// entrada: curs → codi → arena
+// entrada: nickname → codi → arena
 const tp=$('#teamPick');
-function renderPick(){tp.innerHTML='';TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.className='team-opt';b.style.setProperty('--c',t.css);b.setAttribute('aria-pressed',i===pickTeam);b.innerHTML=`<span class="sw"></span><b>${t.name}</b>`;b.addEventListener('click',()=>{pickTeam=i;renderPick();});tp.appendChild(b);});}
+function renderPick(){if(!tp)return;tp.innerHTML='';TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.className='team-opt';b.style.setProperty('--c',t.css);b.setAttribute('aria-pressed',i===pickTeam);b.innerHTML=`<span class="sw"></span><b>${t.name}</b>`;b.addEventListener('click',()=>{pickTeam=i;renderPick();});tp.appendChild(b);});}
 renderPick();
 const CARDS=['home','custom','howto','opts','step1','step2','onlineRoom'];
-function showCard(id){CARDS.forEach(c=>$('#'+c).hidden=c!==id);const hasPreview=id==='custom';$('#lobby').classList.toggle('preview-mode',hasPreview);$('#previewArea').hidden=!hasPreview;$('#lobby').scrollTop=0;S.view=id;if(id==='step1'){const local=!!NET.offline;$('#nicknameIn').value=S.look.name||'';$('#nicknameErr').textContent='';$('#entrySteps').innerHTML=local?'<span class="on">1 · Nickname i curs</span><span>2 · Partida amb bots</span>':'<span class="on">1 · Nickname i curs</span><span>2 · Codi</span><span>3 · Arena</span>';$('#toCode').textContent=local?'Comença partida local':'Següent';}if(id==='custom'){renderLook();updatePreview();}else if(id==='taller'){renderTaller();updatePreview();}else if(preview)preview.visible=false;}
+function showCard(id){CARDS.forEach(c=>$('#'+c).hidden=c!==id);const hasPreview=id==='custom';$('#lobby').classList.toggle('preview-mode',hasPreview);$('#previewArea').hidden=!hasPreview;$('#lobby').scrollTop=0;S.view=id;if(id==='step1'){const local=!!NET.offline;$('#nicknameIn').value=S.look.name||'';$('#nicknameErr').textContent='';$('#entrySteps').innerHTML=local?`<span class="on">${esc(T('entrada.pas1'))}</span><span>${esc(T('entrada.pas2-local'))}</span>`:`<span class="on">${esc(T('entrada.pas1'))}</span><span>${esc(T('entrada.pas2'))}</span><span>${esc(T('entrada.pas3'))}</span>`;$('#toCode').textContent=local?T('entrada.comenca-local'):T('entrada.seguent');renderStartModels();}if(id==='custom'){renderLook();updatePreview();}else if(id==='taller'){renderTaller();updatePreview();}else if(preview)preview.visible=false;}
 function showStep(n){showCard(n===1?'step1':'step2');}
-document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{audioInit();sfx('click');showCard(b.dataset.go);}));
+// tria de castanyera a l'entrada: es desa i es fa servir sempre fins que en triïs una altra
+function renderStartModels(){const L=castModels(),row=$('#startModelRow');row.hidden=L.length<2||!!S.spectator;if(row.hidden)return;
+  if(ASSETS.loaded&&!castAsset(S.look.model))S.look.model=defaultCastId();const box=$('#startModels');box.innerHTML='';
+  L.forEach(A=>{const b=document.createElement('button');b.type='button';b.className='opt';b.textContent=A.nom;b.setAttribute('aria-pressed',S.look.model===A.id);b.addEventListener('click',()=>{S.look.model=A.id;saveLookNow();sfx('click');renderStartModels();});box.appendChild(b);});
+  const cur=castAsset(S.look.model);$('#startCredit').innerHTML=cur?`Model de <b>${esc(cur.autor||'alumnat')}</b>${cur.curs?' · '+esc(cur.curs):''}`:'';}
+$('#startSee').addEventListener('click',()=>{S.lookBack='step1';$('#customBack').dataset.go='step1';$('#customBack').textContent='← Torna';showCard('custom');});
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{audioInit();sfx('click');const go=b.dataset.go;if(b.id==='customBack'){S.lookBack=null;b.dataset.go='home';b.textContent='← Menú';}showCard(go);}));
 $('#playBtn').addEventListener('click',()=>{NET.offline=false;audioInit();sfx('click');S.spectator=false;showCard('step1');});
 $('#specBtn').addEventListener('click',()=>{NET.offline=false;audioInit();sfx('click');S.spectator=true;openCodeCard();});
 $('#howBtn').addEventListener('click',()=>{audioInit();sfx('click');showCard('howto');});
@@ -1733,18 +1841,19 @@ function renderLook(){const box=$('#lookRows');box.innerHTML='';$('#nameIn').val
   const mr=$('#lookModels');mr.innerHTML='';const models=ASSETS.cast.slice();$('#modelRow').hidden=models.length<2;
   if(ASSETS.loaded&&!castAsset(S.look.model))S.look.model=defaultCastId();
   models.forEach(A=>{const b=document.createElement('button');b.type='button';b.className='opt';b.textContent=A.nom;b.setAttribute('aria-pressed',(S.look.model||'')===A.id);
-    b.addEventListener('click',()=>{S.look.model=A.id;sfx('click');renderLook();updatePreview();});mr.appendChild(b);});
-  const cur=castAsset(S.look.model);$('#modelCredit').hidden=!cur;if(cur)$('#modelCredit').innerHTML=`Model de <b>${esc(cur.autor||'alumnat')}</b>${cur.curs?' · '+esc(cur.curs):''}. El color del curs s'aplica sol.`;
+    b.addEventListener('click',()=>{S.look.model=A.id;saveLookNow();sfx('click');renderLook();updatePreview();});mr.appendChild(b);});
+  const cur=castAsset(S.look.model);$('#modelCredit').hidden=!cur;if(cur)$('#modelCredit').innerHTML=`Model de <b>${esc(cur.autor||'alumnat')}</b>${cur.curs?' · '+esc(cur.curs):''}. El color de l'equip s'aplica sol.`;
   if(cur){box.hidden=true;}else box.hidden=false;
   for(const k in LOOK_OPTS){const L=LOOK_OPTS[k],row=document.createElement('div');row.className='lrow';row.innerHTML=`<div class="label">${L.label}</div>`;const o=document.createElement('div');o.className='opts';
     L.opts.forEach(([v,lab])=>{const b=document.createElement('button');b.type='button';
       if(L.type==='color'){b.className='sw';b.style.setProperty('--c','#'+v.toString(16).padStart(6,'0'));b.setAttribute('aria-label',`${L.label}: ${lab}`);b.title=lab;}else{b.className='opt';b.textContent=lab;}
       b.setAttribute('aria-pressed',S.look[k]===v);b.addEventListener('click',()=>{S.look[k]=v;sfx('click');[...o.children].forEach(c=>c.setAttribute('aria-pressed',c===b));updatePreview();});o.appendChild(b);});
     row.appendChild(o);box.appendChild(row);}
-  const tb=$('#lookTeams');tb.innerHTML='';TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='sw';b.style.setProperty('--c',t.css);b.setAttribute('aria-label',t.name);b.title=t.name;b.setAttribute('aria-pressed',i===pickTeam);
+  const tb=$('#lookTeams');tb.innerHTML='';TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='sw';b.style.setProperty('--c',t.css);b.setAttribute('aria-label','Color de prova '+(i+1));b.title='Color de prova '+(i+1);b.setAttribute('aria-pressed',i===pickTeam);
     b.addEventListener('click',()=>{pickTeam=i;sfx('click');[...tb.children].forEach(c=>c.setAttribute('aria-pressed',c===b));renderPick();updatePreview();});tb.appendChild(b);});}
 $('#nameIn').addEventListener('input',e=>{S.look.name=e.target.value.trim().slice(0,12);});
-$('#saveLook').addEventListener('click',()=>{try{localStorage.setItem('castaween-look',JSON.stringify(S.look));}catch(e){}sfx('heal');showCard('home');});
+function saveLookNow(){try{localStorage.setItem('castaween-look',JSON.stringify(S.look));}catch(e){}}
+$('#saveLook').addEventListener('click',()=>{saveLookNow();sfx('heal');const back=S.lookBack||'home';S.lookBack=null;$('#customBack').dataset.go='home';$('#customBack').textContent='← Menú';showCard(back);});
 $('#previewArea').addEventListener('pointerdown',e=>{if(S.view!=='custom')return;e.preventDefault();spinDrag={x:e.clientX,s:spin};e.currentTarget.setPointerCapture(e.pointerId);});
 addEventListener('pointermove',e=>{if(spinDrag)spin=spinDrag.s+(e.clientX-spinDrag.x)*0.012;});
 addEventListener('pointerup',()=>{spinDrag=null;});
@@ -1753,9 +1862,9 @@ $('#sndOn').addEventListener('change',e=>{AU.sfxOn=e.target.checked;audioInit();
 $('#musOn').addEventListener('change',e=>{AU.musOn=e.target.checked;audioInit();audioSet();syncMute();});
 function syncMute(){const on=AU.sfxOn||AU.musOn;$('#muteWave').toggleAttribute('hidden',!on);$('#muteX').toggleAttribute('hidden',on);$('#muteBtn').setAttribute('aria-label',on?'Silencia el so':'Activa el so');}
 $('#muteBtn').addEventListener('click',()=>{const on=!(AU.sfxOn||AU.musOn);AU.sfxOn=AU.musOn=on;$('#sndOn').checked=$('#musOn').checked=on;audioInit();audioSet();syncMute();});
-async function openCodeCard(){await NET.config;if(!NET.url||NET.offline){startLocalGame();return;}S.code='';$('#codeTitle').textContent=`Entra a la sala · ${TEAMS[pickTeam].name}`;$('#codeIn').value='';$('#codeErr').textContent='';$('#codeIn').classList.remove('bad');showStep(2);
+async function openCodeCard(){await NET.config;if(!NET.url||NET.offline){startLocalGame();return;}S.code='';$('#codeTitle').textContent=T('codi.titol');$('#codeIn').value='';$('#codeErr').textContent='';$('#codeIn').classList.remove('bad');showStep(2);
   $('#roomCode').parentElement.hidden=!!NET.url&&!NET.offline;
-  $('#simFullRow').hidden=!!S.spectator||!!NET.url&&!NET.offline;$('#joinBtn').textContent=S.spectator?'Entra com a espectador':"Entra a l'arena";if(S.spectator)$('#codeTitle').textContent='Mira la sala';$('#backBtn').textContent=S.spectator?'← Menú':'← Canvia de curs';}
+  $('#simFullRow').hidden=!!S.spectator||!!NET.url&&!NET.offline;$('#joinBtn').textContent=S.spectator?T('codi.entra-espectador'):T('codi.entra');if(S.spectator)$('#codeTitle').textContent=T('codi.titol-espectador');$('#backBtn').textContent=S.spectator?'← Menú':'← Canvia el nickname';}
 function saveNickname(){const name=$('#nicknameIn').value.replace(/[\u0000-\u001f\u007f]/g,'').trim().slice(0,12);if(!name){$('#nicknameErr').textContent='Escriu un nickname perquè els altres et puguin identificar.';$('#nicknameIn').focus();return false;}S.look.name=name;try{localStorage.setItem('castaween-look',JSON.stringify(S.look));}catch{}return true;}
 function startLocalGame(){netClose();NET.offline=true;S.code='Local';$('#simFull').checked=false;startGame();}
 $('#nicknameIn').addEventListener('input',()=>{$('#nicknameErr').textContent='';});
@@ -1768,7 +1877,7 @@ async function join(){const v=$('#codeIn').value;if(v.length<4){$('#codeErr').te
     catch(e){netClose();if(e.message==='inexistent'||e.message==='limit'){$('#codeErr').textContent=e.message==='inexistent'?'Aquest codi no correspon a cap sala oberta. Revisa la pantalla del professor.':'La sala ha arribat al límit de connexions.';$('#codeIn').classList.add('bad');}else{startLocalGame();banner('Sense connexió · partida amb bots','var(--ember)');}}
     finally{$('#joinBtn').disabled=false;}return;}
   if(v!==S.code){$('#codeErr').textContent='Aquest codi no correspon a cap sala oberta. Revisa la pantalla.';$('#codeIn').classList.add('bad');return;}startGame();}
-$('#joinBtn').addEventListener('click',join);$('#hq').addEventListener('change',e=>applyQuality(e.target.checked));$('#codeIn').addEventListener('keydown',e=>{if(e.key==='Enter')join();});
+$('#joinBtn').addEventListener('click',join);$('#hq').addEventListener('change',e=>applyQuality(e.target.checked));$('#codeIn').addEventListener('keydown',e=>{if(e.target&&e.target.closest&&e.target.closest('#dz'))return;if(e.key==='Enter')join();});
 
 /* ---------- en línia: el professor simula, el Worker només retransmet ---------- */
 const NET={role:null,ws:null,id:null,url:'',peers:new Map(),replicas:new Map(),previous:new Map(),ids:new WeakMap(),serial:0,seq:0,received:0,lastSend:0,lastInput:0,input:'',events:[],tap:false,build:false,upgrade:false};
@@ -1781,7 +1890,7 @@ const offlineButton=document.createElement('button');offlineButton.className='bt
 function netSend(m){if(NET.ws&&NET.ws.readyState===WebSocket.OPEN&&NET.ws.bufferedAmount<256000){NET.ws.send(JSON.stringify(m));return true;}return false;}
 function netClose(){const ws=NET.ws;NET.ws=null;NET.role=null;if(ws)ws.close();for(const e of NET.replicas.values())netDispose(e);NET.peers.clear();NET.replicas.clear();NET.previous.clear();NET.events=[];NET.input='';NET.received=0;NET.seq=0;NET.resync=false;NET.tap=NET.build=NET.upgrade=false;}
 function netRoster(){
-  $('#onlineRoster').innerHTML=TEAMS.map(t=>{const all=t.members||[],h=all.filter(m=>m.human),active=(t.active||[]).filter(m=>m.human).length;return `<p><b style="color:${t.css}">${t.name}</b> · ${h.length} connectats · ${active}/10 jugant · ${(t.queue||[]).length} en espera</p>`;}).join('');
+  $('#onlineRoster').innerHTML=TEAMS.map(t=>{const all=t.members||[],h=all.filter(m=>m.human),active=(t.active||[]).filter(m=>m.human).length;return `<p><b style="color:${t.css}">${t.name}</b> · ${h.length} connectats · ${active}/${SLOTS} jugant · ${(t.queue||[]).length} en espera</p>`;}).join('');
   if(NET.role==='host')$('#onlineStatus').textContent=S.phase==='lobby'?'Comparteix el codi i prem Comença.':`Sala ${S.code} · mantén aquesta pantalla oberta`;
 }
 function netWaiting(){S.phase='lobby';$('#hud').hidden=true;$('#results').hidden=true;$('#lobby').hidden=false;showCard('onlineRoom');$('#onlineCode').textContent=S.code;$('#onlineStart').hidden=NET.role!=='host';netRoster();}
@@ -1811,7 +1920,7 @@ hostButton.addEventListener('click',async()=>{
 $('#onlineLeave').addEventListener('click',toLobby);
 $('#onlineStart').addEventListener('click',()=>{if(NET.role!=='host')return;startGame();NET.previous.clear();});
 function netMember(t,nom,look,peer){
-  const sample=t.members[0];const m=Object.assign({},sample,{name:nom,look,human:!!peer,peer:peer||null,isPlayer:false,state:'queue',pos:new THREE.Vector3(),vel:new THREE.Vector3(),ai:{t:0,target:null,strafe:1,dist:7,raid:null},mesh:makeCastanyera(t,false,look),carry:0,kills:0,delivered:0,turn:0,burn:0,weapon:null,ammo:0,netInput:{mx:0,mz:0,tir:false}});
+  const sample=t.members[0]||S.cast[0];const m=Object.assign({},sample,{name:nom,look,human:!!peer,peer:peer||null,isPlayer:false,state:'queue',pos:new THREE.Vector3(),vel:new THREE.Vector3(),ai:{t:0,target:null,strafe:1,dist:7,raid:null},mesh:makeCastanyera(t,false,look),carry:0,kills:0,delivered:0,turn:0,burn:0,weapon:null,ammo:0,netInput:{mx:0,mz:0,tir:false}});
   t.members.push(m);S.cast.push(m);return m;
 }
 function netRemove(m){const t=m.team;leaveArena(m);t.queue=t.queue.filter(x=>x!==m);t.members=t.members.filter(x=>x!==m);S.cast=S.cast.filter(x=>x!==m);clearNameTag(m.mesh);scene.remove(m.mesh.g);scene.remove(m.mesh.bar.g);if(S.follow===m)S.follow=null;}
@@ -1819,17 +1928,19 @@ function netHostMessage(m){
   if(m.t==='join'){
     if(NET.peers.has(m.id))return;
     if(m.spectator){NET.peers.set(m.id,null);netBroadcast(m.id);return;}
-    const t=TEAMS[m.curs],look=netLook(m.look),bot=t.members.find(x=>!x.human),hadSlot=bot&&bot.state!=='queue';
+    const t=teamForHuman(),look=netLook(m.look),bot=t.members.find(x=>!x.human);
     if(bot)netRemove(bot);
     const human=netMember(t,m.nom||'Alumne',look,m.id);NET.peers.set(m.id,human);
-    if(hadSlot||t.members.length<=SLOTS)spawn(human);else{human.state='queue';human.mesh.g.visible=false;t.queue.push(human);}
+    if(t.active.length<SLOTS)spawn(human);else{human.state='queue';human.mesh.g.visible=false;t.queue.push(human);}
     netRoster();netBroadcast(m.id);
   }else if(m.t==='leave'){
     const human=NET.peers.get(m.id);NET.peers.delete(m.id);if(!human)return;
     const t=human.team,wasActive=human.state!=='queue';dropCarry(human);netRemove(human);
     if(wasActive&&t.queue.length)spawn(t.queue.shift());
-    // Keep ten total available slots, including respawning castanyeres.
-    if(t.members.length<SLOTS){const bot=netMember(t,'Bot',botLook(t),null);spawn(bot);}
+    // Plaça lliure i cua en un altre equip: el primer que espera canvia d'equip i entra.
+    else if(humansOf(t)<SLOTS){const q=TEAMS.find(o=>o!==t&&o.queue.length);if(q){const w=q.queue.shift();q.members.splice(q.members.indexOf(w),1);clearNameTag(w.mesh);scene.remove(w.mesh.g);scene.remove(w.mesh.bar.g);w.team=t;w.mesh=makeCastanyera(t,false,w.look);t.members.push(w);spawn(w);}}
+    // Els bots només omplen fins a BOT_FILL castanyeres per equip.
+    if(t.members.length<BOT_FILL){const bot=netMember(t,'Bot',botLook(t),null);spawn(bot);}
     netRoster();
   }else if(m.t==='input'){
     const p=NET.peers.get(m.id);if(!p)return;p.netInput=m;
@@ -1861,13 +1972,13 @@ function netBroadcast(to){if(NET.role!=='host')return;
     if(r.k==='c'&&prev.state==='active'&&r.state!=='active')events.push({t:'mort',x:r.x,z:r.z});
   }
   if(!full)for(const[id,r]of NET.previous)if(!current.has(id)){del.push(id);if(r.k==='m')events.push({t:'mort',x:r.x,z:r.z});}
-  const meta={phase:S.phase,round:S.round,time:netRound(S.time),night:S.night,teams:TEAMS.map(t=>({stock:t.stock,wins:t.wins,hitT:netRound(t.hitT),delivered:t.delivered})),queues:TEAMS.map(t=>t.queue.map(netId))};
+  const meta={phase:S.phase,round:S.round,time:netRound(S.time),night:S.night,teams:TEAMS.map(t=>({name:t.name,short:t.short,stock:t.stock,wins:t.wins,hitT:netRound(t.hitT),delivered:t.delivered})),queues:TEAMS.map(t=>t.queue.map(netId))};
   netSend({t:'estat',...(to?{to}:{}),seq:to?NET.seq:++NET.seq,full,up,del,meta,events});
   if(!to)NET.previous=current;
 }
 function netDispose(e){if(e.mesh){clearNameTag(e.mesh);scene.remove(e.mesh.g);if(e.mesh.bar)scene.remove(e.mesh.bar.g);}if(e.g)scene.remove(e.g);}
 function netReplica(d){const team=TEAMS[d.team||0];let e={pos:new THREE.Vector3(d.x,d.y,d.z),vel:new THREE.Vector3(),phase:0,face:0,flash:0,lunge:0,inv:0,burn:0,throwAnim:0,respawn:0,carry:0,role:'c',t:0,age:1,ry:0,team};
-  if(d.k==='c')Object.assign(e,{mesh:makeCastanyera(team,d.peer===NET.id,d.look),isPlayer:d.peer===NET.id,ai:{}});
+  if(d.k==='c')Object.assign(e,{mesh:makeCastanyera(team,d.peer===NET.id,d.look),isPlayer:d.peer===NET.id,ai:{},meshModel:(d.look&&d.look.model)||'',meshTeam:d.team||0});
   if(d.k==='m')Object.assign(e,{mesh:makeMonster(d.type,d.v),def:MON[d.type],alive:true});
   if(d.k==='t')Object.assign(e,{mesh:makeTowerMesh(team,d.v),isTower:true,lv:d.lv});
   if(d.k==='a')e.g=makePanellet(d.gold,d.v);
@@ -1883,7 +1994,8 @@ function netReceive(m){
   NET.received=m.seq;NET.lastState=performance.now();
   for(const id of m.del||[]){const e=NET.replicas.get(id);if(e){netDispose(e);NET.replicas.delete(id);}}
   for(const diff of m.up){let e=NET.replicas.get(diff.id);if(!e){e=netReplica(diff);NET.replicas.set(diff.id,e);}const oldLv=e.netData.lv;
-    const d=Object.assign(e.netData,diff);e.look=d.look;e.netFrom=(e.pos||new THREE.Vector3(e.x,e.y,e.z)).clone();e.netAt=performance.now();e.netTarget=new THREE.Vector3(d.x,d.y,d.z);
+    const d=Object.assign(e.netData,diff);e.look=d.look;
+    if(d.k==='c'&&e.mesh&&(((d.look&&d.look.model)||'')!==e.meshModel||(d.team||0)!==e.meshTeam)){clearNameTag(e.mesh);scene.remove(e.mesh.g);if(e.mesh.bar)scene.remove(e.mesh.bar.g);e.mesh=makeCastanyera(TEAMS[d.team||0],e.isPlayer,d.look);e.meshModel=(d.look&&d.look.model)||'';e.meshTeam=d.team||0;}e.netFrom=(e.pos||new THREE.Vector3(e.x,e.y,e.z)).clone();e.netAt=performance.now();e.netTarget=new THREE.Vector3(d.x,d.y,d.z);
     for(const key in d)if(!['x','y','z','team','look','id','k'].includes(key))e[key]=d[key];e.team=TEAMS[d.team||0];e.vel=e.vel||new THREE.Vector3();e.vel.set(d.vx||0,0,d.vz||0);
     if(e.mesh){e.mesh.g.visible=d.k!=='c'||d.state==='active';if(!e.mesh.g.visible&&e.mesh.bar)e.mesh.bar.g.visible=false;}
     if(d.k==='t'&&oldLv!==e.lv)decorateTower(e);
@@ -2040,8 +2152,15 @@ function updateCam(dt){
     preview.visible=true;preview.rotation.y=sp.face+spin+(spinDrag?0:Math.sin(performance.now()/1400)*0.25);const R=preview.userData;animCast(R,0,0,dt,performance.now(),0,false,0);if(R.X){if(R.X.mixer)R.X.mixer.update(dt);}return;}
   if(camera.view&&camera.view.enabled)camera.clearViewOffset();
   if(S.phase==='lobby'||!P){const a=performance.now()/11000;camPos.set(Math.cos(a)*50,30,Math.sin(a)*50);camera.position.copy(camPos);camera.lookAt(0,0,0);return;}
-  if(S.spectator&&S.phase!=='lobby'&&SP.over){const k=1-Math.exp(-dt*3),cx=clamp(SP.pan.x,-30,30),cz=clamp(SP.pan.z,-30,30);
-    camLook.lerp(new THREE.Vector3(cx,0,cz+6),k);camPos.lerp(new THREE.Vector3(cx,portrait?82:58,cz+(portrait?44:40)),k);camera.position.copy(camPos);camera.lookAt(camLook);return;}
+  if(S.spectator&&S.phase!=='lobby'){
+    // la mateixa càmera per a tots els modes: punt on mira + zoom (amb més zoom, més picat)
+    const b=portrait?{y:15.5,z:14.5}:{y:12,z:12.5},z=SP.zoom,steep=1-0.75*clamp((z-1)/5,0,1);let lx,lz;
+    if(SP.mode==='free'){SP.pan.x=clamp(SP.pan.x,-40,40);SP.pan.z=clamp(SP.pan.z,-40,40);lx=SP.pan.x;lz=SP.pan.z;}
+    else{const f=S.follow?S.follow.pos:new THREE.Vector3();lx=f.x;lz=f.z-(portrait?3:1);}
+    const k=1-Math.exp(-dt*(SP.drag&&SP.drag.moved?14:4)),I=specInsets();camera.setViewOffset(innerWidth,innerHeight,0,(I.bot-I.top)/2,innerWidth,innerHeight);
+    camLook.lerp(new THREE.Vector3(lx,0.8,lz),k);camPos.lerp(new THREE.Vector3(lx,b.y*z,lz+b.z*z*steep),k);camera.position.copy(camPos);camera.lookAt(camLook);
+    const cd=camPos.distanceTo(camLook);scene.fog.near=Math.max(48,cd*0.85);scene.fog.far=Math.max(118,cd+80);return;}
+  scene.fog.near=48;scene.fog.far=118;
   let f;if(S.spectator){f=S.follow?S.follow.pos:new THREE.Vector3();}
   else if(P.state==='active')f=P.pos;else{const m=P.team.active[0];f=m?m.pos:new THREE.Vector3();}
   const off=portrait?{y:15.5,z:14.5}:{y:12,z:12.5},k=1-Math.exp(-dt*5);
@@ -2064,5 +2183,15 @@ function frame(now){
 requestAnimationFrame(frame);
 window.__castanyes={S,camera,TEAMS,AU,sfx,musicSchedule,buildCastRig,castGeometries,dropLog,spawnCrate,spawnPanellet,buildTower,upgradeTower,knockFire,freeze:false};
 const assetsReady=loadAssets(); // ganxo de depuració del prototip
+// mode editor per a l'alumnat de Disseny: disseny.html obre index.html?disseny en un marc
+async function uiShow(n){await assetsReady;const cards={inici:'home',personatge:'custom','com-es-juga':'howto',opcions:'opts',entrada:'step1',codi:'step2'};
+  const inGame=S.phase!=='lobby';
+  if(cards[n]){if(inGame)toLobby();if(n==='entrada')NET.offline=true;showCard(cards[n]);return;}
+  if(!inGame||S.phase==='results'){if(S.phase==='results')toLobby();startLocalGame();await new Promise(r=>setTimeout(r,400));}
+  $('#pause').hidden=true;$('#results').hidden=true;if(S.phase==='paused')S.phase='play';
+  if(n==='pausa')openPause();if(n==='resultats')endRound();}
+if(new URLSearchParams(location.search).has('disseny')){
+  // l'editor (disseny.html) carrega el joc dins d'un marc i el controla amb aquestes funcions
+  window.CastaweenUI={base:()=>(UI.base||(UI.base=captureTexts())),applyTexts,applyTheme,applyImages,show:uiShow,THEME_DEFAULT,THEME_VARS,ready:assetsReady};}
 })();
 </script>

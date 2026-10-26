@@ -1,0 +1,7 @@
+CASTANYERA AMB ESQUELET (OPCIONAL)
+
+Importa plantilla-castanyera.glb amb File > Import > glTF 2.0.
+Referència a 1,80 m. Màxim: 1.500 triangles, 20 ossos i 400 KB.
+Animacions: idle, corre, llanca, cop.
+Fes-la servir només si el professorat ha proposat treballar rig i animació.
+Comprova el model final i les animacions després d’exportar.
