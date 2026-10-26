@@ -391,6 +391,7 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
         <li data-t="com-es-juga.li1"><b>Qui ataca la teva foguera:</b> els monstres de Halloween (van sobretot a la foguera més gran) i les castanyeres dels altres equips. Quan passa surt un avís vermell i el minimapa marca la teva base.</li>
         <li data-t="com-es-juga.li2">Tu també pots atacar castanyeres i fogueres d'altres equips. Cada impacte a una foguera rival en fa caure llenya que pots robar.</li>
         <li data-t="com-es-juga.li3">Si caus, deixes a terra la llenya que portaves i tornes a la base en 3 s.</li>
+        <li data-t="com-es-juga.li4b"><b>Supercastanyera</b>: si entregues la cistella plena (10 de llenya) de cop, durant 8 s tu (només tu, no el teu equip) tens una aura daurada, corres més i llances castanyes d'energia blaves que, quan toquen, esclaten en una <b>ona</b> que elimina tots els monstres, les castanyeres rivals i les torradores del voltant.</li>
         <li data-t="com-es-juga.li4"><b>Panellet</b>: +35 de vida. El <b>daurat</b> et posa la vida plena.</li>
         <li data-t="com-es-juga.li5">L'últim minut és la <b>Nit de Difunts</b>: el doble de monstres i la llenya entregada val doble.</li>
         <li data-t="com-es-juga.li6">Tries el teu equip en entrar. Cada equip pot tenir fins a 15 persones: si el teu és ple, entres al que té més lloc i et pots canviar des de la pausa quan s'hi faci lloc. Si n'hi ha menys de 10, la resta són bots. Només si tots són plens esperes a la cua (torn màxim de 90 s).</li>
@@ -448,6 +449,7 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
         <li data-t="pausa.li4">Torradora: costa <b>8 de llenya</b> de la foguera, màxim 3 per equip. Es millora al nivell 2 (<b>12</b>) i al 3 (<b>18</b>): dispara més ràpid, més lluny i amb foc.</li>
         <li data-t="pausa.li5">La foguera l'ataquen els monstres i les castanyeres dels altres equips.</li>
         <li data-t="pausa.li6">Caixes d'armes pel camp: <b>castanyes de foc</b> (12, cremen), <b>ràfega</b> (30 castanyes ràpides) i <b>bazooka de moniato</b> (3 trets, esclata i deixa puré que crema i alenteix).</li>
+        <li data-t="pausa.li7b">Cistella plena (<b>10 de llenya</b>) entregada de cop: <b>Supercastanyera</b> durant 8 s (només qui l'ha entregada): dispara castanyes d'energia blaves que esclaten en ones que eliminen monstres, rivals i torradores.</li>
         <li data-t="pausa.li7">Panellets: <b>+35 de vida</b>. El daurat que deixa el Carabassot dona la vida plena.</li>
         <li data-t="pausa.li8">L'últim minut és la <b>Nit de Difunts</b>: el doble de monstres i la llenya entregada val doble.</li>
         <li data-t="pausa.li9">Cada alumne <b>tria el seu equip</b>. Fins a <b>15 persones</b> per equip: si el teu és ple, entres al que té més lloc i et pots canviar aquí sota quan s'hi faci lloc. Si n'hi ha menys de 10, els bots completen l'equip. Només si tots són plens hi ha cua, amb un torn màxim de 90 s.</li>
@@ -505,7 +507,12 @@ const BOT={speed:5.0,cd:1.5,engage:14},PLAYER_SPEED=5.6;
 const WEAP={ // armes que s'agafen de caixes pel camp; mateixes per a persones i bots
   fire:{ammo:12,cd:0.42,label:'Foc',name:'castanyes de foc',col:'#ff5a1e',grad:'#ffb36a,#ff5a1e 55%,#a8240a',shadow:'#6a1606'},
   rush:{ammo:30,cd:0.12,label:'Ràfega',name:'ràfega de castanyes',col:'#ffd24a',grad:'#fff1a0,#ffd24a 55%,#c9961a',shadow:'#7a5a08'},
-  bazooka:{ammo:3,cd:0.9,label:'Bazooka',name:'bazooka de moniato',col:'#c4566a',grad:'#e07a8c,#a83a52 55%,#5a1e2c',shadow:'#3a1018'}};
+  bazooka:{ammo:3,cd:0.9,label:'Bazooka',name:'bazooka de moniato',col:'#c4566a',grad:'#e07a8c,#a83a52 55%,#5a1e2c',shadow:'#3a1018'},
+  // Supercastanyera: premi per entregar la cistella plena de cop. Uns segons d'aura daurada; cada tret és una ona que elimina tot el que toca
+  super:{ammo:8,cd:0.55,label:'Ona',title:'Supercastanyera',name:'el poder de la Supercastanyera',col:'#ffd400',grad:'#fff6a8,#ffd400 55%,#c98a00',shadow:'#6a4a00'}};
+const SUPER_T=8,WAVE_R=6,WAVE_SPEED=24,SUPER_SPEED=1.3,SUPER_LOAD=CARRY_MAX,SUPER_PSPEED=30;
+function startSuper(c){c.weapon='super';c.superT=SUPER_T;c.ammo=SUPER_T;c.cd=0.3;const x=c.pos.x,z=c.pos.z;shock(x,z,3,0xffd400);shock(x,z,1.8,0xffffff);flash(x,z,6);sparks(x,1.4,z,40,0xffd400,8);sfx('boss',x,z);
+  if(c.isPlayer){banner('Supercastanyera!','#ffd400');popText(x,3.4,z,`${SUPER_T} s!`,'gold');}addFeed(`${who(c)} entrega la cistella plena i es transforma en <b style="color:#ffd400">Supercastanyera</b>`,'');}
 const BAZ_R=3.6; // idèntic per a tots els bots de tots els cursos
 const ROLES=['c','c','c','c','c','d','d','d','a','a']; // caçadora, defensora, assaltant: mateix repartiment a cada curs
 const MON={
@@ -1357,7 +1364,7 @@ function spawnPoint(t){for(let k=0;k<12;k++){const a=t.angle+Math.PI+rand(-1.3,1
 function freeRole(t,except){const c={c:0,d:0,a:0};for(const m of t.active)if(m!==except)c[m.role]++;const need={c:5,d:3,a:2};for(const r of['c','d','a'])if(c[r]<need[r])return r;return 'c';}
 function spawn(m){const t=m.team,p=spawnPoint(t);
   if(!m.human&&S.phase==='play'&&m.mesh&&castModels().length>1){const A=nextCastModel();if(A&&A.id!==(m.look&&m.look.model)){m.look=Object.assign({},m.look||DEFAULT_LOOK,{model:A.id});const o=m.mesh;clearNameTag(o);scene.remove(o.g);if(o.bar)scene.remove(o.bar.g);m.mesh=makeCastanyera(t,false,m.look);}}
-  m.pos.set(p.x,0,p.z);m.vel.set(0,0,0);m.state='active';m.hp=MAXHP;m.turn=0;m.inv=1.5;m.cd=0.4;m.rush=0;m.carry=0;m.weapon=null;m.ammo=0;m.burn=0;m.face=Math.atan2(-p.x,-p.z);m.ai.target=null;
+  m.pos.set(p.x,0,p.z);m.vel.set(0,0,0);m.state='active';m.hp=MAXHP;m.turn=0;m.inv=1.5;m.cd=0.4;m.rush=0;m.carry=0;m.weapon=null;m.ammo=0;m.superT=0;m.burn=0;m.face=Math.atan2(-p.x,-p.z);m.ai.target=null;
   m.role=freeRole(t,m);if(m.role==='a'){const others=TEAMS.filter(o=>o!==t);m.ai.raid=others[Math.floor(Math.random()*others.length)];}
   if(!t.active.includes(m))t.active.push(m);m.mesh.g.visible=true;if(S.phase==='play'){shock(p.x,p.z,1.6,t.color);sparks(p.x,0.3,p.z,8,t.color,2.5);if(m.isPlayer)sfx('spawn');}m.mesh.g.position.set(p.x,0,p.z);}
 function leaveArena(m){const t=m.team,i=t.active.indexOf(m);if(i>=0)t.active.splice(i,1);m.mesh.g.visible=false;m.mesh.bar.g.visible=false;if(m.isPlayer)aimMarker.visible=false;}
@@ -1425,6 +1432,9 @@ function spawnPanellet(gold,x,z){
 const crateGeo=new THREE.BoxGeometry(0.75,0.6,0.75),crateM=M(0x8a5a30),crateHalos={},crateBand={};
 addSmoothNormals(crateGeo);
 for(const k in WEAP){const h=new THREE.Color(WEAP[k].col);crateHalos[k]=B(h.getHex(),{transparent:true,opacity:.7,depthWrite:false});crateBand[k]=M(h.getHex(),{emissive:h.clone().multiplyScalar(.35).getHex()});}
+const superProjM=B(0x6fdcff);
+// resplendor blau de la castanya d'energia (un sprite fill que s'encén i s'apaga)
+function setProjGlow(mesh,on){if(!mesh.userData.glow){if(!on)return;const g=glowSprite(0x3ab8ff,1.6,0.9);mesh.add(g);mesh.userData.glow=g;}mesh.userData.glow.visible=on;}
 const flameProjM=B(0xff7a1a),bandGeo=new THREE.BoxGeometry(0.8,0.16,0.8);
 function spawnCrate(type,x,z,assetId){
   if(x===undefined){for(let k=0;k<12;k++){const a=Math.random()*6.283,r=rand(12,33);x=Math.cos(a)*r;z=Math.sin(a)*r;if(!obstacles.some(o=>Math.hypot(o.x-x,o.z-z)<o.r+1))break;}}
@@ -1432,6 +1442,7 @@ function spawnCrate(type,x,z,assetId){
   const g=new THREE.Group();const CA=nextAsset('prop','caixa',assetId);g.userData.assetId=CA?CA.id:'';if(CA){const X=instAsset(CA,new THREE.Color(WEAP[type].col).getHex());X.fit.position.y-=0.3;g.add(X.fit);}else{const box=new THREE.Mesh(crateGeo,crateM);g.add(box);const band=new THREE.Mesh(bandGeo,crateBand[type]);g.add(band);}
   const icon=new THREE.Group();icon.position.y=0.62;g.add(icon);
   if(type==='fire'){const n=new THREE.Mesh(nutGeo,nutMat);n.scale.setScalar(1.6);icon.add(n);const f=new THREE.Mesh(flameGeos[1],flameMs[0]);f.scale.setScalar(0.45);f.position.y=0.3;icon.add(f);}
+  else if(type==='super'){const n=new THREE.Mesh(nutGeo,B(0xffd400));n.scale.setScalar(2.2);icon.add(n);const gs=glowSprite(0xffd400,2.6,0.8);icon.add(gs);}
   else if(type==='rush'){for(let i=0;i<3;i++){const n=new THREE.Mesh(nutGeo,nutMat);n.scale.setScalar(1.3);n.position.set(Math.cos(i*2.1)*0.18,0,Math.sin(i*2.1)*0.18);icon.add(n);}}
   else{const tube=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.14,0.9,7),M(0x5a3a22));tube.rotation.z=Math.PI/2;icon.add(tube);const mo=new THREE.Mesh(MONI_GEO,MONI_M);mo.position.set(0.5,0,0);icon.add(mo);}
   const wc=new THREE.Color(WEAP[type].col).getHex();
@@ -1472,13 +1483,13 @@ function decorateTower(tw){const g=tw.mesh.g;if(tw.mesh.deco)g.remove(tw.mesh.de
 
 /* ---------- llançament ---------- */
 function throwAt(m,tx,tz,ty,kind){
-  const heavy=kind==='bazooka';const sp=heavy?20:PSPEED;const dx=tx-m.pos.x,dz=tz-m.pos.z;let d=Math.hypot(dx,dz)||1;const nx=dx/d,nz=dz/d;
-  d=clamp(d,2.5,18);const t=d/sp,y0=m.isTower?1.0:1.25,y1=ty||0.9;const vy=(y1-y0)/t+0.5*GRAV*t;
+  const sup=kind==='super',heavy=kind==='bazooka'||sup;const sp=sup?SUPER_PSPEED:heavy?20:PSPEED;const dx=tx-m.pos.x,dz=tz-m.pos.z;let d=Math.hypot(dx,dz)||1;const nx=dx/d,nz=dz/d;
+  d=clamp(d,2.5,sup?22:18);const t=d/sp,y0=m.isTower?1.0:1.25,y1=sup?0.05:(ty||0.9);const vy=(y1-y0)/t+0.5*GRAV*t;
   const p=getProj();p.alive=true;p.owner=m;p.team=m.team;p.life=0;p.heavy=heavy;p.kind=kind||'nut';p.pos.set(m.pos.x+nx*0.6,y0,m.pos.z+nz*0.6);p.vel.set(nx*sp,vy,nz*sp);
-  p.mesh.geometry=heavy?MONI_GEO:nutGeo;p.mesh.material=heavy?MONI_M:kind==='fire'?flameProjM:nutMat;p.mesh.scale.setScalar(heavy?1.7:kind==='fire'?1.3:1);
+  p.mesh.geometry=sup?nutGeo:heavy?MONI_GEO:nutGeo;p.mesh.material=sup?superProjM:heavy?MONI_M:kind==='fire'?flameProjM:nutMat;p.mesh.scale.setScalar(sup?2.4:heavy?1.7:kind==='fire'?1.3:1);setProjGlow(p.mesh,sup);
   p.mesh.position.copy(p.pos);p.mesh.visible=true;m.face=Math.atan2(nx,nz);m.throwAnim=0.18;
   if(NET.role==='host'){NET.ids.delete(p);NET.events.push({t:'tir',peer:m.peer||null,x:netRound(m.pos.x),z:netRound(m.pos.z),kind:p.kind});}
-  if(!m.isTower)sfx(heavy?'heavy':kind==='fire'?'fire':'throw',m.isPlayer?undefined:m.pos.x,m.isPlayer?undefined:m.pos.z);
+  if(!m.isTower)sfx(sup?'fire':heavy?'heavy':kind==='fire'?'fire':'throw',m.isPlayer?undefined:m.pos.x,m.isPlayer?undefined:m.pos.z);
 }
 function boom(p){
   const x=p.pos.x,z=p.pos.z,team=p.team,by=p.owner;burst(x,0.8,z,22,'ember',7);burst(x,0.8,z,16,'moni',6);
@@ -1494,8 +1505,34 @@ function boom(p){
   if(by.isPlayer&&kills>=1)popText(x,2.6,z,kills>=2?`×${kills}!`:'Pam!','big');
   if(by.isPlayer&&kills>=2)addFeed(`${who(by)} esclafa ${kills} monstres`,' amb el bazooka');
 }
+// ---- Supercastanyera: ona expansiva ----
+const superWaves=[];
+function waveFx(x,z){shock(x,z,WAVE_R*1.15,0x4ad6ff);shock(x,z,WAVE_R*0.8,0xbff4ff);shock(x,z,WAVE_R*0.45,0xffffff);flash(x,z,7);sparks(x,1,z,60,0x5ad8ff,11);
+  fxAdd.emit({x,y:1,z,life:0.35,s0:3,s1:WAVE_R*1.7,c0:0xe8fbff,c1:0x2a9cff,a:0.9});sfx('boom',x,z);
+  const P=S.player;if(P&&P.pos){const d=Math.hypot(P.pos.x-x,P.pos.z-z);if(d<24)shakeAmt=Math.max(shakeAmt,0.6*(1-d/24));}}
+// la castanya d'energia esclata on toca i fa l'ona expansiva
+function superBlast(x,z,team,by){superWaves.push({x,z,r:0,team,by,hit:new Set(),kills:0});waveFx(x,z);if(NET.role==='host')NET.events.push({t:'ona',x:netRound(x),z:netRound(z)});}
+function superWave(m){const x=m.pos.x,z=m.pos.z;superWaves.push({x,z,r:0,team:m.team,by:m,hit:new Set(),kills:0});waveFx(x,z);if(NET.role==='host')NET.events.push({t:'ona',x:netRound(x),z:netRound(z)});}
+// l'ona creix i elimina tot el que toca: monstres (també el Carabassot), castanyeres rivals i torradores rivals. Les fogueres no.
+function updateWaves(dt){for(let i=superWaves.length-1;i>=0;i--){const w=superWaves[i];const r0=w.r;w.r=Math.min(WAVE_R,w.r+WAVE_SPEED*dt);
+  const inRing=(px,pz,rad)=>{const d=Math.hypot(px-w.x,pz-w.z);return d<=w.r+(rad||0)&&d>=r0-1.2-(rad||0);};
+  for(const mo of S.mons){if(!mo.alive||w.hit.has(mo))continue;if(inRing(mo.pos.x,mo.pos.z,mo.def.r)){w.hit.add(mo);mo.hp=0;mo.flash=0.12;killMonster(mo,w.by);w.kills++;}}
+  for(const t of TEAMS){if(t===w.team)continue;for(const c of t.active.slice()){if(w.hit.has(c)||c.inv>0)continue;if(inRing(c.pos.x,c.pos.z,0.4)){w.hit.add(c);c.hp=0;c.flash=0.12;downCast(c,who(w.by)+' i la Supercastanyera');}}}
+  for(const tw of S.towers.slice()){if(tw.team===w.team||w.hit.has(tw))continue;if(inRing(tw.pos.x,tw.pos.z,0.6)){w.hit.add(tw);damageTower(tw,9999);}}
+  if(w.r>=WAVE_R){superWaves.splice(i,1);if(w.by.isPlayer&&w.kills>=2){popText(w.by.pos.x,3,w.by.pos.z,`×${w.kills}!`,'big');addFeed(`${who(w.by)} escombra ${w.kills} enemics`,' amb una ona');}}}}
+// aura daurada al voltant de la castanyera (també als mòbils connectats, amb superT replicat)
+const auraGeo=new THREE.ConeGeometry(0.6,2.5,7,1,true),auraM=new THREE.MeshBasicMaterial({color:0xffd400,transparent:true,opacity:0.32,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide});
+function makeAura(){const g=new THREE.Group();g.add(glowSprite(0xffd400,2.6,0.7));const s2=glowSprite(0xfff6a8,1.5,0.55);s2.position.y=1.2;g.add(s2);g.children[0].position.y=1;
+  const flames=[];for(let i=0;i<3;i++){const f=new THREE.Mesh(auraGeo,auraM);f.position.y=1.15;f.rotation.y=i*2.1;f.scale.set(1-i*0.15,1+i*0.12,1-i*0.15);f.renderOrder=6;g.add(f);flames.push(f);}g.userData.flames=flames;return g;}
+function updateAura(m,dt,now){const on=m.superT>0&&m.state==='active';let a=m.mesh.aura;
+  if(!on){if(a)a.visible=false;return;}
+  if(!a){a=m.mesh.aura=makeAura();m.mesh.g.add(a);}a.visible=true;const pulse=1+Math.sin(now/70)*0.08+Math.sin(now/37)*0.05,fade=m.superT<1.5?(Math.floor(now/120)%2?0.35:1):1;
+  a.children[0].scale.setScalar(2.6*pulse);a.children[0].material.opacity=0.7*fade;
+  a.userData.flames.forEach((f,i)=>{f.rotation.y+=dt*(3+i);f.scale.y=(1+i*0.12)*(1+Math.sin(now/55+i*2)*0.18);f.material.opacity=0.32*fade;});
+  if(Math.random()<dt*40){const an=Math.random()*6.283,rr=rand(0.25,0.6);fxAdd.emit({x:m.pos.x+Math.cos(an)*rr,y:rand(0.2,1.2),z:m.pos.z+Math.sin(an)*rr,vx:0,vy:rand(3,5.5),vz:0,life:rand(.35,.6),s0:0.35,s1:0.05,c0:0xffffd0,c1:0xffb000,a:0.9});}}
 function fireWeapon(m,tx,tz,ty){
   const w=m.weapon;let kind='nut';
+  if(w==='super'){throwAt(m,tx,tz,ty,'super');m.cd=cdFor(m,w);return;}
   if(w){kind=w==='rush'?'nut':w;if(w==='rush'){tx+=rand(-.7,.7);tz+=rand(-.7,.7);}if(--m.ammo<=0){m.weapon=null;m.ammo=0;}}
   throwAt(m,tx,tz,w==='bazooka'?Math.max(0.5,(ty||0.9)-0.3):ty,kind);m.cd=cdFor(m,w);
 }
@@ -1564,7 +1601,7 @@ function botUpdate(m,dt){
     if(m.cd<=0&&d<BOT.engage&&m.inv<=0.6&&Math.random()<dt*3){const L=lead(tg,m.pos,0.8);const err=0.3+d*0.06;
       fireWeapon(m,L.x+rand(-err,err),L.z+rand(-err,err),aimH(tg));}}
   else if(Math.hypot(mx,mz)>0.2)m.face=Math.atan2(mx,mz);
-  moveEnt(m,mx,mz,BOT.speed,dt,0.42);
+  moveEnt(m,mx,mz,BOT.speed*(m.superT>0?SUPER_SPEED:1),dt,0.42);
 }
 function monsterUpdate(mo,dt){
   mo.retarget-=dt;mo.atk-=dt;mo.flash-=dt;
@@ -1654,7 +1691,7 @@ function updateHomeArrow(now){const P=S.player;const on=S.phase==='play'&&!S.spe
   const a=Math.atan2(dx,dz),r=1.9+Math.sin(now/180)*0.15;homeArrow.visible=true;homeArrow.position.set(P.pos.x+Math.sin(a)*r,0.08,P.pos.z+Math.cos(a)*r);homeArrow.rotation.y=a;
   const full=P.carry>=CARRY_MAX;homeArrow.material.color.setHex(full?0xffd24a:P.team.color);homeArrow.scale.setScalar(full?1.35:1.1);}
 // consells que surten quan toca, una sola vegada
-const HINTS={logs:"Els monstres deixen llenya. Passa-hi per sobre per agafar-la.",carry:"Porta la llenya a l'anell de la teva foguera: segueix la fletxa.",full:"No hi cap més llenya! Torna a la foguera.",
+const HINTS={logs:"Els monstres deixen llenya. Passa-hi per sobre per agafar-la.",carry:"Porta la llenya a l'anell de la teva foguera: segueix la fletxa.",full:"Cistella plena! Porta-la sencera a la foguera i et convertiràs en Supercastanyera.",
   deliver:"Molt bé! Com més llenya, més gran la foguera. Guanya la més gran.",monster:"Monstres de Halloween! Mantén LLANÇA per tirar-los castanyes.",crate:"Caixa d'armes a prop: agafa-la per tenir trets especials.",
   heal:"Tens poca vida: busca un panellet (els verds).",tower:"Ets a la teva base: pots construir una torradora que defensa sola. Amb més llenya, la pots millorar.",rival:"Si fas caure una rival, deixa a terra la llenya que portava."};
 const HSEEN=new Set();const HQUEUE=[];let hintT=0;
@@ -1948,12 +1985,12 @@ function netHostMessage(m){
   }else if(m.t==='sync')netBroadcast(m.id);
 }
 function netLook(raw){const look=Object.assign({},DEFAULT_LOOK);for(const k in LOOK_OPTS)if(LOOK_OPTS[k].opts.some(o=>o[0]===raw[k]))look[k]=raw[k];if('model' in raw)look.model=raw.model&&castAsset(raw.model)?raw.model:defaultCastId();look.fringe=raw.fringe!==false;return look;}
-function netHuman(m,dt){const input=m.netInput||{mx:0,mz:0};const l=Math.hypot(input.mx,input.mz);if(l>.15)m.face=Math.atan2(input.mx,input.mz);moveEnt(m,l>.15?input.mx:0,l>.15?input.mz:0,PLAYER_SPEED,dt,.42);if(input.tir){const saved=S.player;S.player=m;tryPlayerThrow();S.player=saved;}}
+function netHuman(m,dt){const input=m.netInput||{mx:0,mz:0};const l=Math.hypot(input.mx,input.mz);if(l>.15)m.face=Math.atan2(input.mx,input.mz);moveEnt(m,l>.15?input.mx:0,l>.15?input.mz:0,PLAYER_SPEED*(m.superT>0?SUPER_SPEED:1),dt,.42);if(input.tir){const saved=S.player;S.player=m;tryPlayerThrow();S.player=saved;}}
 const netRound=n=>Number.isFinite(n)?Math.round(n*100)/100:0;
 function netId(o){if(!NET.ids.has(o))NET.ids.set(o,String(++NET.serial));return NET.ids.get(o);}
 function netCapture(){const rows=[];
   const add=(k,o,extra)=>{const p=o.pos||o;const r={id:netId(o),k,x:netRound(p.x),y:netRound(p.y),z:netRound(p.z),...extra};rows.push(r);return r;};
-  for(const c of S.cast){const r=add('c',c,{team:c.team.id,name:c.name,look:c.look||DEFAULT_LOOK,human:c.human,peer:c.peer||null});for(const key of ['state','hp','turn','kills','delivered','carry','weapon','ammo','burn','inv','flash','respawn','rush','throwAnim','role','face'])r[key]=typeof c[key]==='number'?netRound(c[key]):c[key];r.vx=netRound(c.vel.x);r.vz=netRound(c.vel.z);}
+  for(const c of S.cast){const r=add('c',c,{team:c.team.id,name:c.name,look:c.look||DEFAULT_LOOK,human:c.human,peer:c.peer||null});for(const key of ['state','hp','turn','kills','delivered','carry','weapon','ammo','burn','inv','flash','respawn','rush','throwAnim','role','face','superT'])r[key]=typeof c[key]==='number'?netRound(c[key]):c[key];r.vx=netRound(c.vel.x);r.vz=netRound(c.vel.z);}
   for(const o of S.mons)add('m',o,{v:o.mesh.g.userData.assetId||'',type:o.type,hp:netRound(o.hp),maxHp:o.maxHp,face:netRound(o.face),flash:netRound(o.flash),lunge:netRound(o.lunge),burn:netRound(o.burn),vx:netRound(o.vel.x),vz:netRound(o.vel.z)});
   for(const o of S.logs)add('l',o,{v:o.g?.userData.assetId||'',ry:netRound(o.ry),fly:o.fly});
   for(const o of S.pans)add('a',o,{v:o.g.userData.assetId||'',gold:o.gold});
@@ -1985,7 +2022,7 @@ function netReplica(d){const team=TEAMS[d.team||0];let e={pos:new THREE.Vector3(
   if(d.k==='b'){spawnCrate(d.type,d.x,d.z,d.v);e=S.crates.pop();}
   if(d.k==='u'){spawnPuddle(d.x,d.z,team,null);e=S.puddles.pop();}
   if(d.k==='l'&&d.v&&nextAsset('prop','llenya',d.v))e.g=makeLog(d.v);
-  if(d.k==='p'){e.g=new THREE.Mesh(d.heavy?MONI_GEO:nutGeo,d.heavy?MONI_M:d.kind==='fire'?flameProjM:nutMat);e.g.scale.setScalar(d.heavy?1.7:d.kind==='fire'?1.3:1);scene.add(e.g);}
+  if(d.k==='p'){const su=d.kind==='super';e.g=new THREE.Mesh(su?nutGeo:d.heavy?MONI_GEO:nutGeo,su?superProjM:d.heavy?MONI_M:d.kind==='fire'?flameProjM:nutMat);e.g.scale.setScalar(su?2.4:d.heavy?1.7:d.kind==='fire'?1.3:1);if(su)setProjGlow(e.g,true);scene.add(e.g);}
   e.netData={};return e;
 }
 function netReceive(m){
@@ -2009,7 +2046,7 @@ function netReceive(m){
   const phase=m.meta.phase;
   if(phase==='results'&&S.phase!=='results'){endRound();$('#nextBtn').hidden=true;}
   else if(phase!=='results'){S.phase=phase;if(phase==='lobby'){netWaiting();$('#onlineStatus').textContent='Espera que el professor comenci.';}else{$('#lobby').hidden=true;$('#results').hidden=true;$('#hud').hidden=false;$('#hud').classList.toggle('spectating',!!S.spectator);$('#spec').hidden=!S.spectator;}}
-  for(const ev of m.events||[]){if(ev.t==='baixa'){showElimination(ev);}else if(ev.t==='tir'){sfx(ev.kind==='bazooka'?'heavy':ev.kind==='fire'?'fire':'throw',ev.x,ev.z);}else if(ev.t==='entrega'){sparks(ev.x,2,ev.z,10,0xffc050,5);popText(ev.x,3,ev.z,'+'+ev.n+' llenya','wood');sfx('deliver',ev.x,ev.z);}else if(ev.t==='mort'){smoke(ev.x,.6,ev.z,6);shock(ev.x,ev.z,2,0xffa040);}else{sparks(ev.x,1,ev.z,6,0xffa040,4);sfx('hit',ev.x,ev.z);}}
+  for(const ev of m.events||[]){if(ev.t==='ona'){waveFx(ev.x,ev.z);}else if(ev.t==='baixa'){showElimination(ev);}else if(ev.t==='tir'){sfx(ev.kind==='bazooka'?'heavy':ev.kind==='fire'?'fire':'throw',ev.x,ev.z);}else if(ev.t==='entrega'){sparks(ev.x,2,ev.z,10,0xffc050,5);popText(ev.x,3,ev.z,'+'+ev.n+' llenya','wood');sfx('deliver',ev.x,ev.z);}else if(ev.t==='mort'){smoke(ev.x,.6,ev.z,6);shock(ev.x,ev.z,2,0xffa040);}else{sparks(ev.x,1,ev.z,6,0xffa040,4);sfx('hit',ev.x,ev.z);}}
   netRoster();
 }
 function netInterpolate(now,dt){for(const e of NET.replicas.values()){if(!e.netTarget)continue;const a=clamp((now-e.netAt)/100,0,1),v=e.netFrom.clone().lerp(e.netTarget,a);if(e.pos)e.pos.copy(v);e.x=v.x;e.y=v.y;e.z=v.z;const k=e.netData.k;if(['a','b','u','p'].includes(k)&&e.g)e.g.position.set(v.x,k==='a'?.6:k==='b'?.5:v.y,v.z);if(k==='p')e.g.rotation.x+=dt*12;}specUpdate(dt);}
@@ -2047,9 +2084,10 @@ function step(dt){
     let mx=S.joy.x,mz=S.joy.y;const k=S.keys;
     if(k.KeyW||k.ArrowUp)mz-=1;if(k.KeyS||k.ArrowDown)mz+=1;if(k.KeyA||k.ArrowLeft)mx-=1;if(k.KeyD||k.ArrowRight)mx+=1;
     const l=Math.hypot(mx,mz);if(l>0.15){P.face=Math.atan2(mx,mz);if(!S.firstMove){S.firstMove=true;$('#hint').style.opacity='0';}}
-    moveEnt(P,l>0.15?mx:0,l>0.15?mz:0,PLAYER_SPEED,dt,0.42);if(S.holding)tryPlayerThrow();
+    moveEnt(P,l>0.15?mx:0,l>0.15?mz:0,PLAYER_SPEED*(P.superT>0?SUPER_SPEED:1),dt,0.42);if(S.holding)tryPlayerThrow();
   }
-  for(const t of TEAMS)for(const m of t.active){m.cd-=dt;m.inv-=dt;m.flash-=dt;m.rush-=dt;if(m.peer)netHuman(m,dt);else if(!m.isPlayer)botUpdate(m,dt);}
+  updateWaves(dt);
+  for(const t of TEAMS)for(const m of t.active){m.cd-=dt;m.inv-=dt;m.flash-=dt;m.rush-=dt;if(m.superT>0){m.superT-=dt;m.ammo=Math.max(1,Math.ceil(m.superT));if(m.superT<=0){m.superT=0;if(m.weapon==='super'){m.weapon=null;m.ammo=0;}if(m.isPlayer)addFeed('S\'acaba la <b style="color:#ffd400">Supercastanyera</b>','');}}if(m.peer)netHuman(m,dt);else if(!m.isPlayer)botUpdate(m,dt);}
   // regla igual per a tots els cursos: construir torradora quan hi ha prou llenya de marge
   for(const t of TEAMS){const n=S.towers.filter(w=>w.team===t).length;if(n<TOWER_MAX&&t.stock>=14+n*10&&Math.random()<dt*0.3)buildTower(t,null);
     else if(n>=TOWER_MAX){const u=nextUpgrade(t);if(u&&t.stock>=TOWER_LV[u.lv+1].cost+22&&Math.random()<dt*0.2)upgradeTower(t,null);}}
@@ -2067,9 +2105,9 @@ function step(dt){
       if(d<0.75){c.carry++;if(l.g){l.g.visible=false;logPool.push(l.g);}S.logs.splice(i,1);
         if(c.isPlayer){sfx('pick');S.pickN=(S.pickN||0)+1;S.pickT=0.35;sparks(c.pos.x,1.2,c.pos.z,5,0xffc050,3);const pl=$('#carry');pl.classList.remove('bump');void pl.offsetWidth;pl.classList.add('bump');}
         if(c.carry>=CARRY_MAX){if(c.isPlayer){popText(c.pos.x,3,c.pos.z,'Ple!','gold');hint('full');}break;}}}
-    if(c.carry>0&&Math.hypot(c.pos.x-t.base.x,c.pos.z-t.base.z)<DELIVER_R+0.4){const v=c.carry*(S.night?2:1);t.stock+=v;c.delivered+=v;sparks(t.base.x,2,t.base.z,8+v*2,0xffc050,5);if(c.isPlayer){popText(t.base.x,3,t.base.z,'+'+v+' llenya','wood');sfx('deliver');hint('deliver');}burst(t.base.x,2,t.base.z,8,'ember',3);bump(t.id);if(c.isPlayer)addFeed(`${who(c)} alimenta la foguera`,'',`+${v}`);c.carry=0;}
-    if(!c.weapon||c.isPlayer||c.peer)for(let i=S.crates.length-1;i>=0;i--){const q=S.crates[i];if(Math.hypot(c.pos.x-q.x,c.pos.z-q.z)<1.1){S.crates.splice(i,1);scene.remove(q.g);shock(q.x,q.z,1.8,new THREE.Color(WEAP[q.type].col).getHex());c.weapon=q.type;if(c.isPlayer)sfx('weapon');c.ammo=WEAP[q.type].ammo;burst(q.x,1,q.z,12,q.type==='bazooka'?'moni':'ember',3.5);
-      if(c.isPlayer){popText(c.pos.x,2.8,c.pos.z,`${WEAP[q.type].label} ×${c.ammo}`,'gold');banner(WEAP[q.type].label+'!',WEAP[q.type].col);addFeed(`${who(c)} agafa ${WEAP[q.type].name}`,` · ×${c.ammo}`);}break;}}
+    if(c.carry>0&&Math.hypot(c.pos.x-t.base.x,c.pos.z-t.base.z)<DELIVER_R+0.4){const v=c.carry*(S.night?2:1);if(c.carry>=SUPER_LOAD&&!(c.superT>0))startSuper(c);t.stock+=v;c.delivered+=v;sparks(t.base.x,2,t.base.z,8+v*2,0xffc050,5);if(c.isPlayer){popText(t.base.x,3,t.base.z,'+'+v+' llenya','wood');sfx('deliver');hint('deliver');}burst(t.base.x,2,t.base.z,8,'ember',3);bump(t.id);if(c.isPlayer)addFeed(`${who(c)} alimenta la foguera`,'',`+${v}`);c.carry=0;}
+    if(!c.weapon||c.isPlayer||c.peer)for(let i=S.crates.length-1;i>=0;i--){const q=S.crates[i];if(Math.hypot(c.pos.x-q.x,c.pos.z-q.z)<1.1){S.crates.splice(i,1);scene.remove(q.g);shock(q.x,q.z,1.8,new THREE.Color(WEAP[q.type].col).getHex());c.weapon=q.type;if(c.isPlayer)sfx('weapon');c.ammo=WEAP[q.type].ammo;if(q.type==='super'){c.superT=SUPER_T;sfx('boss',q.x,q.z);flash(q.x,q.z,6);if(!c.isPlayer)addFeed(`${who(c)} es transforma en <b style="color:#ffd400">Supercastanyera</b>`,'');}burst(q.x,1,q.z,12,q.type==='bazooka'?'moni':'ember',3.5);
+      if(c.isPlayer){popText(c.pos.x,2.8,c.pos.z,q.type==='super'?`${SUPER_T} s!`:`${WEAP[q.type].label} ×${c.ammo}`,'gold');banner((WEAP[q.type].title||WEAP[q.type].label)+'!',WEAP[q.type].col);addFeed(`${who(c)} agafa ${WEAP[q.type].name}`,q.type==='super'?` · ${SUPER_T} s`:` · ×${c.ammo}`);}break;}}
     for(let i=S.pans.length-1;i>=0;i--){const p=S.pans[i];if(Math.hypot(c.pos.x-p.x,c.pos.z-p.z)<1.0){S.pans.splice(i,1);scene.remove(p.g);
       if(p.gold){c.hp=MAXHP;burst(p.x,1,p.z,12,'gold',4);}
       else{c.hp=Math.min(MAXHP,c.hp+35);burst(p.x,1,p.z,10,'heal',3);}
@@ -2082,9 +2120,9 @@ function step(dt){
       if(p.heavy){let bang=p.pos.y<=0.1;
         if(!bang)for(const mo of S.mons){if(mo.alive&&Math.hypot(mo.pos.x-p.pos.x,mo.pos.z-p.pos.z)<mo.def.r+0.25&&p.pos.y<mo.def.h){bang=true;break;}}
         if(!bang)for(const t of TEAMS){if(t===p.team)continue;if(t.active.some(c=>Math.hypot(c.pos.x-p.pos.x,c.pos.z-p.pos.z)<0.7&&p.pos.y<1.95)){bang=true;break;}}
-        if(!bang)for(const o of obstacles){if(Math.hypot(o.x-p.pos.x,o.z-p.pos.z)<o.r&&p.pos.y<o.h){bang=true;break;}}
+        if(!bang&&p.kind!=='super')for(const o of obstacles){if(Math.hypot(o.x-p.pos.x,o.z-p.pos.z)<o.r&&p.pos.y<o.h){bang=true;break;}}
         if(!bang)for(const w of S.towers){if(w.team!==p.team&&Math.hypot(w.pos.x-p.pos.x,w.pos.z-p.pos.z)<0.8&&p.pos.y<1.3){bang=true;break;}}
-        if(bang||p.life>3){if(bang)boom(p);p.alive=false;p.mesh.visible=false;break;}continue;}
+        if(bang||p.life>3){if(p.kind==='super')superBlast(p.pos.x,p.pos.z,p.team,p.owner);else if(bang)boom(p);p.alive=false;p.mesh.visible=false;break;}continue;}
       for(const mo of S.mons){if(!mo.alive)continue;const dx=mo.pos.x-p.pos.x,dz=mo.pos.z-p.pos.z,r=mo.def.r+0.15;if(dx*dx+dz*dz<r*r&&p.pos.y<mo.def.h){hit=true;const dmg=p.kind==='fire'?2:1;if(p.kind==='fire'){mo.hp-=2;mo.burn=3;mo.burnBy=p.owner;burst(p.pos.x,p.pos.y,p.pos.z,5,'ember',3);}else mo.hp--;mo.flash=0.1;sparks(p.pos.x,p.pos.y,p.pos.z,p.kind==='fire'?10:6,p.kind==='fire'?0xff3a10:0xffa040,4);sfx('hit',p.pos.x,p.pos.z);if(p.owner.isPlayer)popText(mo.pos.x,mo.def.h+0.2,mo.pos.z,'-'+dmg,p.kind==='fire'?'burn':'');burst(p.pos.x,p.pos.y,p.pos.z,5,mo.type==='ghost'?'ghost':'pump',3.5);if(mo.hp<=0)killMonster(mo,p.owner);break;}}
       if(!hit)for(const t of TEAMS){if(t===p.team)continue;for(const c of t.active){const dx=c.pos.x-p.pos.x,dz=c.pos.z-p.pos.z;if(dx*dx+dz*dz<0.42&&p.pos.y<1.95){hit=true;
         if(c.inv>0)burst(p.pos.x,p.pos.y,p.pos.z,3,'ember',2);else{c.hp-=p.owner.isTower?(p.owner.dmg||TOWER_DMG):p.kind==='fire'?PVP_DMG*1.5:PVP_DMG;if(p.kind==='fire'){c.burn=2;c.burnBy=p.owner;}c.flash=0.12;sparks(p.pos.x,p.pos.y,p.pos.z,6,0xff8040,3.5);if(c.isPlayer)sfx('hitMe');else sfx('hit',p.pos.x,p.pos.z);if(p.owner.isPlayer)popText(c.pos.x,2.2,c.pos.z,'-'+Math.round(p.kind==='fire'?PVP_DMG*1.5:PVP_DMG),'');burst(p.pos.x,p.pos.y,p.pos.z,5,'nut',3);if(c.hp<=0)downCast(c,p.owner.isTower?`una torradora de ${teamTag(p.team)}`:who(p.owner));}break;}}if(hit)break;}
@@ -2095,7 +2133,7 @@ function step(dt){
       if(!hit&&p.pos.y<=0.05){hit=true;burst(p.pos.x,0.1,p.pos.z,3,'dust',2);}
       if(!hit&&(p.life>3||Math.hypot(p.pos.x,p.pos.z)>ARENA_R+3))hit=true;
       if(hit){p.alive=false;p.mesh.visible=false;break;}}
-    if(p.alive){p.mesh.position.copy(p.pos);p.mesh.rotation.x+=dt*12;p.mesh.rotation.z+=dt*9;if(p.kind==='fire'&&Math.random()<0.6)burst(p.pos.x,p.pos.y,p.pos.z,1,'ember',0.6);if(p.heavy&&Math.random()<0.4)burst(p.pos.x,p.pos.y,p.pos.z,1,'moni',0.5);}}
+    if(p.alive){p.mesh.position.copy(p.pos);p.mesh.rotation.x+=dt*12;p.mesh.rotation.z+=dt*9;if(p.kind==='fire'&&Math.random()<0.6)burst(p.pos.x,p.pos.y,p.pos.z,1,'ember',0.6);if(p.kind==='super'){fxAdd.emit({x:p.pos.x,y:p.pos.y,z:p.pos.z,vx:0,vy:0,vz:0,life:0.28,s0:0.9,s1:0.1,c0:0xe8fbff,c1:0x2a9cff,a:0.9});}else if(p.heavy&&Math.random()<0.4)burst(p.pos.x,p.pos.y,p.pos.z,1,'moni',0.5);}}
   S.mons=S.mons.filter(m=>m.alive);
   const tg=playerAim();if(tg){aimMarker.visible=true;aimMarker.position.set(tg.pos.x,0.06,tg.pos.z);aimMarker.scale.setScalar(tg.type==='boss'||tg.isFire?2:1);aimMarker.rotation.y+=dt*2;}else aimMarker.visible=false;
 }
@@ -2123,7 +2161,7 @@ function animate(dt,now){
     g.position.set(m.pos.x,0,m.pos.z);g.rotation.y=lerpA(g.rotation.y,m.face,Math.min(1,dt*14));
     animCast(m.mesh,sp,m.phase,dt,now,m.throwAnim>0?m.throwAnim/0.18:0,m.flash>0,m.inv);if(m.mesh.X){animAsset(m.mesh.X,dt,sp,m.throwAnim>0,m.flash>0,BOT.speed);setAssetFlash(m.mesh.X,m.flash>0);}if(m.throwAnim>0)m.throwAnim-=dt;
     for(const fp of m.mesh.flashParts)fp.material=m.flash>0?flashM:m.mesh.teamMat;
-    m.mesh.rig.visible=m.inv>0?(Math.floor(now/90)%2===0):true;
+    m.mesh.rig.visible=m.inv>0?(Math.floor(now/90)%2===0):true;updateAura(m,dt,now);
     m.mesh.bundle.visible=m.carry>0;m.mesh.bundle.scale.setScalar(0.7+Math.min(1,m.carry/CARRY_MAX)*0.6);
     if(g.userData.arrow)g.userData.arrow.position.y=3.0+Math.sin(now/220)*0.12;
     setBar(m.mesh.bar,m.pos.x,3.3,m.pos.z,m.hp/MAXHP);}
