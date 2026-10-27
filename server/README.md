@@ -24,6 +24,7 @@ Obre **https://castaween-relay.carrotrevoltstudio.workers.dev/estat** (s'actuali
 - **Ara**: persones connectades al servidor, sales obertes i quanta gent hi ha jugant, mirant o entrant a cada sala.
 - **Avui** i **Últims dies**: dispositius diferents que han jugat cada dia, separats per mode local, en línia i espectador, partides iniciades i màxim de gent connectada alhora. El mode local també compta: en començar una partida local el joc envia un avís al servidor (si no hi ha Internet, la partida funciona igual i no es compta).
 - No es guarda cap nom ni nickname: cada navegador té un identificador aleatori i el servidor només en desa un resum per comptar-lo una vegada al dia. Les dades diàries es conserven 60 dies. JSON a `/api/estat`.
+- **Hores de connexió**: sessions WebSocket anònimes de professor, jugadors i espectadors, amb sala, entrada, sortida i durada (hora de Catalunya). La durada activa s'actualitza cada 5 s; les sessions tancades conserven la durada final. Es mostren les actives i les 100 més recents i es conserva l'historial 60 dies. Si una sala deixa d'informar durant 3 hores, es marca la sortida com a aproximada amb l'última hora confirmada. El mode local només registra inicis, no durades. El registre de sessions comença amb aquest desplegament; les connexions anteriors no tenen hora d'entrada recuperable.
 
 ## Arquitectura
 

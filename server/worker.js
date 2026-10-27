@@ -33,7 +33,8 @@ export class Room {
     if (!this.env?.PRESENCE || !this.code) return;
     const all = this.sockets().map(s => s.deserializeAttachment()), open = all.some(a => a.role === 'host');
     const n = f => all.filter(a => a.role === 'client' && f(a)).length;
-    const body = JSON.stringify({ code: this.code, open, jugadors: n(a => a.joined && !a.spectator), espectadors: n(a => a.joined && a.spectator), entrant: n(a => !a.joined) });
+    const sessions = all.filter(a => Number.isFinite(a.connectedAt)).map(a => ({ id: a.id, inici: a.connectedAt, tipus: a.role === 'host' ? 'professor' : !a.joined ? 'entrant' : a.spectator ? 'espectador' : 'jugador' }));
+    const body = JSON.stringify({ code: this.code, open, sessions, jugadors: n(a => a.joined && !a.spectator), espectadors: n(a => a.joined && a.spectator), entrant: n(a => !a.joined) });
     const p = presence(this.env).fetch('https://presence/report', { method: 'POST', body }).catch(() => {});
     try { this.state.waitUntil?.(p); } catch {}
     return p;
@@ -47,7 +48,7 @@ export class Room {
     const host = this.host(), [client, socket] = Object.values(new WebSocketPair());
     this.state.acceptWebSocket(socket);
     const id = crypto.randomUUID();
-    socket.serializeAttachment({ id, role, joined: false, window: 0, count: 0, last: 0 });
+    socket.serializeAttachment({ id, role, connectedAt: Date.now(), joined: false, window: 0, count: 0, last: 0 });
     if ((role === "host" && host) || (role === "client" && !host) || this.sockets().length > 151) {
       socket.serializeAttachment({ id, role: "rejected", closed: true });
       this.send(socket, { t: "error", error: role === "host" && host ? "ocupada" : !host ? "inexistent" : "limit" });
@@ -66,6 +67,10 @@ export class Room {
     socket.serializeAttachment(a);
     if (a.role === "host") {
       if (m.t !== "estat") return;
+      // Refresh presence from existing traffic, including after DO hibernation.
+      if (now - (a.presenceAt || 0) >= 60000) {
+        a.presenceAt = now; socket.serializeAttachment(a); this._code ??= a.code; this.report();
+      }
       // Some school proxies time out one-way sockets. An outgoing ack is free,
       // needs no timer and keeps the host connection bidirectional.
       if (now - (a.ack || 0) >= 1000) {
