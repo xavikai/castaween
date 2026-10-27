@@ -1252,7 +1252,7 @@ async function loadProposals(raw,kind){const list=[],ids=new Set();for(const c o
   if(c.integrat){list.push({id,integrat:true,nom:c.nom||'Original'});ids.add(id);continue;}
   try{const A=await loadGLB(modelURL(c.fitxer),kind);if(Number.isFinite(c.altura)&&c.altura>0){const ratio=c.altura/BUDGET[kind].h;A.k*=ratio;A.off.multiplyScalar(ratio);A.th/=ratio;}Object.assign(A,{id,nom:c.nom||c.fitxer,nomCombat:c.nomCombat||'',autor:c.autor||'',curs:c.curs||''});list.push(A);ids.add(id);}catch(e){ASSETS.errors.push(c.fitxer+': '+e.message);}}
   return list;}
-function propAssignments(models,places,round){const groups=new Map();if(!models.length)return groups;places.forEach((pl,i)=>{const A=models[((round-1)*places.length+i)%models.length];if(!groups.has(A))groups.set(A,[]);groups.get(A).push(pl);});return groups;}
+function propAssignments(models,places,round,cat){const groups=new Map();if(!models.length)return groups;if(cat==='foguera'||cat==='paradeta'){if(places.length)groups.set(models[(round-1)%models.length],places);return groups;}places.forEach((pl,i)=>{const A=models[((round-1)*places.length+i)%models.length];if(!groups.has(A))groups.set(A,[]);groups.get(A).push(pl);});return groups;}
 function nearestPropPlace(places,x,z){let nearest=0,distance=Infinity;places.forEach((p,i)=>{const d=(p.x-x)**2+(p.z-z)**2;if(d<distance){distance=d;nearest=i;}});return nearest;}
 // Keep the actual original geometry at the positions assigned to the built-in variant.
 // Cache transforms once, so alternating rounds never loses the hidden instances.
@@ -1271,7 +1271,7 @@ function showOriginalProps(P,places){
 }
 // Static instances are batched by proposal, preserving instancing on mobile.
 function applyProp(cat,models,round){models=Array.isArray(models)?models:[models];ASSETS.prop[cat]=models;const P=PROPS[cat];if(!P||!models.length)return;
-  round=round||S.round||1;const assignments=propAssignments(models,P.places,round),originals=[];for(const [A,places]of assignments)if(A.integrat)originals.push(...places);showOriginalProps(P,originals);
+  round=round||S.round||1;const assignments=propAssignments(models,P.places,round,cat),originals=[];for(const [A,places]of assignments)if(A.integrat)originals.push(...places);showOriginalProps(P,originals);
   if(P.applied)P.applied.forEach(o=>{if(o.parent)o.parent.remove(o);o.traverse(m=>{if(m.isMesh){for(const mat of [].concat(m.material))mat.dispose();}});if(o.dispose)o.dispose();});P.applied=[];
   for(const [A,places]of assignments){if(A.integrat)continue;
     if(BUDGET[cat].team||P.places.length<=8){places.forEach(pl=>{const g=new THREE.Group();g.userData.assetId=A.id;g.position.set(pl.x,pl.y,pl.z);g.rotation.y=pl.ry||0;g.scale.setScalar(pl.s||1);

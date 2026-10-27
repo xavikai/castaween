@@ -31,6 +31,19 @@ test('scenery distributes models evenly, rotating the next batch each round incl
   assert.equal([...c.propAssignments(models,[{}],7).keys()][0].id,6);
   const counts=[...c.propAssignments(models,Array.from({length:50},()=>({})),1).values()].map(v=>v.length);assert.equal(Math.max(...counts)-Math.min(...counts),1);
 });
+
+test('all five teams share the same fire and stall model each round, including original rounds',()=>{
+  const c=fixture(),models=[{id:'original',integrat:true},{id:'student-a'},{id:'student-b'}],places=Array.from({length:5},(_,team)=>({team}));
+  for(const kind of ['foguera','paradeta'])for(let round=1;round<=6;round++){
+    const groups=c.propAssignments(models,places,round,kind);
+    assert.equal(groups.size,1,kind+' round '+round);
+    const [[model,assigned]]=groups;
+    assert.equal(model,models[(round-1)%3]);
+    assert.equal(assigned.length,5);assert.ok(places.every(p=>assigned.includes(p)));
+  }
+  assert.equal(c.propAssignments(models,[],1,'foguera').size,0);
+  assert.equal(c.propAssignments(models,places,1,'lapida').size,3,'other scenery still mixes variants');
+});
 test('network snapshots preserve the chosen model for every dynamic asset',()=>{
   const g=id=>({userData:{assetId:id}}),o=(id,extra={})=>({pos:{x:1,y:0,z:2},mesh:{g:g(id)},g:g(id),vel:{x:0,z:0},...extra});
   const c={S:{cast:[],mons:[o('monster',{hp:4,type:'pumpkin'})],logs:[o('log')],pans:[o('sweet')],crates:[o('box')],towers:[o('tower',{team:{id:0},hp:80})],puddles:[]},projPool:[],netId:o=>o.g.userData.assetId,netRound:n=>n};
