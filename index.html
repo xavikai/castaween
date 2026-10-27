@@ -513,7 +513,7 @@ addEventListener('resize',()=>{clearTimeout(fitLabel.t);fitLabel.t=setTimeout(()
 function rollTeamNames(){const pool=TEAM_NAMES.slice();for(const t of TEAMS){const n=pool.splice(Math.floor(Math.random()*pool.length),1)[0];t.short=n;t.name='Els '+n;drawSign(t);}}
 let SLOTS=15,BOT_FILL=10;const ROUND=300,TURN=90,RESPAWN=3,ARENA_R=42,MAXHP=100,PSPEED=16,GRAV=18,BASE_R=33,NIGHT=60,MONI_MAX=3,MONI_R=2.8;
 const TOWER_LV=[null,{cost:8,hp:80,cd:1.0,range:9.5,dmg:8,kind:'nut',label:'Castanyes'},{cost:12,hp:130,cd:0.65,range:11,dmg:10,kind:'fire',label:'Castanyes de foc'},{cost:18,hp:180,cd:0.5,range:12.5,dmg:13,kind:'fire',splash:3,label:'Foc i moniatos'}];
-const CARRY_MAX=10,TOWER_COST=8,TOWER_MAX=3,PVP_DMG=9,TOWER_DMG=8,FIRE_R=1.5,DELIVER_R=3.2,HEAL_R=4.2,BASE_HEAL=18,START_STOCK=10;
+const CARRY_MAX=10,TOWER_COST=8,TOWER_MAX=3,PVP_DMG=9,TOWER_DMG=8,FIRE_R=1.5,DELIVER_R=3.2,HEAL_R=6.0,BASE_HEAL=16,START_STOCK=10;
 const BOT={speed:5.0,cd:1.5,engage:14},PLAYER_SPEED=5.6;
 const WEAP={ // armes que s'agafen de caixes pel camp; mateixes per a persones i bots
   fire:{ammo:12,cd:0.42,label:'Foc',name:'castanyes de foc',col:'#ff5a1e',grad:'#ffb36a,#ff5a1e 55%,#a8240a',shadow:'#6a1606'},
@@ -1587,7 +1587,9 @@ function botUpdate(m,dt){
   let goal=null;
   if(m.hp<45){let bd=16;for(const p of S.pans){const d=Math.hypot(p.x-m.pos.x,p.z-m.pos.z);if(d<bd){bd=d;goal=p;}}}
   const dHome=Math.hypot(home.x-m.pos.x,home.z-m.pos.z);
-  if(!goal&&(m.hp<45||m.carry>=5||(m.carry>0&&(m.role==='d'||S.time<12))))goal={x:home.x,z:home.z};
+  ai.heal=m.hp<45||(ai.heal&&m.hp<88);
+  if(!goal&&ai.heal){const a=t.angle+Math.PI+(ai.ang||0)*0.85;goal={x:home.x+Math.cos(a)*3.1,z:home.z+Math.sin(a)*3.1};}
+  if(!goal&&(m.carry>=5||(m.carry>0&&(m.role==='d'||S.time<12))))goal={x:home.x,z:home.z};
   if(ai.t<=0||!ai.target||ai.target.alive===false||ai.target.state&&ai.target.state!=='active'||(ai.target.hp!==undefined&&ai.target.hp<=0)){
     ai.t=rand(.4,.9);if(Math.random()<.3)ai.strafe*=-1;ai.dist=rand(6,9);ai.ang=clamp((ai.ang??rand(-.9,.9))+rand(-.35,.35),-1.05,1.05);ai.rad=clamp((ai.rad??15)+rand(-2.5,2.5),9,22);
     let best=null,bs=1e9;
@@ -1803,6 +1805,7 @@ function updateSpecHud(){
 let hudT=0;
 function updateHud(dt){updateTips(dt);if(FA.t>0){FA.t-=dt;if(FA.t<=0)$('#fireAlert').classList.remove('on');}if(S.baseAlert>0)S.baseAlert-=dt;
   if(bannerT>0){bannerT-=dt;if(bannerT<=0)$('#banner').style.opacity='0';}
+  if(!S.spectator&&S.player){const P=S.player,t=P.team,hr=P.state==='active'?P.hp/MAXHP:0,inHeal=P.state==='active'&&P.hp<MAXHP&&Math.hypot(P.pos.x-t.base.x,P.pos.z-t.base.z)<HEAL_R;$('#hpBar').style.width=(hr*100)+'%';$('#hpTxt').textContent=P.state==='active'?Math.max(0,Math.ceil(P.hp)):0;$('#hpBox').classList.toggle('low',hr<0.3&&!inHeal);$('#hpBox').classList.toggle('heal',inHeal);}
   hudT-=dt;if(hudT>0)return;hudT=0.1;
   $('#timeLbl').textContent=fmt(S.time);$('#roundLbl').textContent=S.night?'Nit de Difunts':'Ronda '+S.round;$('#clock').classList.toggle('night',S.night);
   const LEAD=leaderTeam();TEAMS.forEach((t,i)=>{if(chips[i].n.textContent!==t.short){chips[i].n.textContent=t.short;fitLabel(chips[i].n,10);drawSign(t);}chips[i].el.classList.toggle('lead',t===LEAD);chips[i].s.textContent=t.stock;chips[i].m.textContent=t.queue.length?`llenya · cua ${t.queue.length}`:'llenya';chips[i].el.classList.toggle('me',!S.spectator&&t.id===S.pTeam);chips[i].el.classList.toggle('hit',t.hitT>0||(!S.spectator&&t.id===S.pTeam&&S.baseAlert>0));});
@@ -2178,8 +2181,8 @@ function step(dt){
         if(c.isPlayer&&c.carry===SUPER_LOAD&&!(c.superT>0)&&!(c.superCd>0)){popText(c.pos.x,3.2,c.pos.z,'⚡ Supercàrrega!','gold');hint('super');}
         if(c.carry>=CARRY_MAX){if(c.isPlayer){popText(c.pos.x,3,c.pos.z,'Ple!','gold');hint('full');}break;}}}
     const dBase=Math.hypot(c.pos.x-t.base.x,c.pos.z-t.base.z);
-    if(c.carry>0&&dBase<DELIVER_R+0.4){const v=c.carry*(S.night?2:1);if(c.carry>=SUPER_LOAD&&!(c.superT>0)&&!(c.superCd>0))startSuper(c);t.stock+=v;c.delivered+=v;if(c.hp<MAXHP)c.hp=Math.min(MAXHP,c.hp+c.carry*4);sparks(t.base.x,2,t.base.z,8+v*2,0xffc050,5);if(c.isPlayer){popText(t.base.x,3,t.base.z,'+'+v+' llenya','wood');sfx('deliver');hint('deliver');}burst(t.base.x,2,t.base.z,8,'ember',3);bump(t.id);if(c.isPlayer)addFeed(`${who(c)} alimenta la foguera`,'',`+${v}`);c.carry=0;}
-    if(dBase<HEAL_R){if(c.burn>0)c.burn=0;if(c.hp<MAXHP){const h0=c.hp;c.hp=Math.min(MAXHP,c.hp+BASE_HEAL*dt);c.healAcc=(c.healAcc||0)+(c.hp-h0);if(Math.random()<dt*9)burst(c.pos.x+rand(-.35,.35),0.9,c.pos.z+rand(-.35,.35),1,'heal',2);if(c.isPlayer&&(c.healAcc>=10||c.hp>=MAXHP&&c.healAcc>=2)){const gain=Math.round(c.healAcc);c.healAcc=0;sfx('heal');popText(c.pos.x,2.7,c.pos.z,c.hp>=MAXHP?'Vida plena!':`+${gain} vida`,'heal');}}}else c.healAcc=0;
+    if(c.carry>0&&dBase<DELIVER_R+0.4){const v=c.carry*(S.night?2:1);if(c.carry>=SUPER_LOAD&&!(c.superT>0)&&!(c.superCd>0))startSuper(c);t.stock+=v;c.delivered+=v;sparks(t.base.x,2,t.base.z,8+v*2,0xffc050,5);if(c.isPlayer){popText(t.base.x,3,t.base.z,'+'+v+' llenya','wood');sfx('deliver');hint('deliver');}burst(t.base.x,2,t.base.z,8,'ember',3);bump(t.id);if(c.isPlayer)addFeed(`${who(c)} alimenta la foguera`,'',`+${v}`);c.carry=0;}
+    if(dBase<HEAL_R){if(c.burn>0)c.burn=0;if(c.hp<MAXHP){const h0=Math.ceil(c.hp);c.hp=Math.min(MAXHP,c.hp+BASE_HEAL*dt);const h1=Math.ceil(c.hp);c.healSfxT=(c.healSfxT||0)-dt;if(Math.random()<dt*14)burst(c.pos.x+rand(-.4,.4),0.9,c.pos.z+rand(-.4,.4),1,'heal',2.2);if(c.isPlayer&&h1>h0&&(h1%2===0||c.hp>=MAXHP)){popText(c.pos.x+rand(-.25,.25),2.65,c.pos.z,c.hp>=MAXHP?'Vida plena!':`+${h1-h0}`,'heal');if(c.hp>=MAXHP||c.healSfxT<=0){c.healSfxT=0.38;sfx('heal');}}}}else c.healSfxT=0;
     if(!c.weapon||c.isPlayer||c.peer)for(let i=S.crates.length-1;i>=0;i--){const q=S.crates[i];if(Math.hypot(c.pos.x-q.x,c.pos.z-q.z)<1.1){S.crates.splice(i,1);scene.remove(q.g);shock(q.x,q.z,1.8,new THREE.Color(WEAP[q.type].col).getHex());c.weapon=q.type;if(c.isPlayer)sfx('weapon');c.ammo=WEAP[q.type].ammo;if(q.type==='super'){c.superT=SUPER_T;sfx('boss',q.x,q.z);flash(q.x,q.z,6);if(!c.isPlayer)addFeed(`${who(c)} es transforma en <b style="color:#ffd400">Supercastanyera</b>`,'');}burst(q.x,1,q.z,12,q.type==='bazooka'?'moni':'ember',3.5);
       if(c.isPlayer){popText(c.pos.x,2.8,c.pos.z,q.type==='super'?`${SUPER_T} s!`:`${WEAP[q.type].label} ×${c.ammo}`,'gold');banner((WEAP[q.type].title||WEAP[q.type].label)+'!',WEAP[q.type].col);addFeed(`${who(c)} agafa ${WEAP[q.type].name}`,q.type==='super'?` · ${SUPER_T} s`:` · ×${c.ammo}`);}break;}}
     for(let i=S.pans.length-1;i>=0;i--){const p=S.pans[i];if(Math.hypot(c.pos.x-p.x,c.pos.z-p.z)<1.0){S.pans.splice(i,1);scene.remove(p.g);
@@ -2259,7 +2262,8 @@ function animate(dt,now){
     if(t.stallGroup)t.stallGroup.position.set(t.stallPos.x+jx,0,t.stallPos.z+jz);
     for(const[m,mat]of t.flashParts||[])m.material=fl?flashM:mat;
     for(const cat of['foguera','paradeta'])for(const o of PROPS[cat]?.applied||[])if(o.userData.team===t){o.position.set(o.userData.ox+jx,0,o.userData.oz+jz);if(o.userData.X)setAssetFlash(o.userData.X,fl);}
-    if(t.ring){t.ring.material.color.setHex(al?(Math.floor(now/110)%2?0xff3a2e:0xffffff):t.color);t.ring.material.opacity=al?0.88:0.55;t.ring.scale.setScalar(al?1+Math.sin(now/65)*0.09:1);}
+    const hl=!al&&!S.spectator&&t.id===S.pTeam&&S.player&&S.player.state==='active'&&S.player.hp<MAXHP&&Math.hypot(S.player.pos.x-t.base.x,S.player.pos.z-t.base.z)<HEAL_R;
+    if(t.ring){t.ring.material.color.setHex(al?(Math.floor(now/110)%2?0xff3a2e:0xffffff):hl?0x8fe07a:t.color);t.ring.material.opacity=al?0.88:hl?0.82:0.55;t.ring.scale.setScalar(al?1+Math.sin(now/65)*0.09:hl?1+Math.sin(now/110)*0.05:1);}
     t.light.color.setHex(hit?0xff2a1a:0xff7a20);t.glow.material.color.setHex(hit?0xff2a1a:0xff8a2a);});
   portal.rotation.y+=dt*0.4;
 }
