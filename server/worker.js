@@ -2,6 +2,9 @@
 import {UPLOAD_PAGE,REVIEW_PAGE,VIEWER_JS} from './model-pages.js';
 import {PALETTE_PNG_BASE64} from './palette-image.js';
 export {ReviewStore} from './review-store.js';
+import {STATUS_PAGE} from './presence.js';
+export {Presence} from './presence.js';
+const presence = env => env.PRESENCE.get(env.PRESENCE.idFromName('global'));
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -11,6 +14,10 @@ export default {
       if(request.method!=='GET')return new Response('Method not allowed',{status:405});
       return new Response(url.pathname==='/models'?UPLOAD_PAGE:url.pathname==='/revisio'?REVIEW_PAGE:VIEWER_JS,{headers:{'Content-Type':url.pathname.endsWith('.js')?'text/javascript; charset=utf-8':'text/html; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' data: blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"}});
     }
+    if(url.pathname==='/estat'&&request.method==='GET')return new Response(STATUS_PAGE,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
+    if(url.pathname==='/api/estat'&&request.method==='GET')return presence(env).fetch('https://presence/estat');
+    // El joc l'envia com a text/plain per evitar la consulta CORS prèvia.
+    if(url.pathname==='/api/entrada'&&request.method==='POST'){const body=await request.text();if(body.length>300)return new Response('',{status:413});return presence(env).fetch('https://presence/entrada',{method:'POST',body});}
     if(url.pathname.startsWith('/api/models/'))return env.REVIEWS.get(env.REVIEWS.idFromName('classroom')).fetch(request);
     const match = /^\/room\/(\d{4})$/.exec(url.pathname);
     if (!match) return new Response("Castaween WebSocket relay", { status: 404 });
@@ -20,7 +27,18 @@ export default {
 };
 
 export class Room {
-  constructor(state) { this.state = state; }
+  constructor(state, env) { this.state = state; this.env = env; }
+  // Envia només números al comptador global (cap nom). Si falla, la partida continua igual.
+  report() {
+    if (!this.env?.PRESENCE || !this.code) return;
+    const all = this.sockets().map(s => s.deserializeAttachment()), open = all.some(a => a.role === 'host');
+    const n = f => all.filter(a => a.role === 'client' && f(a)).length;
+    const body = JSON.stringify({ code: this.code, open, jugadors: n(a => a.joined && !a.spectator), espectadors: n(a => a.joined && a.spectator), entrant: n(a => !a.joined) });
+    const p = presence(this.env).fetch('https://presence/report', { method: 'POST', body }).catch(() => {});
+    try { this.state.waitUntil?.(p); } catch {}
+    return p;
+  }
+  get code() { return this._code ?? this.state.id?.name; }
   sockets() { return this.state.getWebSockets().filter(s => s.readyState === 1 && !s.deserializeAttachment()?.closed); }
   host() { return this.sockets().find(s => s.deserializeAttachment()?.role === "host"); }
   send(s, message) { try { s.send(JSON.stringify(message)); } catch { this.webSocketClose(s); } }
@@ -34,7 +52,7 @@ export class Room {
       socket.serializeAttachment({ id, role: "rejected", closed: true });
       this.send(socket, { t: "error", error: role === "host" && host ? "ocupada" : !host ? "inexistent" : "limit" });
       socket.close(1008, "Sala no disponible");
-    } else this.send(socket, { t: "hello", id, code: url.pathname.split("/").pop() });
+    } else { this._code = url.pathname.split("/").pop(); this.send(socket, { t: "hello", id, code: this._code }); socket.serializeAttachment({ ...socket.deserializeAttachment(), code: this._code }); this.report(); }
     return new Response(null, { status: 101, webSocket: client });
   }
   webSocketMessage(socket, raw) {
@@ -65,7 +83,8 @@ export class Room {
     if (!host) { this.send(socket, { t: "error", error: "amfitrio" }); return socket.close(1001, "Amfitrió desconnectat"); }
     if (m.t === "join" && !a.joined) {
       if (!Number.isInteger(m.curs) || m.curs < 0 || m.curs > 4 || typeof m.nom !== "string" || !m.look || typeof m.look !== "object" || JSON.stringify(m.look).length > 1500) return socket.close(1008, "Entrada incorrecta");
-      a.joined = true; socket.serializeAttachment(a);
+      a.joined = true; a.spectator = m.spectator === true; socket.serializeAttachment(a);
+      this._code ??= a.code; this.report();
       this.send(host, { t: "join", id: a.id, curs: m.curs, nom: m.nom.slice(0, 16), look: m.look, spectator: m.spectator === true });
     } else if (m.t === "input" && a.joined) {
       if (![m.mx, m.mz].every(v => Number.isFinite(v) && Math.abs(v) <= 1)) return;
@@ -88,6 +107,7 @@ export class Room {
       }
     } else if (a.joined) { const host = this.host(); if (host) this.send(host, { t: "leave", id: a.id }); }
     try { socket.close(1000); } catch {}
+    this._code ??= a.code; this.report();
   }
   webSocketError(socket) { this.webSocketClose(socket); }
 }

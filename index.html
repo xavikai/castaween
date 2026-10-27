@@ -1835,6 +1835,7 @@ function updateHud(dt){updateTips(dt);if(FA.t>0){FA.t-=dt;if(FA.t<=0)$('#fireAle
 function resetRound(){refreshProps(S.round);S.time=ROUND;S.spawnT=2.5;S.panT=3;S.bosses=0;S.night=false;clearRound();TEAMS.forEach(t=>{t.stock=START_STOCK;t.delivered=0;t.hitT=0;});for(let i=0;i<3;i++)spawnPanellet(false);for(let i=0;i<3;i++)spawnCrate();}
 async function startGame(){
   await assetsReady;
+  if(NET.role!=='host'&&NET.role!=='client')netTrack('local');
   audioInit();S.tipT=0;S.tipI=-1;
   applyQuality($('#hq').checked);
   S.pTeam=Math.floor(Math.random()*TEAMS.length);S.simFull=NET.role==='host'?false:$('#simFull').checked;S.clock=NET.role==='host'?1:$('#accel').checked?6:1;$('#accLbl').hidden=S.clock===1;
@@ -1950,7 +1951,7 @@ $('#backBtn').addEventListener('click',()=>{if(S.spectator)showCard('home');else
 $('#codeIn').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,4);$('#codeErr').textContent='';e.target.classList.remove('bad');});
 async function join(){const v=$('#codeIn').value;if(v.length<4){$('#codeErr').textContent='Escriu els 4 números de la pantalla de la sala.';$('#codeIn').classList.add('bad');return;}
   await NET.config;if(NET.url&&!NET.offline){$('#joinBtn').disabled=true;
-    try{netClose();await netConnect(v,'client');NET.role='client';NET.localPaused=false;S.code=v;S.clock=1;clearWorld();S.player=null;S.follow=null;netWaiting();NET.teamNoted=false;netSend(joinMsg());}
+    try{netClose();await netConnect(v,'client');NET.role='client';NET.localPaused=false;S.code=v;S.clock=1;clearWorld();S.player=null;S.follow=null;netWaiting();NET.teamNoted=false;netSend(joinMsg());netTrack(S.spectator?'espectador':'online');}
     catch(e){netClose();if(e.message==='inexistent'||e.message==='limit'){$('#codeErr').textContent=e.message==='inexistent'?'Aquest codi no correspon a cap sala oberta. Revisa la pantalla del professor.':'La sala ha arribat al límit de connexions.';$('#codeIn').classList.add('bad');}else{startLocalGame();banner('Sense connexió · partida amb bots','var(--ember)');}}
     finally{$('#joinBtn').disabled=false;}return;}
   if(v!==S.code){$('#codeErr').textContent='Aquest codi no correspon a cap sala oberta. Revisa la pantalla.';$('#codeIn').classList.add('bad');return;}startGame();}
@@ -1964,6 +1965,9 @@ const roomCard=document.createElement('div');roomCard.id='onlineRoom';roomCard.c
 roomCard.innerHTML='<h2>Sala de Castaween</h2><div class="screen"><div class="big" id="onlineCode">····</div><p id="onlineStatus" role="status">Connectant…</p></div><div id="onlineRoster"></div><div class="btns"><button class="btn" id="onlineStart">Comença</button><button class="btn ghost" id="onlineLeave">Surt de la sala</button></div>';
 $('#lobby').appendChild(roomCard);
 const offlineButton=document.createElement('button');offlineButton.className='btn ghost';offlineButton.id='offlineBtn';offlineButton.textContent='Mode local · bots';$('#playBtn').after(offlineButton);offlineButton.addEventListener('click',()=>{NET.offline=true;S.spectator=false;audioInit();showCard('step1');});
+// Comptador diari de Castaween: un identificador aleatori per dispositiu, cap nom.
+function netTrack(mode){NET.config.then(()=>{if(!NET.url)return;const id=(()=>{try{let v=localStorage.getItem('castaween-dispositiu');if(!v){v=crypto.randomUUID();localStorage.setItem('castaween-dispositiu',v);}return v;}catch(e){return 'sense-'+Math.random().toString(36).slice(2,12);}})();
+  fetch(NET.url.replace(/^ws/,'http')+'/api/entrada',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({mode,dispositiu:id}),keepalive:true}).catch(()=>{});});}
 function netSend(m){if(NET.ws&&NET.ws.readyState===WebSocket.OPEN&&NET.ws.bufferedAmount<256000){NET.ws.send(JSON.stringify(m));return true;}return false;}
 function netClose(){const ws=NET.ws;NET.ws=null;NET.role=null;if(ws)ws.close();for(const e of NET.replicas.values())netDispose(e);NET.peers.clear();NET.replicas.clear();NET.previous.clear();NET.events=[];NET.input='';NET.received=0;NET.seq=0;NET.resync=false;NET.tap=NET.build=NET.upgrade=false;}
 function netRoster(){

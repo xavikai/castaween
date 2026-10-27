@@ -17,6 +17,14 @@ Hi ha 10 places per curs, amb bots a les places buides. La persona número 11 va
 
 **Mode local · bots** està sempre disponible: **nickname i curs → Comença partida local**, sense escriure cap codi ni obrir cap WebSocket. Si falta la configuració, el joc passa directament a una partida local. Si no es pot establir la connexió, s'inicia una partida local amb un avís. Un codi inexistent mostra un error i permet corregir-lo. Una interrupció durant la partida retorna al menú; es pot tornar a entrar o triar el mode local.
 
+## Gent connectada i registre diari
+
+Obre **https://castaween-relay.carrotrevoltstudio.workers.dev/estat** (s'actualitza cada 5 s):
+
+- **Ara**: persones connectades al servidor, sales obertes i quanta gent hi ha jugant, mirant o entrant a cada sala.
+- **Avui** i **Últims dies**: dispositius diferents que han jugat cada dia, separats per mode local, en línia i espectador, partides iniciades i màxim de gent connectada alhora. El mode local també compta: en començar una partida local el joc envia un avís al servidor (si no hi ha Internet, la partida funciona igual i no es compta).
+- No es guarda cap nom ni nickname: cada navegador té un identificador aleatori i el servidor només en desa un resum per comptar-lo una vegada al dia. Les dades diàries es conserven 60 dies. JSON a `/api/estat`.
+
 ## Arquitectura
 
 - `index.html` continua sent l'únic fitxer del joc. L'amfitrió executa la simulació existent de bots, monstres, projectils, llenya, fogueres, torradores, cues i rondes.
