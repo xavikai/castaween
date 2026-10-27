@@ -1,0 +1,27 @@
+// Uses the same Three.js r128 as the game, without WebGL or DOM.
+const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:assert/strict'), path = require('node:path');
+const THREE = require(path.resolve(process.argv[2]));
+assert.equal(THREE.REVISION, '128');
+const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+const scene = new THREE.Scene(), geometry = new THREE.BoxGeometry(), material = new THREE.MeshBasicMaterial();
+const instances = new THREE.InstancedMesh(geometry, material, 2);
+instances.setMatrixAt(0, new THREE.Matrix4().makeTranslation(0, 1, 0)); instances.setMatrixAt(1, new THREE.Matrix4().makeTranslation(10, 2, 0));
+const group = new THREE.Group(); group.position.set(10, 0, 0); group.add(new THREE.Mesh(geometry, material));
+const points = new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute([0, 3, 0, 10, 4, 0], 3)), new THREE.PointsMaterial());
+scene.add(instances, group, points);
+const places = [{ x: 0, z: 0 }, { x: 10, z: 0 }], P = { objs: [instances, group, points], places };
+const c = vm.createContext({ THREE, scene });
+vm.runInContext(html.slice(html.indexOf('function nearestPropPlace('), html.indexOf('// Static instances are batched')), c);
+const matrix = i => { const m = new THREE.Matrix4(); instances.getMatrixAt(i, m); return m; };
+c.showOriginalProps(P, [places[0]]);
+assert.equal(matrix(0).elements[13], 1); assert.equal(matrix(1).elements[13], -100000);
+assert.equal(group.visible, false); assert.equal(points.geometry.attributes.position.getY(1), -100000);
+c.showOriginalProps(P, [places[1]]);
+assert.equal(matrix(0).elements[13], -100000); assert.equal(matrix(1).elements[13], 2);
+assert.equal(group.visible, true); assert.equal(points.geometry.attributes.position.getY(1), 4);
+c.showOriginalProps(P, []); assert.ok(P.objs.every(o => !o.visible));
+c.showOriginalProps(P, places);
+assert.ok(P.objs.every(o => o.visible)); assert.equal(matrix(0).elements[13], 1); assert.equal(matrix(1).elements[13], 2);
+assert.equal(points.geometry.attributes.position.getY(0), 3); assert.equal(points.geometry.attributes.position.getY(1), 4);
+assert.equal(instances.geometry, geometry); assert.equal(instances.material, material);
+console.log('OK: original instanced geometry, groups and window glow points alternate and restore without losing transforms or materials.');

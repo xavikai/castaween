@@ -840,6 +840,7 @@ const MG={pump:new THREE.IcosahedronGeometry(0.62,1),eye:new THREE.TetrahedronGe
 function makeMonster(type,assetId){
   const g=new THREE.Group(),rig=new THREE.Group();g.add(rig);let flash=[];const legs=[];
   const MA=nextAsset('mon',MON_KEY[type],assetId);g.userData.assetId=MA?MA.id:'';
+  g.userData.enemyName=MA&&MA.nomCombat||MON[type].name;
   if(MA){const X=instAsset(MA,0xa35cff);rig.add(X.fit);const sh=new THREE.Mesh(G.shadow,shadowM);sh.position.y=0.03;sh.scale.setScalar(type==='boss'?2.2:1);g.add(sh);scene.add(g);markShadows(g);
     return{g,rig,legs,X,flashParts:[],teamMat:null,bar:makeBar(type==='boss'?2.2:0.9,barMonM)};}
   if(type==='ghost'){
@@ -1235,7 +1236,7 @@ for(const k in BUDGET)if(!BUDGET[k].clips)BUDGET[k].clips={};
 ASSETS.prop={};
 const PROP_NEUTRAL=0xff8a2a;
 // Both the legacy single model and the proposal array are accepted.
-function assetEntries(raw){return (Array.isArray(raw)?raw:[raw]).map(e=>typeof e==='string'?{fitxer:e}:e).filter(e=>e&&typeof e.fitxer==='string'&&e.fitxer.trim());}
+function assetEntries(raw){return (Array.isArray(raw)?raw:[raw]).map(e=>typeof e==='string'?{fitxer:e}:e).filter(e=>e&&(e.integrat===true||typeof e.fitxer==='string'&&e.fitxer.trim()));}
 function modelURL(file){return /^https?:\/\//.test(file)?file:'assets/'+file;}
 async function appendReviewedModels(man){try{
   await NET.config;if(!NET.url)return;const base=NET.url.replace(/^ws/,'http'),r=await fetch(base+'/api/models/approved',{cache:'no-store',signal:AbortSignal.timeout(6000)});if(!r.ok)return;
@@ -1244,18 +1245,35 @@ async function appendReviewedModels(man){try{
 }catch(e){console.warn('Castaween · catàleg de revisió no disponible; es conserven els models locals.');}}
 const assetTurns={};
 function nextAsset(group,kind,id){const list=ASSETS[group][kind]||[];
-  if(id!==undefined)return list.find(a=>a.id===id)||null;
-  if(!list.length)return null;const key=group+':'+kind,n=assetTurns[key]||0;assetTurns[key]=n+1;return list[n%list.length];}
+  if(id!==undefined){const A=list.find(a=>a.id===id);return A&&!A.integrat?A:null;}
+  if(!list.length)return null;const key=group+':'+kind,n=assetTurns[key]||0;assetTurns[key]=n+1;const A=list[n%list.length];return A.integrat?null:A;}
 async function loadProposals(raw,kind){const list=[],ids=new Set();for(const c of assetEntries(raw)){
-  const id=c.id||c.fitxer;if(ids.has(id)){ASSETS.errors.push(kind+': id repetit '+id);continue;}
-  try{const A=await loadGLB(modelURL(c.fitxer),kind);Object.assign(A,{id,nom:c.nom||c.fitxer,autor:c.autor||'',curs:c.curs||''});list.push(A);ids.add(id);}catch(e){ASSETS.errors.push(c.fitxer+': '+e.message);}}
+  const id=c.id||(c.integrat?'integrat-'+kind:c.fitxer);if(ids.has(id)){ASSETS.errors.push(kind+': id repetit '+id);continue;}
+  if(c.integrat){list.push({id,integrat:true,nom:c.nom||'Original'});ids.add(id);continue;}
+  try{const A=await loadGLB(modelURL(c.fitxer),kind);if(Number.isFinite(c.altura)&&c.altura>0){const ratio=c.altura/BUDGET[kind].h;A.k*=ratio;A.off.multiplyScalar(ratio);A.th/=ratio;}Object.assign(A,{id,nom:c.nom||c.fitxer,nomCombat:c.nomCombat||'',autor:c.autor||'',curs:c.curs||''});list.push(A);ids.add(id);}catch(e){ASSETS.errors.push(c.fitxer+': '+e.message);}}
   return list;}
 function propAssignments(models,places,round){const groups=new Map();if(!models.length)return groups;places.forEach((pl,i)=>{const A=models[((round-1)*places.length+i)%models.length];if(!groups.has(A))groups.set(A,[]);groups.get(A).push(pl);});return groups;}
+function nearestPropPlace(places,x,z){let nearest=0,distance=Infinity;places.forEach((p,i)=>{const d=(p.x-x)**2+(p.z-z)**2;if(d<distance){distance=d;nearest=i;}});return nearest;}
+// Keep the actual original geometry at the positions assigned to the built-in variant.
+// Cache transforms once, so alternating rounds never loses the hidden instances.
+function showOriginalProps(P,places){
+  if(!P.originalParts){scene.updateMatrixWorld(true);P.originalParts=P.objs.map(o=>{
+    const owner=p=>nearestPropPlace(P.places,p.x,p.z),point=new THREE.Vector3();
+    if(o.isInstancedMesh){const matrices=[],owners=[];for(let i=0;i<o.count;i++){const m=new THREE.Matrix4();o.getMatrixAt(i,m);matrices.push(m);point.setFromMatrixPosition(new THREE.Matrix4().multiplyMatrices(o.matrixWorld,m));owners.push(owner(point));}return{o,matrices,owners};}
+    if(o.isPoints){const positions=o.geometry.attributes.position.clone(),owners=[];for(let i=0;i<positions.count;i++){point.fromBufferAttribute(positions,i).applyMatrix4(o.matrixWorld);owners.push(owner(point));}return{o,positions,owners};}
+    point.setFromMatrixPosition(o.matrixWorld);return{o,owner:owner(point)};});}
+  const active=new Set(places.map(p=>P.places.indexOf(p))),hidden=new THREE.Matrix4().makeScale(0.000001,0.000001,0.000001);hidden.setPosition(0,-100000,0);
+  for(const part of P.originalParts){const o=part.o;
+    if(part.matrices){o.visible=part.owners.some(i=>active.has(i));part.matrices.forEach((m,i)=>o.setMatrixAt(i,active.has(part.owners[i])?m:hidden));o.instanceMatrix.needsUpdate=true;}
+    else if(part.positions){o.visible=part.owners.some(i=>active.has(i));const pos=o.geometry.attributes.position;for(let i=0;i<pos.count;i++)pos.setXYZ(i,part.positions.getX(i),active.has(part.owners[i])?part.positions.getY(i):-100000,part.positions.getZ(i));pos.needsUpdate=true;}
+    else o.visible=active.has(part.owner);
+  }
+}
 // Static instances are batched by proposal, preserving instancing on mobile.
 function applyProp(cat,models,round){models=Array.isArray(models)?models:[models];ASSETS.prop[cat]=models;const P=PROPS[cat];if(!P||!models.length)return;
-  round=round||S.round||1;P.objs.forEach(o=>o.visible=false);
+  round=round||S.round||1;const assignments=propAssignments(models,P.places,round),originals=[];for(const [A,places]of assignments)if(A.integrat)originals.push(...places);showOriginalProps(P,originals);
   if(P.applied)P.applied.forEach(o=>{if(o.parent)o.parent.remove(o);o.traverse(m=>{if(m.isMesh){for(const mat of [].concat(m.material))mat.dispose();}});if(o.dispose)o.dispose();});P.applied=[];
-  for(const [A,places]of propAssignments(models,P.places,round)){
+  for(const [A,places]of assignments){if(A.integrat)continue;
     if(BUDGET[cat].team||P.places.length<=8){places.forEach(pl=>{const g=new THREE.Group();g.userData.assetId=A.id;g.position.set(pl.x,pl.y,pl.z);g.rotation.y=pl.ry||0;g.scale.setScalar(pl.s||1);
       const X=instAsset(A,pl.team?pl.team.color:PROP_NEUTRAL);g.userData.X=X;g.userData.team=pl.team;g.userData.ox=pl.x;g.userData.oz=pl.z;g.add(X.fit);(pl.parent||scene).add(g);markShadows(g);P.applied.push(g);});continue;}
     A.scene.updateMatrixWorld(true);const fitM=new THREE.Matrix4().compose(A.off,new THREE.Quaternion(),new THREE.Vector3(A.k,A.k,A.k)),UP=new THREE.Vector3(0,1,0);
@@ -1435,7 +1453,7 @@ function killMonster(mo,by){
   burst(mo.pos.x,1,mo.pos.z,mo.type==='boss'?22:12,mo.type==='ghost'?'ghost':'pump',5);
   for(let i=0;i<mo.def.drop;i++)dropLog(mo.pos.x+rand(-0.8,0.8),mo.pos.z+rand(-0.8,0.8));
   if(by&&by.kills!==undefined)by.kills++;
-  if(mo.type==='boss'){addFeed(`${by&&by.name?who(by):teamTag(by.team)} derrota el Carabassot`,' · deixa llenya i un bazooka');spawnCrate('bazooka',mo.pos.x+1.5,mo.pos.z);spawnPanellet(true,mo.pos.x-1.5,mo.pos.z);}
+  if(mo.type==='boss'){addFeed(`${by&&by.name?who(by):teamTag(by.team)} derrota ${esc(mo.mesh.g.userData.enemyName||mo.def.name)}`,' · deixa llenya i un bazooka');spawnCrate('bazooka',mo.pos.x+1.5,mo.pos.z);spawnPanellet(true,mo.pos.x-1.5,mo.pos.z);}
   else if(Math.random()<0.06)spawnPanellet(false,mo.pos.x,mo.pos.z);
 }
 function spawnPanellet(gold,x,z){
@@ -1645,7 +1663,7 @@ function monsterUpdate(mo,dt){
     if(mo.atk<=0){mo.atk=1.1;mo.lunge=0.2;
       if(!tg){knockFire(mo.goal,mo.def.knock,mo.pos.x,mo.pos.z,'mon');}
       else if(tg.isTower){damageTower(tg,mo.def.dmg,'mon');}
-      else if(tg.inv<=0){if(tg.isPlayer)sfx('hitMe');tg.hp-=mo.def.dmg;tg.flash=0.12;burst(tg.pos.x,1,tg.pos.z,4,'purple',2.5);if(tg.hp<=0)downCast(tg,mo.def.name);}
+      else if(tg.inv<=0){if(tg.isPlayer)sfx('hitMe');tg.hp-=mo.def.dmg;tg.flash=0.12;burst(tg.pos.x,1,tg.pos.z,4,'purple',2.5);if(tg.hp<=0)downCast(tg,mo.mesh.g.userData.enemyName||mo.def.name);}
     }}
 }
 function damageTower(tw,n,src){tw.hp-=n;tw.flash=0.14;tw.team.hitT=Math.max(tw.team.hitT||0,0.45);if(src&&S.player&&!S.spectator&&S.phase==='play'&&tw.team===S.player.team)fireAlert(src);if(NET.role==='host')NET.events.push({t:'atacBase',team:tw.team.id,n:0,x:netRound(tw.pos.x),z:netRound(tw.pos.z),src:src==='mon'?'mon':(src&&src.short)||''});sparks(tw.pos.x,1.1,tw.pos.z,8,0xff6a20,4);burst(tw.pos.x,0.9,tw.pos.z,4,'dust',2.5);if(tw.hp<=0){S.towers.splice(S.towers.indexOf(tw),1);scene.remove(tw.mesh.g);scene.remove(tw.mesh.bar.g);shock(tw.pos.x,tw.pos.z,2.2,0xff4a20);burst(tw.pos.x,0.8,tw.pos.z,14,'dust',4);addFeed(`Cau una torradora de ${teamTag(tw.team)}`);}}
@@ -2149,7 +2167,7 @@ function step(dt){
   // Halloween
   S.spawnT-=dt;const maxAlive=Math.round((10+f*22)*(S.night?1.6:1));
   if(S.spawnT<=0&&S.mons.length<maxAlive){spawnMonster(Math.random()<0.35?'ghost':'pumpkin');S.spawnT=rand(0.5,0.9)/(S.night?2:1)/Math.max(1,S.clock*0.5);}
-  const bossAt=[0.25,0.55,0.85];if(S.bosses<3&&f>=bossAt[S.bosses]){S.bosses++;const b=spawnMonster('boss');banner('Arriba el Carabassot!');sfx('boss');addFeed('<b style="color:var(--hallow)">El Carabassot</b> va cap a',` ${b.goal.short}`);}
+  const bossAt=[0.25,0.55,0.85];if(S.bosses<3&&f>=bossAt[S.bosses]){S.bosses++;const b=spawnMonster('boss'),name=b.mesh.g.userData.enemyName||b.def.name;banner('Arriba '+name+'!');sfx('boss');addFeed('<b style="color:var(--hallow)">'+esc(name)+'</b> va cap a',` ${b.goal.short}`);}
   // panellets
   S.panT-=dt;if(S.panT<=0){S.panT=rand(4,6);if(S.pans.filter(p=>!p.gold).length<5)spawnPanellet(false);if(Math.random()<0.15&&!S.pans.some(p=>p.gold))spawnPanellet(true);}
   S.crateT-=dt;if(S.crateT<=0){S.crateT=rand(6,9);if(S.crates.length<5)spawnCrate();}

@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {validateGLB} from '../model-validation.js';
 const html=fs.readFileSync(new URL('../../index.html',import.meta.url),'utf8');
 function source(a,b){return html.slice(html.indexOf('function '+a+'('),html.indexOf(b,html.indexOf('function '+a+'(')));}
 function fixture(extra={}){const c={ASSETS:{mon:{},prop:{},errors:[]},...extra};vm.createContext(c);vm.runInContext(source('assetEntries','// ----- so:'),c);return c;}
@@ -43,4 +44,37 @@ test('replicas use host model ids instead of their local alternation order',()=>
   vm.createContext(c);vm.runInContext(source('netReplica','function netReceive('),c);
   for(const k of ['m','t','a','b','l'])c.netReplica({k,type:'pumpkin',v:'proposal-'+k,x:0,y:0,z:0});
   assert.deepEqual(calls,[['m','proposal-m'],['t','proposal-t'],['a','proposal-a'],['b','proposal-b'],['l','proposal-l']]);
+});
+
+test('built-in proposals rotate alongside students and retain the original network fallback', async()=>{
+  const calls=[],c=fixture({loadGLB:async(url,kind)=>{calls.push(url);return {kind};}});
+  const list=await c.loadProposals([{integrat:true,id:'original'},{id:'student',fitxer:'student.glb'}],'carabassot');
+  assert.equal(list.length,2);assert.equal(calls.length,1);
+  c.ASSETS.mon.carabassot=list;
+  assert.equal(c.nextAsset('mon','carabassot'),null);
+  assert.equal(c.nextAsset('mon','carabassot').id,'student');
+  assert.equal(c.nextAsset('mon','carabassot',''),null);
+  assert.equal(c.nextAsset('mon','carabassot','original'),null);
+  assert.equal(c.nextAsset('mon','carabassot'),null);
+  const groups=c.propAssignments(list,[{}],2);
+  assert.equal([...groups.keys()][0].id,'student');
+});
+
+test('all 25 student deliveries pass the actual GLB validator and keep their originals in rotation',async()=>{
+  const manifest=JSON.parse(fs.readFileSync(new URL('../../assets/assets.json',import.meta.url)));
+  const ids=new Set();let count=0;
+  for(const group of ['monstres','escenari'])for(const [kind,list]of Object.entries(manifest[group])){
+    assert.ok(list.some(a=>a.integrat===true),kind+' must retain original');
+    for(const entry of list.filter(a=>a.fitxer?.includes('/alumnat/'))){
+      assert.ok(!ids.has(entry.id));ids.add(entry.id);count++;
+      assert.ok(entry.autor);const bytes=fs.readFileSync(new URL('../../assets/'+entry.fitxer,import.meta.url));
+      const result=await validateGLB(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),kind);
+      assert.equal(result.palette,'oficial',entry.fitxer);
+    }
+  }
+  assert.equal(count,25);
+  assert.ok(!manifest.castanyeres.some(a=>a.fitxer.includes('morticia')||a.autor==='Clara Gamell'));
+  const boss=manifest.monstres.carabassot.find(a=>a.autor==='Clara Gamell');
+  assert.equal(boss.nomCombat,'la Mortícia');
+  assert.equal(manifest.escenari.portal.find(a=>a.autor==='Quim Paneque').altura,0.32);
 });

@@ -231,6 +231,12 @@ Cada clau de `monstres` i `escenari` pot contenir una **llista de propostes**, a
 - **Compatibilitat:** el camí únic antic (`"carabassa": "monstres/pol.glb"`) continua funcionant. També s'accepta una llista de camins. Si falta `id`, s'utilitza el camí del fitxer. Un ID repetit dins d'un tipus es descarta i queda registrat com a error.
 - **Errors:** un fitxer que falla no impedeix carregar els dels companys. Si no es carrega cap proposta d'un tipus, es conserva el model integrat. La càrrega i memòria augmenten amb el nombre de models; respecteu els pressupostos i eviteu variants duplicades del mateix fitxer.
 
+Per alternar també amb el model original del joc, incloeu una proposta sense fitxer: `{ "id": "integrat-pi", "nom": "Original de Castaween", "integrat": true }`. Compta com una variant més en el torn. En escenari fix es conserva la geometria original a les posicions que li corresponen; en línia es replica amb l'identificador buit del model integrat.
+
+Una proposta pot indicar `altura` (metres) per ajustar-ne l'escala sense deformar-la. Per exemple, el portal pla de Quim fa uns 5,5 m de diàmetre i té `altura: 0.32`; escalar-lo a l'alçada general d'1,6 m el faria massa gran. El panet d'Axel té `altura: 0.24` per encaixar com a recollible. `nomCombat` permet donar un nom als avisos d'un enemic: la Mortícia de Clara és una variant del Carabassot, amb les mateixes estadístiques i recompenses, i no apareix entre les castanyeres jugables.
+
+La integració de les 25 entregues d'octubre de 2026, les optimitzacions i el procediment de retorn són a [l'informe del professorat](documentacio-professorat/ASSETS-ALUMNAT-2026-10-28.md).
+
 Per publicar les entregues, afegiu-les a les llistes del manifest i pugeu els GLB al repositori.
 
 ## So i música

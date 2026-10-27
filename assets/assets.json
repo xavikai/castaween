@@ -9,8 +9,279 @@
       "fitxer": "castanyeres/castanyera-nova.glb"
     }
   ],
-  "monstres": {},
-  "escenari": {},
+  "monstres": {
+    "carabassa": [
+      {
+        "id": "integrat-carabassa",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-khliebnikova-carabassa",
+        "nom": "Carabassa · Mariia",
+        "autor": "Mariia Khliebnikova",
+        "curs": "1GS",
+        "fitxer": "monstres/alumnat/1gs-khliebnikova-mariia-carabassa.glb"
+      },
+      {
+        "id": "alumnat-esteve-carabassa",
+        "nom": "Carabassa · Alba",
+        "autor": "Alba Esteve",
+        "curs": "3D i videojocs",
+        "fitxer": "monstres/alumnat/3d-esteve-alba-carbassa.glb"
+      },
+      {
+        "id": "alumnat-oliveras-carabassa",
+        "nom": "Carabassa · Anna",
+        "autor": "Anna Oliveras",
+        "curs": "3D i videojocs",
+        "fitxer": "monstres/alumnat/3d-oliveras-anna-carabassa.glb"
+      }
+    ],
+    "fantasma": [
+      {
+        "id": "integrat-fantasma",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-khliebnikova-fantasma",
+        "nom": "Fantasma · Mariia",
+        "autor": "Mariia Khliebnikova",
+        "curs": "1GS",
+        "fitxer": "monstres/alumnat/1gs-khliebnikova-mariia-fantasma.glb"
+      },
+      {
+        "id": "alumnat-esteve-fantasma",
+        "nom": "Fantasma · Alba",
+        "autor": "Alba Esteve",
+        "curs": "3D i videojocs",
+        "fitxer": "monstres/alumnat/3d-esteve-alba-fantasma.glb"
+      },
+      {
+        "id": "alumnat-liang-fantasma",
+        "nom": "Fantasma · Yuheng",
+        "autor": "Yuheng Liang",
+        "curs": "3D i videojocs",
+        "fitxer": "monstres/alumnat/3d-liang-yuheng-fantasma.glb"
+      },
+      {
+        "id": "alumnat-oliveras-fantasma",
+        "nom": "Fantasma · Anna",
+        "autor": "Anna Oliveras",
+        "curs": "3D i videojocs",
+        "fitxer": "monstres/alumnat/3d-oliveras-anna-fantasma.glb"
+      },
+      {
+        "id": "alumnat-paneque-fantasma",
+        "nom": "Fantasma · Quim",
+        "autor": "Quim Paneque",
+        "curs": "3D i videojocs",
+        "fitxer": "monstres/alumnat/3d-paneque-quim-fantasma.glb"
+      },
+      {
+        "id": "alumnat-rodriguez-fantasma",
+        "nom": "Fantasma · Lissy",
+        "autor": "Lissy Rodríguez",
+        "curs": "3D i videojocs",
+        "fitxer": "monstres/alumnat/3d-rodriguez-lissy-fantasma.glb"
+      },
+      {
+        "id": "alumnat-torres-fantasma",
+        "nom": "Fantasma · Alejandro",
+        "autor": "Alejandro Torres",
+        "curs": "3D i videojocs",
+        "fitxer": "monstres/alumnat/3d-torres-alejandro-fantasma.glb"
+      }
+    ],
+    "carabassot": [
+      {
+        "id": "integrat-carabassot",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-gamell-carabassot",
+        "nom": "Mortícia",
+        "nomCombat": "la Mortícia",
+        "autor": "Clara Gamell",
+        "curs": "3D i videojocs",
+        "fitxer": "monstres/alumnat/3d-gamell-clara-morticia.glb"
+      },
+      {
+        "id": "alumnat-torres-carabassot",
+        "nom": "Carabassot · Alejandro",
+        "autor": "Alejandro Torres",
+        "curs": "3D i videojocs",
+        "fitxer": "monstres/alumnat/3d-torres-alejandro-carabassot.glb"
+      }
+    ]
+  },
+  "escenari": {
+    "pi": [
+      {
+        "id": "integrat-pi",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-khliebnikova-pi",
+        "nom": "Pi del bosc · Mariia",
+        "autor": "Mariia Khliebnikova",
+        "curs": "1GS",
+        "fitxer": "escenari/alumnat/1gs-khliebnikova-mariia-pi.glb"
+      },
+      {
+        "id": "alumnat-feliu-pi",
+        "nom": "Pi del bosc · Axel",
+        "autor": "Axel Feliu",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-feliu-axel-pi-del-bosc.glb"
+      }
+    ],
+    "caixa": [
+      {
+        "id": "integrat-caixa",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-esteve-caixa",
+        "nom": "Caixa d’armes · Alba",
+        "autor": "Alba Esteve",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-esteve-alba-caixadarmes.glb"
+      }
+    ],
+    "arbre-sec": [
+      {
+        "id": "integrat-arbre-sec",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-feliu-arbre-sec",
+        "nom": "Arbre sec · Axel",
+        "autor": "Axel Feliu",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-feliu-axel-arbre-sec.glb"
+      }
+    ],
+    "panellet": [
+      {
+        "id": "integrat-panellet",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-feliu-panellet",
+        "nom": "Panet · Axel",
+        "autor": "Axel Feliu",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-feliu-axel-panet.glb",
+        "altura": 0.24
+      }
+    ],
+    "casa": [
+      {
+        "id": "integrat-casa",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-fullana-casa",
+        "nom": "Casa · Bernat",
+        "autor": "Bernat Fullana",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-fullana-bernat-casa.glb"
+      }
+    ],
+    "cripta": [
+      {
+        "id": "integrat-cripta",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-fullana-cripta",
+        "nom": "Cripta · Bernat",
+        "autor": "Bernat Fullana",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-fullana-bernat-cripta.glb"
+      }
+    ],
+    "lapida": [
+      {
+        "id": "integrat-lapida",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-fullana-lapida",
+        "nom": "Làpida · Bernat",
+        "autor": "Bernat Fullana",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-fullana-bernat-lapida.glb"
+      },
+      {
+        "id": "alumnat-liang-lapida",
+        "nom": "Làpida · Yuheng",
+        "autor": "Yuheng Liang",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-liang-yuheng-lapida.glb"
+      },
+      {
+        "id": "alumnat-torres-lapida",
+        "nom": "Làpida · Alejandro",
+        "autor": "Alejandro Torres",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-torres-alejandro-lapida.glb"
+      }
+    ],
+    "paradeta": [
+      {
+        "id": "integrat-paradeta",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-oliveras-paradeta",
+        "nom": "Paradeta de castanyes · Anna",
+        "autor": "Anna Oliveras",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-oliveras-anna-paradeta-de-castanyes.glb"
+      }
+    ],
+    "portal": [
+      {
+        "id": "integrat-portal",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-paneque-portal",
+        "nom": "Portal · Quim",
+        "autor": "Quim Paneque",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-paneque-quim-portal.glb",
+        "altura": 0.32
+      }
+    ],
+    "foguera": [
+      {
+        "id": "integrat-foguera",
+        "nom": "Original de Castaween",
+        "integrat": true
+      },
+      {
+        "id": "alumnat-torres-foguera",
+        "nom": "Foguera · Alejandro",
+        "autor": "Alejandro Torres",
+        "curs": "3D i videojocs",
+        "fitxer": "escenari/alumnat/3d-torres-alejandro-foguera.glb"
+      }
+    ]
+  },
   "so": {
     "efectes": {
       "llancament": "so/efectes/llancament.mp3",

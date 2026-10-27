@@ -31,6 +31,8 @@ Tot el que surt al joc es pot substituir per material fet a classe, sense tocar 
 
 Cada tipus de monstre, arbre i objecte admet diverses propostes a `assets/assets.json`, amb nom i autor. Les aparicions alternen els models per torns; l'escenari els reparteix pel mapa i renova la selecció a cada ronda. Vegeu **Diverses propostes per tipus** a [ASSETS.md](ASSETS.md).
 
+**Assets de l'alumnat:** 25 models incorporats, alternant amb els originals. La Mortícia de Clara és una enemiga gran que alterna amb els Carabassots. [Correspondències, validació i pla per tornar a la versió anterior](documentacio-professorat/ASSETS-ALUMNAT-2026-10-28.md).
+
 **[Descarrega els models i la guia d'escala](https://xavikai.github.io/castaween/assets/)**: castanyera de referència i plantilla animada a **1,80 m**, més **19 models de monstres, arbres i objectes** amb les mides de referència. Hi ha descàrregues individuals i un [ZIP amb tot el conjunt](assets/referencies/castaween-referencies.zip). A Blender, treballa en metres amb **Unit Scale 1.000**; respecta l'alçada de cada model indicada al catàleg. Detalls a `assets/referencies/LLEGEIX-ME.md`.
 
 ## Estructura
