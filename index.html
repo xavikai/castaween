@@ -4,6 +4,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0e1122">
 <title>Castaween</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Castaween">
+<script src="assets/pwa.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Rubik:wght@400;500;700&display=swap">
@@ -19,6 +24,9 @@
   color-scheme:dark;
 }
 [hidden]{display:none!important}
+.linkbtn.install-action{align-self:center}.install-status{margin:0;text-align:center;font-size:11px;color:var(--muted)}
+.install-panel{max-width:min(400px,calc(100vw - 48px));box-sizing:border-box;padding:24px;background:var(--panel-solid);color:var(--ink);border:1px solid var(--line);border-radius:16px;font-family:var(--body)}
+.install-panel::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(6px)}.install-panel h2{margin-top:0}.install-panel p{font-size:14px;line-height:1.5}.install-panel .btn{width:100%}
 .layer{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .pop{position:absolute;left:0;top:0;font-family:var(--display);font-size:17px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.7);white-space:nowrap;will-change:transform,opacity;opacity:0}
 .pop.big{color:#ffb35a;font-size:22px}
@@ -350,6 +358,8 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
         <button class="btn big" id="playBtn" data-t="inici.playBtn">Mode en línia</button>
         <button class="btn ghost" id="specBtn" data-t="inici.specBtn">Mira una partida</button>
         <div class="row3"><button class="btn ghost" id="lookBtn" data-t="inici.lookBtn">Personatge</button><button class="btn ghost" id="howBtn" data-t="inici.howBtn">Com es juga</button><button class="btn ghost" id="optBtn" data-t="inici.optBtn">Opcions</button></div>
+        <button class="linkbtn install-action" id="installBtn" hidden>Instal·la el joc</button>
+        <p class="install-status" id="pwaStatus" aria-live="polite"></p>
       </div>
     </div>
 
@@ -484,15 +494,16 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
 </div>
 
 <script src="assets/local-session.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
+<dialog id="installDialog" class="install-panel" aria-labelledby="installTitle"><h2 id="installTitle">Instal·la Castaween</h2><p id="installHelp"></p><p>El joc tindrà una icona pròpia al dispositiu. Obre'l amb Internet la primera vegada per preparar el mode local sense connexió. Les partides en línia necessiten Internet.</p><button class="btn" id="installClose">Entesos</button></dialog>
+<script src="assets/vendor/three-r128/three.min.js"></script>
+<script src="assets/vendor/three-r128/CopyShader.js"></script>
+<script src="assets/vendor/three-r128/LuminosityHighPassShader.js"></script>
+<script src="assets/vendor/three-r128/EffectComposer.js"></script>
+<script src="assets/vendor/three-r128/RenderPass.js"></script>
+<script src="assets/vendor/three-r128/ShaderPass.js"></script>
+<script src="assets/vendor/three-r128/UnrealBloomPass.js"></script>
+<script src="assets/vendor/three-r128/GLTFLoader.js"></script>
+<script src="assets/vendor/three-r128/SkeletonUtils.js"></script>
 <script>
 (function(){
 'use strict';

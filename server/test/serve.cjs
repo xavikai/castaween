@@ -25,9 +25,9 @@ http.createServer((req,res)=>{const url=new URL(req.url,'http://localhost'),rel=
   if(reviews&&rel==='assets/online.json'){res.setHeader('Content-Type','application/json');return res.end(JSON.stringify({servidor:'ws://127.0.0.1:8787'}));}
   if(proposals&&rel==='assets/assets.json'){res.setHeader('Content-Type','application/json');res.setHeader('Cache-Control','no-store');return res.end(JSON.stringify(proposalManifest()));}
   if(rel==='mobile'){res.setHeader('Content-Type','text/html; charset=utf-8');return res.end('<!doctype html><html><head><title>Castaween · mòbil 390 × 844</title></head><body style="margin:0;background:#111;display:flex;justify-content:center"><iframe title="Mòbil 390 × 844" src="'+(url.searchParams.has('clean')?'/':'/?qa=1')+'" width="390" height="844" style="border:0"></iframe></body></html>');}
-  if(!(rel==='index.html'||rel==='cifog-logo.png'||rel.startsWith('assets/'))){res.writeHead(404);return res.end();}
+  if(!(['index.html','cifog-logo.png','manifest.webmanifest','sw.js'].includes(rel)||rel.startsWith('assets/'))){res.writeHead(404);return res.end();}
   const file=path.resolve(root,rel);if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}
-  fs.readFile(file,(err,data)=>{if(err){res.writeHead(404);return res.end();}const ext=path.extname(file);res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.json':'application/json','.png':'image/png','.css':'text/css','.js':'text/javascript','.mp3':'audio/mpeg','.wav':'audio/wav','.glb':'model/gltf-binary'})[ext]||'application/octet-stream');res.setHeader('Cache-Control','no-store');
+  fs.readFile(file,(err,data)=>{if(err){res.writeHead(404);return res.end();}const ext=path.extname(file);res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.json':'application/json','.webmanifest':'application/manifest+json','.png':'image/png','.css':'text/css','.js':'text/javascript','.mp3':'audio/mpeg','.wav':'audio/wav','.glb':'model/gltf-binary'})[ext]||'application/octet-stream');res.setHeader('Cache-Control','no-store');
     if(rel==='index.html'&&url.searchParams.has('qa'))data=Buffer.from(data.toString().replace('\n})();','\n'+qa+'\n})();'));res.end(data);
   });
 }).listen(53781,'127.0.0.1',()=>console.log('QA: http://127.0.0.1:53781/?qa=1'));

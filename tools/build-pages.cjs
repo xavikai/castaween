@@ -2,10 +2,11 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
+require('./build-offline-manifest.cjs');
 const out = path.join(root, 'public');
 fs.mkdirSync(out, { recursive: true });
 const entries = [
-  'index.html', 'disseny.html', 'cifog-logo.png',
+  'index.html', 'disseny.html', 'cifog-logo.png', 'manifest.webmanifest', 'sw.js', '_headers',
   'assets', 'disseny', 'carpeta-alumnat', 'documentacio-professorat', 'lliurament',
   'ASSETS.md', 'PROJECTE-CICLES.md', 'README.md',
 ];
