@@ -19,6 +19,40 @@ class Storage {
 const report = (store, sessions, open = true) => store.fetch(new Request('https://presence/report', {
   method: 'POST', body: JSON.stringify({ code: '1234', open, jugadors: 1, sessions })
 }));
+const local = (store, body) => store.fetch(new Request('https://presence/local', { method: 'POST', body: JSON.stringify(body) }));
+
+test('local duration uses measured gameplay, never pause time, and terminal updates are idempotent', async t => {
+  let now = Date.parse('2026-10-27T09:00:00Z'); t.mock.method(Date, 'now', () => now);
+  const store = new Presence({ storage: new Storage() });
+  const session = { id: 'local-session-0001', inici: now, at: now, durada: 0, seq: 1, estat: 'jugant' };
+  assert.equal((await local(store, session)).status, 200);
+  now += 30000; Object.assign(session, { at: now, durada: 30000, seq: 2, estat: 'pausa' }); await local(store, session);
+  now += 60000;
+  let data = await store.summary(true);
+  assert.equal(data.sessions[0].durada, 30000); assert.equal(data.localsActius, 0); assert.equal(data.total, 0);
+  Object.assign(session, { at: now, seq: 3, estat: 'jugant' }); await local(store, session);
+  now += 10000; Object.assign(session, { at: now, durada: 40000, seq: 4, estat: 'acabada' }); await local(store, session);
+  await local(store, session); // duplicate retry
+  await local(store, { ...session, estat: 'jugant', seq: 3 }); // late heartbeat
+  await local(store, { ...session, estat: 'jugant', seq: 5 }); // finished sessions never reopen
+  data = await store.summary(true);
+  assert.equal(data.sessions.length, 1); assert.equal(data.sessions[0].durada, 40000);
+  assert.equal(data.sessions[0].fi, now); assert.equal(data.localsActius, 0);
+});
+
+test('unconfirmed local departures retain measured time and later recovery can extend it', async t => {
+  let now = Date.parse('2026-10-27T09:00:00Z'); t.mock.method(Date, 'now', () => now);
+  const store = new Presence({ storage: new Storage() });
+  const session = { id: 'local-session-0002', inici: now - 15000, at: now, durada: 15000, seq: 1, estat: 'jugant' };
+  await local(store, session); now += 120001;
+  let data = await store.summary(true);
+  assert.equal(data.localsActius, 0); assert.equal(data.sessions[0].durada, 15000); assert.equal(data.sessions[0].aproximada, true);
+  await local(store, { ...session, at: now, durada: 20000, seq: 2, estat: 'acabada' });
+  data = await store.summary(true);
+  assert.equal(data.sessions[0].durada, 20000); assert.equal(data.sessions[0].aproximada, false);
+  assert.equal((await local(store, { ...session, durada: 999999 })).status, 400);
+  assert.equal((await local(store, { ...session, id: '<script>' })).status, 400);
+});
 
 test('session arrival, role changes, departure and reconnect preserve exact durations across hibernation', async t => {
   let now = Date.parse('2026-10-27T09:00:00Z');

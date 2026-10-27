@@ -18,6 +18,7 @@ export default {
     if(url.pathname==='/api/estat'&&request.method==='GET')return presence(env).fetch('https://presence/estat');
     // El joc l'envia com a text/plain per evitar la consulta CORS prèvia.
     if(url.pathname==='/api/entrada'&&request.method==='POST'){const body=await request.text();if(body.length>300)return new Response('',{status:413});return presence(env).fetch('https://presence/entrada',{method:'POST',body});}
+    if(url.pathname==='/api/local'&&request.method==='POST'){const body=await request.text();if(body.length>500)return new Response('',{status:413});return presence(env).fetch('https://presence/local',{method:'POST',body});}
     if(url.pathname.startsWith('/api/models/'))return env.REVIEWS.get(env.REVIEWS.idFromName('classroom')).fetch(request);
     const match = /^\/room\/(\d{4})$/.exec(url.pathname);
     if (!match) return new Response("Castaween WebSocket relay", { status: 404 });

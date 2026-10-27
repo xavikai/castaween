@@ -482,6 +482,7 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
   </div>
 </div>
 
+<script src="assets/local-session.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
@@ -1841,6 +1842,7 @@ async function startGame(){
   S.pTeam=Math.floor(Math.random()*TEAMS.length);S.simFull=NET.role==='host'?false:$('#simFull').checked;S.clock=NET.role==='host'?1:$('#accel').checked?6:1;$('#accLbl').hidden=S.clock===1;
   TEAMS.forEach(t=>t.wins=0);S.round=1;if(NET.role!=='host')buildRoom();resetRound();
   S.phase='play';$('#lobby').hidden=true;$('#results').hidden=true;$('#hud').hidden=false;feedEl.innerHTML='';hudT=0;
+  if(!NET.role)localSessions.start();
   $('#connectionLabel').textContent=NET.role?`Sala ${S.code} · en línia`:'Partida amb bots';
   $('#hud').classList.toggle('spectating',!!S.spectator);$('#spec').hidden=!S.spectator;$('#specHint').hidden=!S.spectator;
   if(S.spectator){addFeed(NET.offline?'Mires una partida local amb bots':`Mires la sala ${S.code}`,' · mode espectador');banner('Mode espectador','var(--ember)');setTimeout(()=>{$('#specHint').hidden=true;},9000);syncSpecBtns();return;}
@@ -1848,6 +1850,7 @@ async function startGame(){
   else{addFeed(NET.offline?`Partida local · jugues amb ${teamTag(S.player.team)}`:`Has entrat a la sala ${S.code}`,NET.offline?'': ' · substitueixes un bot');banner(`Ets dels ${S.player.team.short}!`,S.player.team.css);}
 }
 function endRound(){
+  if(!NET.role)localSessions.finish();
   sfx('end');$('#tip').style.opacity='0';
   S.phase='results';S.holding=false;S.joy.on=false;joyEl.hidden=true;for(const p of projPool){p.alive=false;p.mesh.visible=false;}
   const sorted=TEAMS.slice().sort((a,b)=>b.stock-a.stock);const top=sorted[0];const tie=sorted[1]&&sorted[1].stock===top.stock;if(!tie&&NET.role!=='client')top.wins++;
@@ -1860,13 +1863,14 @@ function endRound(){
 }
 function nextRound(){
   if(NET.role==='client')return;
+  if(!NET.role){netTrack('local');localSessions.start();}
   S.round++;resetRound();
   TEAMS.forEach(t=>{for(const m of t.members){m.kills=0;m.delivered=0;m.superCd=0;if(m.state==='respawning')m.state='queue';}
     for(const m of t.members)if(m.state==='queue'&&!t.queue.includes(m)&&t.active.length<SLOTS)spawn(m);
     for(const m of t.active.slice())spawn(m);});
   S.phase='play';$('#results').hidden=true;feedEl.innerHTML='';hudT=0;banner(`Ronda ${S.round}`,'var(--ember)');
 }
-function openPause(){if(S.phase!=='play')return;if(NET.role==='client')NET.localPaused=true;else S.phase='paused';S.holding=false;S.joy.on=false;S.joy.x=S.joy.y=0;S.keys={};joyEl.hidden=true;
+function openPause(){if(S.phase!=='play')return;if(!NET.role)localSessions.pause();if(NET.role==='client')NET.localPaused=true;else S.phase='paused';S.holding=false;S.joy.on=false;S.joy.x=S.joy.y=0;S.keys={};joyEl.hidden=true;
   $('#pauseCode').textContent=NET.offline?'· partida local':'· codi '+S.code;
   const canSw=NET.role==='client'&&!S.spectator&&S.player&&S.player.team;
   $('#pauseTable').innerHTML='<tr><th>Equip</th><th class="num">Persones</th><th class="num">Bots</th><th>En espera</th></tr>'+TEAMS.map(t=>{const h=t.active.filter(m=>m.human).length;return `<tr><td><span class="tdot" style="--c:${t.css}"></span>${t.short}</td><td class="num">${h}</td><td class="num">${t.active.length-h}</td><td class="qnames">${t.queue.length?t.queue.map(m=>m.isPlayer?'<b style="color:var(--ink)">Tu</b>':esc(m.name)).join(', '):'–'}</td></tr>`;}).join('');
@@ -1874,8 +1878,8 @@ function openPause(){if(S.phase!=='play')return;if(NET.role==='client')NET.local
   $('#pause').hidden=false;}
 $('#pauseBtn').addEventListener('click',openPause);
 $('#pauseSwitch').addEventListener('click',e=>{const b=e.target.closest('[data-sw]');if(b&&!b.disabled)netSwitchTeam(b.dataset.sw);});
-$('#resumeBtn').addEventListener('click',()=>{NET.localPaused=false;$('#pause').hidden=true;if(NET.role!=='client')S.phase='play';});
-const toLobby=()=>{netClose();$('#nextBtn').hidden=false;specRing.visible=false;$('#spec').hidden=true;$('#hud').classList.remove('spectating');S.spectator=false;$('#pause').hidden=true;$('#results').hidden=true;$('#hud').hidden=true;S.phase='lobby';$('#lobby').hidden=false;showCard('home');clearWorld();S.player=null;};
+$('#resumeBtn').addEventListener('click',()=>{NET.localPaused=false;$('#pause').hidden=true;if(NET.role!=='client')S.phase='play';if(!NET.role)localSessions.resume();});
+const toLobby=()=>{localSessions.finish();netClose();$('#nextBtn').hidden=false;specRing.visible=false;$('#spec').hidden=true;$('#hud').classList.remove('spectating');S.spectator=false;$('#pause').hidden=true;$('#results').hidden=true;$('#hud').hidden=true;S.phase='lobby';$('#lobby').hidden=false;showCard('home');clearWorld();S.player=null;};
 $('#quitBtn').addEventListener('click',toLobby);$('#lobbyBtn').addEventListener('click',toLobby);$('#nextBtn').addEventListener('click',nextRound);
 document.addEventListener('visibilitychange',()=>{if(document.hidden){if(NET.role==='client'){S.holding=false;S.keys={};S.joy.x=S.joy.y=0;NET.tap=false;setTimeout(()=>netInputs(performance.now()),110);}else if(NET.role!=='host')openPause();}});
 addEventListener('blur',()=>{S.keys={};S.holding=false;S.joy.x=S.joy.y=0;NET.tap=false;});
@@ -1959,7 +1963,12 @@ $('#joinBtn').addEventListener('click',join);$('#hq').addEventListener('change',
 
 /* ---------- en línia: el professor simula, el Worker només retransmet ---------- */
 const NET={role:null,ws:null,id:null,url:'',peers:new Map(),replicas:new Map(),previous:new Map(),ids:new WeakMap(),serial:0,seq:0,received:0,lastSend:0,lastInput:0,input:'',events:[],tap:false,build:false,upgrade:false};
-NET.config=fetch('assets/online.json',{cache:'no-store',signal:AbortSignal.timeout(10000)}).then(r=>r.ok?r.json():null).then(c=>{if(c&&/^wss?:\/\//.test(c.servidor))NET.url=c.servidor.replace(/\/$/,'');}).catch(()=>{});
+function netLoadConfig(){return fetch('assets/online.json',{cache:'no-store',signal:AbortSignal.timeout(10000)}).then(r=>r.ok?r.json():null).then(c=>{if(c&&/^wss?:\/\//.test(c.servidor))NET.url=c.servidor.replace(/\/$/,'');}).catch(()=>{});}
+NET.config=netLoadConfig();
+let localSessionStorage;try{localSessionStorage=localStorage;}catch{}
+const localSessions=createLocalSessionTracker({storage:localSessionStorage,url:()=>NET.config.then(()=>NET.url.replace(/^ws/,'http')),send:(url,body)=>fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body,keepalive:true,signal:AbortSignal.timeout(10000)})});
+addEventListener('online',()=>{if(!NET.url)NET.config=netLoadConfig();localSessions.flush();});
+addEventListener('pagehide',()=>localSessions.finish());
 const hostButton=document.createElement('button');hostButton.className='btn ghost';hostButton.id='hostBtn';hostButton.textContent='Obre una sala (professor)';$('#playBtn').after(hostButton);
 const roomCard=document.createElement('div');roomCard.id='onlineRoom';roomCard.className='card';roomCard.hidden=true;
 roomCard.innerHTML='<h2>Sala de Castaween</h2><div class="screen"><div class="big" id="onlineCode">····</div><p id="onlineStatus" role="status">Connectant…</p></div><div id="onlineRoster"></div><div class="btns"><button class="btn" id="onlineStart">Comença</button><button class="btn ghost" id="onlineLeave">Surt de la sala</button></div>';
