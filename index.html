@@ -51,7 +51,8 @@ html,body{height:100%;margin:0;background:var(--night);color:var(--ink);font-fam
 .chip{background:var(--panel);border-radius:calc(8px * var(--rad,1));border-top:3px solid var(--c);padding:4px 6px 5px;min-width:0;transition:transform .2s}
 .chip.me{box-shadow:inset 0 0 0 1.5px var(--c)}
 .chip.bump{transform:scale(1.08)}
-.chip.hit{background:rgba(255,90,78,.25)}
+.chip.hit{background:rgba(255,65,54,.45);box-shadow:0 0 0 1.5px var(--danger),0 0 14px rgba(255,65,54,.75);animation:chiphit .25s ease-in-out infinite alternate}
+@keyframes chiphit{to{transform:scale(1.06);background:rgba(255,65,54,.72)}}
 .chip{position:relative}
 .chip.lead::after{content:'👑';position:absolute;top:-8px;right:3px;font-size:12px;line-height:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.6))}
 .chip.lead{box-shadow:0 0 0 1.5px var(--c),0 0 14px color-mix(in srgb,var(--c) 45%,transparent)}
@@ -74,6 +75,9 @@ html,body{height:100%;margin:0;background:var(--night);color:var(--ink);font-fam
 .hp .track{height:10px;border-radius:calc(5px * var(--rad,1));background:rgba(244,234,214,.12);overflow:hidden}
 .hp .track i{display:block;height:100%;background:var(--heal);transition:width .15s}
 .hp.low .track i{background:var(--danger)}
+.hp.heal{border-color:var(--heal);box-shadow:0 0 12px rgba(126,217,87,.55)}
+.hp.hit{border-color:var(--danger);box-shadow:0 0 14px rgba(255,90,78,.75);animation:hphit .28s ease-out}
+@keyframes hphit{25%{transform:translateX(-4px) scale(1.04)}75%{transform:translateX(4px) scale(1.04)}}
 .turn{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12px;white-space:nowrap;display:flex;align-items:center;gap:8px}
 .turn .dot{width:9px;height:9px;border-radius:50%;background:var(--c)}
 .turn b{font-variant-numeric:tabular-nums}
@@ -83,6 +87,9 @@ html,body{height:100%;margin:0;background:var(--night);color:var(--ink);font-fam
 .throw svg{width:34px;height:34px}
 .throw .am{font-family:var(--body);font-weight:700;font-size:11px;opacity:.85}
 .throw[disabled]{filter:grayscale(1) brightness(.6)}
+.throw.cancel{background:radial-gradient(circle at 35% 30%,#ff8a80,var(--danger) 60%,#8a1c14)!important;color:#fff;box-shadow:0 4px 0 #5a100c,0 8px 18px rgba(0,0,0,.45)!important}
+.aimpad{position:absolute;width:136px;height:136px;margin:-68px 0 0 -68px;border-radius:50%;border:2px dashed rgba(255,138,42,.65);background:rgba(14,17,34,.32);display:grid;place-items:center;pointer-events:none;font-family:var(--display);font-size:18px;color:rgba(244,234,214,.55)}
+.aimpad.cancel{border-color:var(--danger);background:rgba(200,40,40,.28);color:var(--danger)}
 .moni{position:absolute;right:calc(env(safe-area-inset-right,0px) + 30px);bottom:calc(env(safe-area-inset-bottom,0px) + 128px);width:72px;height:72px;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#c4566a,#8a3446 60%,#5a1e2c);color:#ffe2c8;font-family:var(--display);font-size:9.5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;box-shadow:0 5px 0 #3a1018,0 8px 18px rgba(0,0,0,.45);cursor:pointer;touch-action:none}
 .moni b{font-size:18px;font-weight:400;line-height:1;color:#ffb070}
 .moni:active{transform:translateY(3px);box-shadow:0 2px 0 #3a1018}
@@ -90,8 +97,9 @@ html,body{height:100%;margin:0;background:var(--night);color:var(--ink);font-fam
 .build{position:absolute;right:calc(env(safe-area-inset-right,0px) + 22px);bottom:calc(env(safe-area-inset-bottom,0px) + 130px);width:100px;border:1.5px solid var(--wood);background:var(--panel);color:var(--ink);border-radius:calc(14px * var(--rad,1));padding:8px 10px;font:inherit;font-size:11px;font-weight:700;line-height:1.2;text-align:center;cursor:pointer;touch-action:none}
 .build.up.solo{bottom:calc(env(safe-area-inset-bottom,0px) + 130px)}
 .build.up{bottom:calc(env(safe-area-inset-bottom,0px) + 196px);border-color:#ffd24a}.build.up b{color:#ffd24a}
-.falert{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 206px);max-width:calc(100% - 40px);white-space:nowrap;background:rgba(200,40,40,.92);color:#fff;font-size:12.5px;font-weight:700;line-height:1.3;padding:7px 11px;border-radius:calc(10px * var(--rad,1));opacity:0;transform:translate(-50%,-6px);transition:opacity .25s,transform .25s;pointer-events:none}
-.falert.on{opacity:1;transform:translate(-50%,0)}
+.falert{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 206px);max-width:calc(100% - 32px);white-space:nowrap;background:linear-gradient(135deg,rgba(220,38,38,.96),rgba(150,18,18,.96));color:#fff;font-size:13px;font-weight:700;line-height:1.3;padding:8px 14px;border-radius:calc(10px * var(--rad,1));border:1.5px solid #ff9a8a;box-shadow:0 0 18px rgba(255,58,46,.8),0 6px 16px rgba(0,0,0,.45);opacity:0;transform:translate(-50%,-6px) scale(.94);transition:opacity .2s,transform .2s;pointer-events:none}
+.falert.on{opacity:1;transform:translate(-50%,0) scale(1);animation:falertpulse .45s ease-in-out infinite alternate}
+@keyframes falertpulse{to{box-shadow:0 0 28px rgba(255,58,46,1),0 6px 18px rgba(0,0,0,.55);transform:translate(-50%,0) scale(1.04)}}
 .falert b{font-weight:800}
 .build b{display:block;font-family:var(--display);font-weight:400;font-size:12px;color:var(--wood)}
 .build[disabled]{opacity:.45}
@@ -320,6 +328,7 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
       <div class="row"><button class="mode" id="specAuto" aria-pressed="true" data-t="espectador.specAuto">Càmera automàtica</button><button class="mode" id="specOver" aria-pressed="false" data-t="espectador.specOver">Vista general</button></div>
     </div>
     <div class="joy" id="joy" hidden><i id="knob"></i></div>
+    <div class="aimpad" id="aimPad" hidden>×</div>
     <div class="msg" id="msg" hidden><h3 id="msgH"></h3><p id="msgP"></p></div>
   </div>
 
@@ -349,7 +358,7 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
       <h2 data-t="personatge.h21">La teva castanyera</h2>
       <p class="hint2" data-t="personatge.p1">Arrossega la figura per fer-la girar.</p>
       <label class="label" for="nameIn" data-t="personatge.label1">Nickname a l'arena</label>
-      <input class="name" id="nameIn" maxlength="12" placeholder="Tu" autocomplete="off" data-tp="personatge.nameIn-pista">
+      <input class="name" id="nameIn" maxlength="16" placeholder="Tu" autocomplete="off" data-tp="personatge.nameIn-pista">
       <div class="lrow" id="modelRow"><div class="label" data-t="personatge.div1">Model</div><div class="opts" id="lookModels"></div><p class="credit" id="modelCredit" hidden></p></div>
       <div id="lookRows"></div>
       <div class="label" data-t="personatge.div2">Color de prova</div>
@@ -371,10 +380,10 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
       <div class="label" data-t="com-es-juga.div4">Controls</div>
       <div class="ctrl">
         <div><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="2.5" opacity=".5"/><circle cx="26" cy="15" r="8" fill="currentColor"/></svg><span data-t="com-es-juga.span1"><b>Moure't</b>Arrossega el polze a la meitat esquerra de la pantalla.</span></div>
-        <div><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#ff8a2a"/><path d="M20 10c4 0 9 5 9 11 0 5-4 9-9 9s-9-4-9-9c0-6 5-11 9-11z" fill="#4a230f"/></svg><span data-t="com-es-juga.span2"><b>Llançar</b>Mantén premut LLANÇA. Apunta sol al cercle taronja.</span></div>
+        <div><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="#ff8a2a"/><path d="M20 10c4 0 9 5 9 11 0 5-4 9-9 9s-9-4-9-9c0-6 5-11 9-11z" fill="#4a230f"/></svg><span data-t="com-es-juga.span2"><b>Llançar i apuntar</b>Toca LLANÇA per disparar sol a l'enemic més proper, o arrossega el botó per apuntar on vulguis (torna al centre per cancel·lar).</span></div>
         <div><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="14" width="28" height="20" rx="3" fill="#6b6458"/><rect x="5" y="20" width="30" height="4" fill="#ff8a2a"/><rect x="11" y="6" width="5" height="10" fill="#2b2522"/></svg><span data-t="com-es-juga.span3"><b>Torradora</b>A la teva base apareix el botó. Costa 8 de llenya i dispara sola. Amb més llenya la millores: nivell 2 (12) tira castanyes de foc i nivell 3 (18) hi afegeix moniatos que esclaten.</span></div>
       </div>
-      <p class="ctrls" data-t="com-es-juga.p2">A l'ordinador: WASD o fletxes per moure't, espai per llançar i B per construir.</p>
+      <p class="ctrls" data-t="com-es-juga.p2">A l'ordinador: WASD o fletxes per moure't, clic/arrossegar amb el ratolí per apuntar (o espai per autoapuntar) i B per construir.</p>
       <p class="ctrls" data-t="com-es-juga.p3"><b>Mira una partida</b>: mode espectador. Arrossega per moure la càmera i fes zoom amb la roda o pessigant. Toca un equip per anar a la seva foguera, toca una castanyera per seguir-la (o canvia amb ‹ ›), o deixa la càmera automàtica, que va on hi ha més acció i de tant en tant ensenya les fogueres. La vista general mostra tota l'arena (arrossega per moure-la). Teclat: fletxes, 1–5, A i V.</p>
       <div class="label" data-t="com-es-juga.div5">Halloween</div>
       <div class="chips3">
@@ -393,8 +402,8 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
         <li data-t="com-es-juga.li1"><b>Qui ataca la teva foguera:</b> els monstres de Halloween (van sobretot a la foguera més gran) i les castanyeres dels altres equips. Quan passa surt un avís vermell i el minimapa marca la teva base.</li>
         <li data-t="com-es-juga.li2">Tu també pots atacar castanyeres i fogueres d'altres equips. Cada impacte a una foguera rival en fa caure llenya que pots robar.</li>
         <li data-t="com-es-juga.li3">Si caus, deixes a terra la llenya que portaves i tornes a la base en 3 s.</li>
-        <li data-t="com-es-juga.li4b"><b>Supercastanyera</b>: si arribes a la foguera amb 6 de llenya o més de cop, durant 8 s tu (només tu, no el teu equip) tens una aura daurada, corres més i llances castanyes d'energia blaves que, quan toquen, esclaten en una <b>ona</b> que elimina tots els monstres, les castanyeres rivals i les torradores del voltant.</li>
-        <li data-t="com-es-juga.li4"><b>Panellet</b>: +35 de vida. El <b>daurat</b> et posa la vida plena.</li>
+        <li data-t="com-es-juga.li4b"><b>Supercastanyera</b>: si arribes a la foguera amb 6 de llenya o més de cop (i no l'has fet servir en l'últim minut), durant 8 s tu (només tu, no el teu equip) tens una aura daurada, corres més i llances castanyes d'energia blaves que, quan toquen, esclaten en una <b>ona</b> que elimina tots els monstres, les castanyeres rivals i les torradores del voltant.</li>
+        <li data-t="com-es-juga.li4"><b>Recuperar vida</b>: torna a la teva foguera per curar-te amb l'escalfor del foc, o agafa un <b>panellet</b> (+35 de vida, o vida plena si és <b>daurat</b>).</li>
         <li data-t="com-es-juga.li5">L'últim minut és la <b>Nit de Difunts</b>: el doble de monstres i la llenya entregada val doble.</li>
         <li data-t="com-es-juga.li6">Tries el teu equip en entrar. Cada equip pot tenir fins a 15 persones: si el teu és ple, entres al que té més lloc i et pots canviar des de la pausa quan s'hi faci lloc. Si n'hi ha menys de 10, la resta són bots. Només si tots són plens esperes a la cua (torn màxim de 90 s).</li>
       </ul>
@@ -419,8 +428,8 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
       <button class="back" data-go="home" data-t="entrada.button1">← Menú</button>
       <div class="steps" id="entrySteps"><span class="on">1 · Nickname</span><span>2 · Codi</span><span>3 · Arena</span></div>
       <label class="label" for="nicknameIn" data-t="entrada.label1">El teu nickname</label>
-      <input class="name" id="nicknameIn" maxlength="12" placeholder="Ex.: CastanyaNinja" autocomplete="nickname" aria-describedby="nicknameHelp nicknameErr" data-tp="entrada.nicknameIn-pista">
-      <p class="note" id="nicknameHelp" data-t="entrada.nicknameHelp">Màxim 12 caràcters. Es veurà damunt la teva castanyera i a les eliminacions.</p>
+      <input class="name" id="nicknameIn" maxlength="16" placeholder="Ex.: CastanyaNinja" autocomplete="nickname" aria-describedby="nicknameHelp nicknameErr" data-tp="entrada.nicknameIn-pista">
+      <p class="note" id="nicknameHelp" data-t="entrada.nicknameHelp">Màxim 16 caràcters. Es veurà damunt la teva castanyera i a les eliminacions.</p>
       <p class="err" id="nicknameErr" role="alert"></p>
       <div class="lrow" id="startModelRow" hidden><div class="label" data-t="entrada.div1">La teva castanyera</div><div class="opts" id="startModels"></div><p class="credit" id="startCredit"></p><button type="button" class="linkbtn" id="startSee" data-t="entrada.startSee">Mira-la en 3D i personalitza-la →</button></div>
       <div class="label" data-t="entrada.equip-titol">El teu equip</div><div class="teams" id="teamPick"></div><p class="note" data-t="entrada.p1">Si el teu equip és ple, entraràs al que tingui més lloc. Quan s'hi faci lloc, et podràs canviar des de la sala o la pausa.</p>
@@ -451,7 +460,7 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
         <li data-t="pausa.li4">Torradora: costa <b>8 de llenya</b> de la foguera, màxim 3 per equip. Es millora al nivell 2 (<b>12</b>) i al 3 (<b>18</b>): dispara més ràpid, més lluny i amb foc.</li>
         <li data-t="pausa.li5">La foguera l'ataquen els monstres i les castanyeres dels altres equips.</li>
         <li data-t="pausa.li6">Caixes d'armes pel camp: <b>castanyes de foc</b> (12, cremen), <b>ràfega</b> (30 castanyes ràpides) i <b>bazooka de moniato</b> (3 trets, esclata i deixa puré que crema i alenteix).</li>
-        <li data-t="pausa.li7b"><b>6 de llenya o més</b> entregades de cop: <b>Supercastanyera</b> durant 8 s (només qui l'ha entregada): dispara castanyes d'energia blaves que esclaten en ones que eliminen monstres, rivals i torradores.</li>
+        <li data-t="pausa.li7b"><b>6 de llenya o més</b> entregades de cop (com a molt un cop per minut): <b>Supercastanyera</b> durant 8 s (només qui l'ha entregada): dispara castanyes d'energia blaves que esclaten en ones que eliminen monstres, rivals i torradores.</li>
         <li data-t="pausa.li7">Panellets: <b>+35 de vida</b>. El daurat que deixa el Carabassot dona la vida plena.</li>
         <li data-t="pausa.li8">L'últim minut és la <b>Nit de Difunts</b>: el doble de monstres i la llenya entregada val doble.</li>
         <li data-t="pausa.li9">Cada alumne <b>tria el seu equip</b>. Fins a <b>15 persones</b> per equip: si el teu és ple, entres al que té més lloc i et pots canviar aquí sota quan s'hi faci lloc. Si n'hi ha menys de 10, els bots completen l'equip. Només si tots són plens hi ha cua, amb un torn màxim de 90 s.</li>
@@ -503,8 +512,8 @@ function fitLabel(el,max,tries=0){el.dataset.fit=max;el.style.fontSize='';el.sty
 addEventListener('resize',()=>{clearTimeout(fitLabel.t);fitLabel.t=setTimeout(()=>document.querySelectorAll('[data-fit]').forEach(el=>fitLabel(el,+el.dataset.fit)),150);});
 function rollTeamNames(){const pool=TEAM_NAMES.slice();for(const t of TEAMS){const n=pool.splice(Math.floor(Math.random()*pool.length),1)[0];t.short=n;t.name='Els '+n;drawSign(t);}}
 let SLOTS=15,BOT_FILL=10;const ROUND=300,TURN=90,RESPAWN=3,ARENA_R=42,MAXHP=100,PSPEED=16,GRAV=18,BASE_R=33,NIGHT=60,MONI_MAX=3,MONI_R=2.8;
-const TOWER_LV=[null,{cost:8,hp:80,cd:1.0,range:9.5,dmg:10,kind:'nut',label:'Castanyes'},{cost:12,hp:130,cd:0.65,range:11,dmg:13,kind:'fire',label:'Castanyes de foc'},{cost:18,hp:180,cd:0.5,range:12.5,dmg:16,kind:'fire',splash:3,label:'Foc i moniatos'}];
-const CARRY_MAX=10,TOWER_COST=8,TOWER_MAX=3,PVP_DMG=12,TOWER_DMG=10,FIRE_R=1.5,DELIVER_R=3.2,START_STOCK=10;
+const TOWER_LV=[null,{cost:8,hp:80,cd:1.0,range:9.5,dmg:8,kind:'nut',label:'Castanyes'},{cost:12,hp:130,cd:0.65,range:11,dmg:10,kind:'fire',label:'Castanyes de foc'},{cost:18,hp:180,cd:0.5,range:12.5,dmg:13,kind:'fire',splash:3,label:'Foc i moniatos'}];
+const CARRY_MAX=10,TOWER_COST=8,TOWER_MAX=3,PVP_DMG=9,TOWER_DMG=8,FIRE_R=1.5,DELIVER_R=3.2,HEAL_R=4.2,BASE_HEAL=18,START_STOCK=10;
 const BOT={speed:5.0,cd:1.5,engage:14},PLAYER_SPEED=5.6;
 const WEAP={ // armes que s'agafen de caixes pel camp; mateixes per a persones i bots
   fire:{ammo:12,cd:0.42,label:'Foc',name:'castanyes de foc',col:'#ff5a1e',grad:'#ffb36a,#ff5a1e 55%,#a8240a',shadow:'#6a1606'},
@@ -512,15 +521,15 @@ const WEAP={ // armes que s'agafen de caixes pel camp; mateixes per a persones i
   bazooka:{ammo:3,cd:0.9,label:'Bazooka',name:'bazooka de moniato',col:'#c4566a',grad:'#e07a8c,#a83a52 55%,#5a1e2c',shadow:'#3a1018'},
   // Supercastanyera: premi per entregar 6 de llenya o més de cop. Uns segons d'aura daurada i castanyes d'energia que esclaten en ones
   super:{ammo:8,cd:0.55,label:'Ona',title:'Supercastanyera',name:'el poder de la Supercastanyera',col:'#ffd400',grad:'#fff6a8,#ffd400 55%,#c98a00',shadow:'#6a4a00'}};
-const SUPER_T=8,WAVE_R=6,WAVE_SPEED=24,SUPER_SPEED=1.3,SUPER_LOAD=6,SUPER_PSPEED=30;
+const SUPER_T=8,WAVE_R=6,WAVE_SPEED=24,SUPER_SPEED=1.3,SUPER_LOAD=6,SUPER_COOLDOWN=60,SUPER_PSPEED=30;
 function startSuper(c){c.weapon='super';c.superT=SUPER_T;c.ammo=SUPER_T;c.cd=0.3;const x=c.pos.x,z=c.pos.z;shock(x,z,3,0xffd400);shock(x,z,1.8,0xffffff);flash(x,z,6);sparks(x,1.4,z,40,0xffd400,8);sfx('boss',x,z);
   if(c.isPlayer){banner('Supercastanyera!','#ffd400');popText(x,3.4,z,`${SUPER_T} s!`,'gold');}addFeed(`${who(c)} porta molta llenya i es transforma en <b style="color:#ffd400">Supercastanyera</b>`,'');}
 const BAZ_R=3.6; // idèntic per a tots els bots de tots els cursos
 const ROLES=['c','c','c','c','c','d','d','d','a','a']; // caçadora, defensora, assaltant: mateix repartiment a cada curs
 const MON={
-  pumpkin:{hp:4,speed:3.0,dmg:10,knock:1,r:0.65,h:1.5,drop:1,name:'una carabassa'},
-  ghost:{hp:3,speed:3.8,dmg:7,knock:1,r:0.55,h:2.0,drop:1,name:'un fantasma',phase:true},
-  boss:{hp:18,speed:2.2,dmg:22,knock:4,r:1.3,h:3.2,drop:5,name:'el Carabassot'},
+  pumpkin:{hp:4,speed:3.0,dmg:8,knock:1,r:0.65,h:1.5,drop:1,name:'una carabassa'},
+  ghost:{hp:3,speed:3.8,dmg:6,knock:1,r:0.55,h:2.0,drop:1,name:'un fantasma',phase:true},
+  boss:{hp:18,speed:2.2,dmg:18,knock:4,r:1.3,h:3.2,drop:5,name:'el Carabassot'},
 };
 const NAMES=['Marta','Pau','Jana','Pol','Laia','Arnau','Ona','Biel','Júlia','Martí','Aina','Nil','Clara','Jan','Mar','Roc','Berta','Èric','Núria','Oriol','Txell','Gerard','Paula','Quim','Carla','Joan','Elna','Àlex','Mireia','Jordi','Gemma','Pere','Lluna','Sergi','Rita','Guillem','Anna','Iu','Neus','Marc','Bruna','Hug','Emma','Adrià','Queralt','Lluc','Sara','Xavi','Mariona','Dídac','Abril','Ferran','Ivet','Bernat','Noa','Dani','Sílvia','Aleix','Irene','Toni','Cesc','Maria','Ot','Íngrid','Ramon'];
 TEAMS.forEach((t,i)=>{t.id=i;t.angle=-Math.PI/2+i*2*Math.PI/5;t.base={x:Math.cos(t.angle)*BASE_R,z:Math.sin(t.angle)*BASE_R};t.wins=0;
@@ -654,7 +663,7 @@ TEAMS.forEach(t=>{
   const fLogs=[];for(let i=0;i<7;i++){const l=new THREE.Mesh(logGeo,logM);const a=i/7*6.28;l.position.set(Math.cos(a)*1.7,0.12,Math.sin(a)*1.7);l.rotation.y=-a;g.add(l);fLogs.push(l);}
   scene.add(g);regProp('foguera',[pot,rim,band,...fLogs],[{x:t.base.x,y:0,z:t.base.z,ry:-t.angle-Math.PI/2,team:t}]);
   t.light=new THREE.PointLight(0xff7a20,1.8,20,1.6);t.light.position.set(t.base.x,2.4,t.base.z);scene.add(t.light);
-  const ring=new THREE.Mesh(new THREE.RingGeometry(DELIVER_R-0.3,DELIVER_R,24),B(t.color,{transparent:true,opacity:.55}));ring.rotation.x=-Math.PI/2;ring.position.set(t.base.x,0.03,t.base.z);scene.add(ring);
+  const ring=new THREE.Mesh(new THREE.RingGeometry(DELIVER_R-0.3,DELIVER_R,24),B(t.color,{transparent:true,opacity:.55}));ring.rotation.x=-Math.PI/2;ring.position.set(t.base.x,0.03,t.base.z);scene.add(ring);t.ring=ring;t.fireGroup=g;
   t.slots.forEach(s=>{const pad=new THREE.Mesh(new THREE.RingGeometry(0.5,0.65,12),B(t.color,{transparent:true,opacity:.3}));pad.rotation.x=-Math.PI/2;pad.position.set(s.x,0.03,s.z);scene.add(pad);});
   obstacles.push({x:t.base.x,z:t.base.z,r:FIRE_R,h:2.2,fireOf:t});
   // paradeta de castanyes darrere la foguera
@@ -671,7 +680,7 @@ TEAMS.forEach(t=>{
   const bask=new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.25,0.3,7),M(0x9a6a36));bask.position.set(0.9,1.2,0.1);st.add(bask);
   const moni=new THREE.Mesh(MONI_GEO,MONI_M);moni.position.set(0.9,1.38,0.1);moni.rotation.y=0.6;st.add(moni);const moni2=moni.clone();moni2.position.set(1.15,1.36,-0.05);moni2.rotation.y=2;st.add(moni2);
   for(const s of[-1,1]){const sk=new THREE.Mesh(new THREE.IcosahedronGeometry(0.55,1),sackM);sk.scale.set(1,1.15,0.9);sk.position.set(s*2.6,0.6,0.2);st.add(sk);const tie=new THREE.Mesh(new THREE.ConeGeometry(0.2,0.3,5),M(0x6b5536));tie.position.set(s*2.6,1.35,0.2);st.add(tie);}
-  scene.add(st);regProp('paradeta',st,[{x:sx,y:0,z:sz,ry:st.rotation.y,team:t}]);obstacles.push({x:sx,z:sz,r:2.1,h:2.4});obstacles.push({x:sx+px*2.6,z:sz+pz*2.6,r:0.6,h:1.3});obstacles.push({x:sx-px*2.6,z:sz-pz*2.6,r:0.6,h:1.3});
+  scene.add(st);t.stallGroup=st;t.stallPos={x:sx,z:sz};t.flashParts=[[pot,potM],[rim,rimM],[band,t.mat],[counter,woodM],[front,t.mat],[roaster,potM]];regProp('paradeta',st,[{x:sx,y:0,z:sz,ry:st.rotation.y,team:t}]);obstacles.push({x:sx,z:sz,r:2.1,h:2.4,fireOf:t});obstacles.push({x:sx+px*2.6,z:sz+pz*2.6,r:0.6,h:1.3,fireOf:t});obstacles.push({x:sx-px*2.6,z:sz-pz*2.6,r:0.6,h:1.3,fireOf:t});
   // fanalets: dues tires de la paradeta cap a pals davant la plaça
   for(const s of[-1,1]){const ax=sx+px*1.85*s+ux*0.45,az=sz+pz*1.85*s+uz*0.45,ay=2.6;const bx=t.base.x+px*5.4*s-ux*2.2,bz=t.base.z+pz*5.4*s-uz*2.2,by=2.7;
     const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.08,2.9,5),woodDark);pole.position.set(bx,1.45,bz);scene.add(pole);obstacles.push({x:bx,z:bz,r:0.25,h:2.9});
@@ -987,8 +996,8 @@ function updateFX(dt,now){
   if(fxLightT>0){fxLightT-=dt;fxLight.intensity*=Math.exp(-dt*9);if(fxLightT<=0)fxLight.intensity=0;}
   mists.forEach(s=>{s.userData.a+=s.userData.sp*dt;s.position.x=Math.cos(s.userData.a)*s.userData.r;s.position.z=Math.sin(s.userData.a)*s.userData.r;});
   portalGlow.material.opacity=0.38+Math.sin(now/400)*0.1;
-  const P=S.player;if(P&&S.phase==='play'){if(P.state==='active'&&P.hp<lastHp-0.5){hurtT=Math.min(0.6,hurtT+0.25+(lastHp-P.hp)/80);shakeAmt=Math.max(shakeAmt,0.12);}lastHp=P.state==='active'?P.hp:MAXHP;}
-  hurtT=Math.max(0,hurtT-dt);document.getElementById('hurt').style.opacity=(hurtT*1.4).toFixed(2);
+  const P=S.player;if(P&&S.phase==='play'){if(P.state==='active'&&P.hp<lastHp-0.5){const dmg=Math.max(1,Math.round(lastHp-P.hp));hurtT=Math.min(0.75,hurtT+0.32+dmg/70);shakeAmt=Math.max(shakeAmt,0.18);popText(P.pos.x,2.5,P.pos.z,'-'+dmg,'burn');shock(P.pos.x,P.pos.z,1.5,0xff3a2e);const hb=$('#hpBox');if(hb){hb.classList.remove('hit');void hb.offsetWidth;hb.classList.add('hit');}}lastHp=P.state==='active'?P.hp:MAXHP;}
+  hurtT=Math.max(0,hurtT-dt);document.getElementById('hurt').style.opacity=Math.min(1,hurtT*1.65).toFixed(2);
   updatePops(dt);
 }
 // postprocessat: resplendor (bloom) i ombres quan els gràfics són alts
@@ -1247,7 +1256,7 @@ function applyProp(cat,models,round){models=Array.isArray(models)?models:[models
   if(P.applied)P.applied.forEach(o=>{if(o.parent)o.parent.remove(o);o.traverse(m=>{if(m.isMesh){for(const mat of [].concat(m.material))mat.dispose();}});if(o.dispose)o.dispose();});P.applied=[];
   for(const [A,places]of propAssignments(models,P.places,round)){
     if(BUDGET[cat].team||P.places.length<=8){places.forEach(pl=>{const g=new THREE.Group();g.userData.assetId=A.id;g.position.set(pl.x,pl.y,pl.z);g.rotation.y=pl.ry||0;g.scale.setScalar(pl.s||1);
-      const X=instAsset(A,pl.team?pl.team.color:PROP_NEUTRAL);g.add(X.fit);(pl.parent||scene).add(g);markShadows(g);P.applied.push(g);});continue;}
+      const X=instAsset(A,pl.team?pl.team.color:PROP_NEUTRAL);g.userData.X=X;g.userData.team=pl.team;g.userData.ox=pl.x;g.userData.oz=pl.z;g.add(X.fit);(pl.parent||scene).add(g);markShadows(g);P.applied.push(g);});continue;}
     A.scene.updateMatrixWorld(true);const fitM=new THREE.Matrix4().compose(A.off,new THREE.Quaternion(),new THREE.Vector3(A.k,A.k,A.k)),UP=new THREE.Vector3(0,1,0);
     A.scene.traverse(o=>{if(!o.isMesh)return;const mat=Array.isArray(o.material)?o.material.map(m=>studentMat(m,false,PROP_NEUTRAL)):studentMat(o.material,false,PROP_NEUTRAL);
       const im=new THREE.InstancedMesh(o.geometry,mat,places.length),pm=new THREE.Matrix4(),q=new THREE.Quaternion(),t=new THREE.Matrix4();im.userData.assetId=A.id;
@@ -1361,12 +1370,12 @@ function buildRoom(){
   // espectador: una "castanyera fantasma" que no és a l'arena, perquè la resta del codi tingui S.player
   if(S.spectator){S.player={name:'Espectador',team:TEAMS[0],state:'spectator',isPlayer:true,pos:new THREE.Vector3(),vel:new THREE.Vector3(),hp:MAXHP,carry:0,kills:0,delivered:0,cd:9,face:0,queue:[]};S.follow=pick(TEAMS[0].active);SP.auto=true;SP.over=false;SP.t=0;}
 }
-function spawnPoint(t){for(let k=0;k<12;k++){const a=t.angle+Math.PI+rand(-1.3,1.3),r=rand(2.2,3.4);const x=t.base.x+Math.cos(a)*r,z=t.base.z+Math.sin(a)*r;
-  if(!S.cast.some(o=>o.state==='active'&&Math.hypot(o.pos.x-x,o.pos.z-z)<0.9))return{x,z};}return{x:t.base.x*0.88,z:t.base.z*0.88};}
+function spawnPoint(t){for(let k=0;k<18;k++){const a=t.angle+Math.PI+rand(-1.3,1.3),r=rand(2.3,4.2);const x=t.base.x+Math.cos(a)*r,z=t.base.z+Math.sin(a)*r;
+  if(!S.cast.some(o=>o.state==='active'&&Math.hypot(o.pos.x-x,o.pos.z-z)<1.05)&&!S.towers.some(w=>Math.hypot(w.pos.x-x,w.pos.z-z)<1.3)&&!obstacles.some(o=>Math.hypot(o.x-x,o.z-z)<o.r+0.55))return{x,z};}return{x:t.base.x*0.85,z:t.base.z*0.85};}
 function freeRole(t,except){const c={c:0,d:0,a:0};for(const m of t.active)if(m!==except)c[m.role]++;const need={c:5,d:3,a:2};for(const r of['c','d','a'])if(c[r]<need[r])return r;return 'c';}
 function spawn(m){const t=m.team,p=spawnPoint(t);
   if(!m.human&&S.phase==='play'&&m.mesh&&castModels().length>1){const A=nextCastModel();if(A&&A.id!==(m.look&&m.look.model)){m.look=Object.assign({},m.look||DEFAULT_LOOK,{model:A.id});const o=m.mesh;clearNameTag(o);scene.remove(o.g);if(o.bar)scene.remove(o.bar.g);m.mesh=makeCastanyera(t,false,m.look);}}
-  m.pos.set(p.x,0,p.z);m.vel.set(0,0,0);m.state='active';m.hp=MAXHP;m.turn=0;m.inv=1.5;m.cd=0.4;m.rush=0;m.carry=0;m.weapon=null;m.ammo=0;m.superT=0;m.burn=0;m.face=Math.atan2(-p.x,-p.z);m.ai.target=null;
+  m.pos.set(p.x,0,p.z);m.vel.set(0,0,0);m.state='active';m.hp=MAXHP;m.turn=0;m.inv=1.5;m.cd=0.4;m.rush=0;m.carry=0;m.weapon=null;m.ammo=0;m.superT=0;m.burn=0;m.face=Math.atan2(-p.x,-p.z);m.ai.target=null;m.ai.ang=rand(-0.95,0.95);m.ai.rad=rand(10,21);m.ai.stuck=0;m.ai.escT=0;m.ai.lx=p.x;m.ai.lz=p.z;
   m.role=freeRole(t,m);if(m.role==='a'){const others=TEAMS.filter(o=>o!==t);m.ai.raid=others[Math.floor(Math.random()*others.length)];}
   if(!t.active.includes(m))t.active.push(m);m.mesh.g.visible=true;if(S.phase==='play'){shock(p.x,p.z,1.6,t.color);sparks(p.x,0.3,p.z,8,t.color,2.5);if(m.isPlayer)sfx('spawn');}m.mesh.g.position.set(p.x,0,p.z);}
 function leaveArena(m){const t=m.team,i=t.active.indexOf(m);if(i>=0)t.active.splice(i,1);m.mesh.g.visible=false;m.mesh.bar.g.visible=false;if(m.isPlayer)aimMarker.visible=false;}
@@ -1399,14 +1408,15 @@ function dropLog(x,z,vx,vz,vy,y){
   S.logs.push(e);
 }
 const FA={t:0,last:{}};
-function fireAlert(src){const k=src==='mon'?'mon':src.short;const now=performance.now();if(FA.last[k]&&now-FA.last[k]<4000){FA.t=Math.max(FA.t,1.2);return;}FA.last[k]=now;
-  $('#fireAlert').innerHTML=src==='mon'?'Halloween ataca la vostra foguera!':`<b style="color:#fff">${esc(src.short)}</b> ataca la vostra foguera!`;$('#fireAlert').classList.add('on');FA.t=3;S.baseAlert=3;sfx('alarm');}
+function fireAlert(src){const k=src==='mon'?'mon':(src&&src.short)||'rival';const now=performance.now();FA.t=3;S.baseAlert=3;$('#fireAlert').classList.add('on');hurtT=Math.max(hurtT,0.22);if(FA.last[k]&&now-FA.last[k]<3500)return;FA.last[k]=now;
+  $('#fireAlert').innerHTML=src==='mon'?'⚠️ <b>Halloween</b> ataca el vostre lloc de castanyes!':`⚠️ <b style="color:#fff">Els ${esc(src.short||src)}</b> ataquen el vostre lloc de castanyes!`;sfx('alarm');}
+function baseHitFx(t,n,x,z){const hx=x??t.base.x,hz=z??t.base.z;t.hitT=0.65;sparks(hx,1.6,hz,8+n*3,0xff4a1a,5.5);if(Math.hypot(hx-t.base.x,hz-t.base.z)>0.5)sparks(t.base.x,1.6,t.base.z,6+n*2,0xff6a1a,4.5);shock(t.base.x,t.base.z,DELIVER_R*1.12,0xff3a20);flash(t.base.x,t.base.z,3.5);burst(hx,1.6,hz,6,'ember',3.5);sfx('knock',t.base.x,t.base.z);if((!S.spectator&&S.player&&t===S.player.team)||near(t.base.x,t.base.z,24)>0.1)popText(t.base.x,2.9,t.base.z,n>0?`-${n} llenya`:'Atac!','burn');}
 function knockFire(t,n,x,z,src){
-  n=Math.min(n,t.stock);if(n<=0)return 0;t.stock-=n;t.hitT=0.3;
+  const actual=Math.min(n,t.stock);t.stock-=actual;baseHitFx(t,actual,x,z);
   if(src&&S.player&&!S.spectator&&S.phase==='play'&&t===S.player.team)fireAlert(src);
-  sparks(t.base.x,1.6,t.base.z,6+n*3,0xff6a1a,5);sfx('knock',t.base.x,t.base.z);
-  for(let i=0;i<n;i++){const a=Math.atan2(z-t.base.z,x-t.base.x)+rand(-0.9,0.9),r=rand(2.2,3.6);dropLog(t.base.x+Math.cos(a)*r,t.base.z+Math.sin(a)*r);}
-  burst(t.base.x,1.8,t.base.z,5,'ember',3);return n;
+  if(NET.role==='host')NET.events.push({t:'atacBase',team:t.id,n:actual,x:netRound(x??t.base.x),z:netRound(z??t.base.z),src:src==='mon'?'mon':(src&&src.short)||''});
+  for(let i=0;i<actual;i++){const a=Math.atan2(z-t.base.z,x-t.base.x)+rand(-0.9,0.9),r=rand(2.2,3.6);dropLog(t.base.x+Math.cos(a)*r,t.base.z+Math.sin(a)*r);}
+  return actual;
 }
 function spawnMonster(type){
   const def=MON[type],f=1-S.time/ROUND;const a=Math.random()*6.283;
@@ -1500,9 +1510,9 @@ function boom(p){
   {const P0=S.player;if(P0&&P0.state==='active'){const d=Math.hypot(P0.pos.x-x,P0.pos.z-z);if(d<20)shakeAmt=Math.max(shakeAmt,0.55*(1-d/20));}}
   let kills=0;
   for(const mo of S.mons){if(!mo.alive)continue;if(Math.hypot(mo.pos.x-x,mo.pos.z-z)<BAZ_R+mo.def.r){mo.hp-=4;mo.flash=0.12;if(mo.hp<=0){killMonster(mo,by);kills++;}}}
-  for(const t of TEAMS){if(t===team)continue;for(const c of t.active.slice()){if(c.inv>0)continue;if(Math.hypot(c.pos.x-x,c.pos.z-z)<BAZ_R){c.hp-=35;c.flash=0.12;if(c.hp<=0)downCast(c,who(by)+' i el bazooka');}}
+  for(const t of TEAMS){if(t===team)continue;for(const c of t.active.slice()){if(c.inv>0)continue;if(Math.hypot(c.pos.x-x,c.pos.z-z)<BAZ_R){c.hp-=28;c.flash=0.12;if(c.hp<=0)downCast(c,who(by)+' i el bazooka');}}
     if(Math.hypot(t.base.x-x,t.base.z-z)<FIRE_R+BAZ_R)knockFire(t,4,x,z,team);}
-  for(const w of S.towers.slice())if(w.team!==team&&Math.hypot(w.pos.x-x,w.pos.z-z)<BAZ_R)damageTower(w,25);
+  for(const w of S.towers.slice())if(w.team!==team&&Math.hypot(w.pos.x-x,w.pos.z-z)<BAZ_R)damageTower(w,25,team);
   spawnPuddle(x,z,team,by);
   if(by.isPlayer&&kills>=1)popText(x,2.6,z,kills>=2?`×${kills}!`:'Pam!','big');
   if(by.isPlayer&&kills>=2)addFeed(`${who(by)} esclafa ${kills} monstres`,' amb el bazooka');
@@ -1520,7 +1530,7 @@ function updateWaves(dt){for(let i=superWaves.length-1;i>=0;i--){const w=superWa
   const inRing=(px,pz,rad)=>{const d=Math.hypot(px-w.x,pz-w.z);return d<=w.r+(rad||0)&&d>=r0-1.2-(rad||0);};
   for(const mo of S.mons){if(!mo.alive||w.hit.has(mo))continue;if(inRing(mo.pos.x,mo.pos.z,mo.def.r)){w.hit.add(mo);mo.hp=0;mo.flash=0.12;killMonster(mo,w.by);w.kills++;}}
   for(const t of TEAMS){if(t===w.team)continue;for(const c of t.active.slice()){if(w.hit.has(c)||c.inv>0)continue;if(inRing(c.pos.x,c.pos.z,0.4)){w.hit.add(c);c.hp=0;c.flash=0.12;downCast(c,who(w.by)+' i la Supercastanyera');}}}
-  for(const tw of S.towers.slice()){if(tw.team===w.team||w.hit.has(tw))continue;if(inRing(tw.pos.x,tw.pos.z,0.6)){w.hit.add(tw);damageTower(tw,9999);}}
+  for(const tw of S.towers.slice()){if(tw.team===w.team||w.hit.has(tw))continue;if(inRing(tw.pos.x,tw.pos.z,0.6)){w.hit.add(tw);damageTower(tw,9999,w.team);}}
   if(w.r>=WAVE_R){superWaves.splice(i,1);if(w.by.isPlayer&&w.kills>=2){popText(w.by.pos.x,3,w.by.pos.z,`×${w.kills}!`,'big');addFeed(`${who(w.by)} escombra ${w.kills} enemics`,' amb una ona');}}}}
 // aura daurada al voltant de la castanyera (també als mòbils connectats, amb superT replicat)
 const auraGeo=new THREE.ConeGeometry(0.6,2.5,7,1,true),auraM=new THREE.MeshBasicMaterial({color:0xffd400,transparent:true,opacity:0.32,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide});
@@ -1556,7 +1566,9 @@ function playerAim(){
   return best||(nd<8?near:null);
 }
 function cdFor(m,w){w=w===undefined?m.weapon:w;const human=m.isPlayer||m.peer;if(w)return WEAP[w].cd*(human?1:1.8);return human?0.45:BOT.cd;}
-function tryPlayerThrow(){if(NET.role==='client'){NET.tap=true;return;}const P=S.player;if(S.phase!=='play'||!P||P.state!=='active'||P.cd>0)return;
+const aimMaxR=m=>m&&m.weapon==='super'?20:16;
+function tryPlayerThrow(ax,az){const hasAim=Number.isFinite(ax)&&Number.isFinite(az)&&Math.hypot(ax,az)>0.05;if(NET.role==='client'){NET.tap=true;if(hasAim)NET.aim={ax:clamp(ax,-1,1),az:clamp(az,-1,1)};return;}const P=S.player;if(S.phase!=='play'||!P||P.state!=='active'||P.cd>0)return;
+  if(hasAim){const R=aimMaxR(P),tx=P.pos.x+ax*R,tz=P.pos.z+az*R;P.face=Math.atan2(ax,az);fireWeapon(P,tx,tz,0.35);return;}
   const tg=playerAim();if(tg){const L=lead(tg,P.pos,0.9);fireWeapon(P,L.x,L.z,aimH(tg));}else fireWeapon(P,P.pos.x+Math.sin(P.face)*12,P.pos.z+Math.cos(P.face)*12);}
 function tryPlayerUpgrade(){if(NET.role==='client'){NET.upgrade=true;return;}const P=S.player;if(S.phase!=='play'||!P||P.state!=='active')return;if(Math.hypot(P.pos.x-P.team.base.x,P.pos.z-P.team.base.z)>6)return;upgradeTower(P.team,P);}
 function tryPlayerBuild(){if(NET.role==='client'){NET.build=true;return;}const P=S.player;if(S.phase!=='play'||!P||P.state!=='active')return;if(Math.hypot(P.pos.x-P.team.base.x,P.pos.z-P.team.base.z)>6)return;buildTower(P.team,P);}
@@ -1569,15 +1581,15 @@ function moveEnt(m,mx,mz,speed,dt,r,phase){
   if(!phase)for(const o of obstacles){const dx=m.pos.x-o.x,dz=m.pos.z-o.z,d=Math.hypot(dx,dz),min=o.r+r;if(d<min&&d>0){m.pos.x=o.x+dx/d*min;m.pos.z=o.z+dz/d*min;}}
   const rr=Math.hypot(m.pos.x,m.pos.z),R=ARENA_R-0.8;if(rr>R){m.pos.x*=R/rr;m.pos.z*=R/rr;}
 }
-function nearestLog(m,maxD){let b=null,bd=maxD;for(const l of S.logs){const d=Math.hypot(l.x-m.pos.x,l.z-m.pos.z);if(d<bd){bd=d;b=l;}}return b;}
+function nearestLog(m,maxD){let b=null,bd=maxD;for(const l of S.logs){if(l.fly)continue;let d=Math.hypot(l.x-m.pos.x,l.z-m.pos.z);if(d>=bd)continue;for(const o of m.team.active)if(o!==m&&Math.hypot(l.x-o.pos.x,l.z-o.pos.z)<d-0.35)d+=2.6;if(d<bd){bd=d;b=l;}}return b;}
 function botUpdate(m,dt){
   const ai=m.ai,t=m.team,home=t.base;ai.t-=dt;
   let goal=null;
   if(m.hp<45){let bd=16;for(const p of S.pans){const d=Math.hypot(p.x-m.pos.x,p.z-m.pos.z);if(d<bd){bd=d;goal=p;}}}
   const dHome=Math.hypot(home.x-m.pos.x,home.z-m.pos.z);
-  if(!goal&&(m.carry>=5||(m.carry>0&&(m.role==='d'||S.time<12))))goal={x:home.x,z:home.z};
+  if(!goal&&(m.hp<45||m.carry>=5||(m.carry>0&&(m.role==='d'||S.time<12))))goal={x:home.x,z:home.z};
   if(ai.t<=0||!ai.target||ai.target.alive===false||ai.target.state&&ai.target.state!=='active'||(ai.target.hp!==undefined&&ai.target.hp<=0)){
-    ai.t=rand(.4,.9);if(Math.random()<.3)ai.strafe*=-1;ai.dist=rand(6,9);
+    ai.t=rand(.4,.9);if(Math.random()<.3)ai.strafe*=-1;ai.dist=rand(6,9);ai.ang=clamp((ai.ang??rand(-.9,.9))+rand(-.35,.35),-1.05,1.05);ai.rad=clamp((ai.rad??15)+rand(-2.5,2.5),9,22);
     let best=null,bs=1e9;
     hostiles(t,(e,k)=>{const d=Math.hypot(e.pos.x-m.pos.x,e.pos.z-m.pos.z);if(d>18)return;let s=d+rand(0,2);
       if(m.role==='d'){const dh=Math.hypot(e.pos.x-home.x,e.pos.z-home.z);if(dh>15)return;s=dh;}
@@ -1595,10 +1607,18 @@ function botUpdate(m,dt){
     else if(log&&(!tg||Math.hypot(log.x-m.pos.x,log.z-m.pos.z)<5)){mx+=log.x-m.pos.x;mz+=log.z-m.pos.z;}
     else if(tg){const dx=tg.pos.x-m.pos.x,dz=tg.pos.z-m.pos.z,d=Math.hypot(dx,dz)||1,nx=dx/d,nz=dz/d;const keep=tg.isFire?7:ai.dist;
       if(d>keep+1.5){mx+=nx;mz+=nz;}else if(d<keep-2){mx-=nx*1.3;mz-=nz*1.3;}mx+=-nz*ai.strafe*0.6;mz+=nx*ai.strafe*0.6;}
-    else if(m.role==='a'&&ai.raid){mx+=ai.raid.base.x*0.8-m.pos.x;mz+=ai.raid.base.z*0.8-m.pos.z;}
-    else if(m.role==='c'){mx+=-m.pos.x*0.3;mz+=-m.pos.z*0.3;}
-    else {mx+=home.x*0.8-m.pos.x;mz+=home.z*0.8-m.pos.z;}
+    else if(m.role==='a'&&ai.raid){const a=ai.raid.angle+Math.PI+(ai.ang||0)*0.65;mx+=ai.raid.base.x+Math.cos(a)*7.2-m.pos.x;mz+=ai.raid.base.z+Math.sin(a)*7.2-m.pos.z;}
+    else if(m.role==='c'){const a=t.angle+(ai.ang||0),r=ai.rad||15,px=Math.cos(a)*r,pz=Math.sin(a)*r;if(Math.hypot(px-m.pos.x,pz-m.pos.z)<2.4)ai.ang=clamp((ai.ang||0)+0.55*ai.strafe,-1.05,1.05);mx+=px-m.pos.x;mz+=pz-m.pos.z;}
+    else {const a=t.angle+Math.PI+(ai.ang||0)*0.85,px=home.x+Math.cos(a)*6.8,pz=home.z+Math.sin(a)*6.8;if(Math.hypot(px-m.pos.x,pz-m.pos.z)<1.5)ai.ang=clamp((ai.ang||0)+0.5*ai.strafe,-1,1);mx+=px-m.pos.x;mz+=pz-m.pos.z;}
   }else{mx+=goal.x-m.pos.x;mz+=goal.z-m.pos.z;}
+  const ml=Math.hypot(mx,mz);if(ml>0.001){mx/=ml;mz/=ml;}
+  for(const o of S.cast){if(o===m||o.state!=='active')continue;const dx=m.pos.x-o.pos.x,dz=m.pos.z-o.pos.z,d=Math.hypot(dx,dz);if(d<1.75&&d>0.001){const w=(1.75-d)/1.75,nx=dx/d,nz=dz/d;mx+=nx*w*1.35-nz*ai.strafe*w*0.55;mz+=nz*w*1.35+nx*ai.strafe*w*0.55;}}
+  const avoid=(ox,oz,or)=>{const dx=m.pos.x-ox,dz=m.pos.z-oz,d=Math.hypot(dx,dz),min=or+1.35;if(d>=min||d<0.001)return;const nx=dx/d,nz=dz/d;if(mx*nx+mz*nz<0.2){const w=(min-d)/min,s=(-nz*mx+nx*mz)>=0?1:-1;mx+=nx*w*1.4-nz*s*w*1.65;mz+=nz*w*1.4+nx*s*w*1.65;}};
+  for(const o of obstacles)avoid(o.x,o.z,o.r);for(const w of S.towers)avoid(w.pos.x,w.pos.z,0.75);
+  const moved=Math.hypot(m.pos.x-(ai.lx??m.pos.x),m.pos.z-(ai.lz??m.pos.z));ai.lx=m.pos.x;ai.lz=m.pos.z;
+  if(ml>0.1&&moved<dt*BOT.speed*0.22)ai.stuck=(ai.stuck||0)+dt;else ai.stuck=Math.max(0,(ai.stuck||0)-dt*2);
+  if(ai.stuck>0.32){ai.stuck=0;ai.strafe*=-1;ai.ang=rand(-1,1);ai.escT=0.45;}
+  if(ai.escT>0){ai.escT-=dt;const ex=-mz*ai.strafe,ez=mx*ai.strafe;mx=ex*1.2-mx*0.3;mz=ez*1.2-mz*0.3;}
   if(tg){const dx=tg.pos.x-m.pos.x,dz=tg.pos.z-m.pos.z,d=Math.hypot(dx,dz);m.face=Math.atan2(dx,dz);
     if(m.cd<=0&&d<BOT.engage&&m.inv<=0.6&&Math.random()<dt*3){const L=lead(tg,m.pos,0.8);const err=0.3+d*0.06;
       fireWeapon(m,L.x+rand(-err,err),L.z+rand(-err,err),aimH(tg));}}
@@ -1621,11 +1641,11 @@ function monsterUpdate(mo,dt){
   else{mo.vel.multiplyScalar(0.8);
     if(mo.atk<=0){mo.atk=1.1;mo.lunge=0.2;
       if(!tg){knockFire(mo.goal,mo.def.knock,mo.pos.x,mo.pos.z,'mon');}
-      else if(tg.isTower){damageTower(tg,mo.def.dmg);}
+      else if(tg.isTower){damageTower(tg,mo.def.dmg,'mon');}
       else if(tg.inv<=0){if(tg.isPlayer)sfx('hitMe');tg.hp-=mo.def.dmg;tg.flash=0.12;burst(tg.pos.x,1,tg.pos.z,4,'purple',2.5);if(tg.hp<=0)downCast(tg,mo.def.name);}
     }}
 }
-function damageTower(tw,n){tw.hp-=n;tw.flash=0.1;burst(tw.pos.x,0.9,tw.pos.z,4,'dust',2.5);if(tw.hp<=0){S.towers.splice(S.towers.indexOf(tw),1);scene.remove(tw.mesh.g);scene.remove(tw.mesh.bar.g);burst(tw.pos.x,0.8,tw.pos.z,14,'dust',4);addFeed(`Cau una torradora de ${teamTag(tw.team)}`);}}
+function damageTower(tw,n,src){tw.hp-=n;tw.flash=0.14;tw.team.hitT=Math.max(tw.team.hitT||0,0.45);if(src&&S.player&&!S.spectator&&S.phase==='play'&&tw.team===S.player.team)fireAlert(src);if(NET.role==='host')NET.events.push({t:'atacBase',team:tw.team.id,n:0,x:netRound(tw.pos.x),z:netRound(tw.pos.z),src:src==='mon'?'mon':(src&&src.short)||''});sparks(tw.pos.x,1.1,tw.pos.z,8,0xff6a20,4);burst(tw.pos.x,0.9,tw.pos.z,4,'dust',2.5);if(tw.hp<=0){S.towers.splice(S.towers.indexOf(tw),1);scene.remove(tw.mesh.g);scene.remove(tw.mesh.bar.g);shock(tw.pos.x,tw.pos.z,2.2,0xff4a20);burst(tw.pos.x,0.8,tw.pos.z,14,'dust',4);addFeed(`Cau una torradora de ${teamTag(tw.team)}`);}}
 function towerUpdate(tw,dt){
   const LV=TOWER_LV[tw.lv||1];if(tw.mesh.flame){tw.mesh.flame.scale.set(1,1+Math.sin(performance.now()/90+tw.slot)*0.2,1);}
   tw.cd-=dt;tw.flash-=dt;if(tw.cd>0)return;let best=null,bd=LV.range;
@@ -1634,19 +1654,39 @@ function towerUpdate(tw,dt){
 }
 
 /* ---------- entrada ---------- */
-const touch=$('#touch'),joyEl=$('#joy'),knob=$('#knob'),throwBtn=$('#throwBtn'),buildBtn=$('#buildBtn');
+const touch=$('#touch'),joyEl=$('#joy'),knob=$('#knob'),throwBtn=$('#throwBtn'),aimPad=$('#aimPad'),buildBtn=$('#buildBtn');
+const AIM_DEAD=12,AIM_MAX=64,rayPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0),raycaster=new THREE.Raycaster(),rayNdc=new THREE.Vector2(),rayHit=new THREE.Vector3();
+function screenToAimVec(cx,cy){const P=S.player;if(!P||P.state!=='active')return null;rayNdc.set((cx/innerWidth)*2-1,-(cy/innerHeight)*2+1);raycaster.setFromCamera(rayNdc,camera);if(!raycaster.ray.intersectPlane(rayPlane,rayHit))return null;const R=aimMaxR(P);let dx=rayHit.x-P.pos.x,dz=rayHit.z-P.pos.z;const d=Math.hypot(dx,dz);if(d<0.2)return{ax:Math.sin(P.face)*0.2,az:Math.cos(P.face)*0.2};const k=Math.min(1,d/R)/d;return{ax:dx*k,az:dz*k};}
+function startAimStick(e,fromBtn){S.aim={on:true,id:e.pointerId,ox:e.clientX,oy:e.clientY,moved:false,cancel:false,fromBtn,mouse:e.pointerType==='mouse'&&!fromBtn};S.aimVec=S.aim.mouse?screenToAimVec(e.clientX,e.clientY):null;if(fromBtn){throwBtn.classList.add('down');clearTimeout(S.aimHoldT);S.aimHoldT=setTimeout(()=>{if(S.aim&&S.aim.on&&!S.aim.moved)S.holding=true;},180);}}
+function moveAimStick(e){const A=S.aim;if(!A||!A.on||e.pointerId!==A.id)return false;
+  if(A.mouse){A.moved=true;S.aimVec=screenToAimVec(e.clientX,e.clientY);if(S.aimVec&&S.player&&S.player.state==='active')S.player.face=Math.atan2(S.aimVec.ax,S.aimVec.az);return true;}
+  let dx=e.clientX-A.ox,dy=e.clientY-A.oy;const l=Math.hypot(dx,dy);
+  if(!A.moved&&l>AIM_DEAD){A.moved=true;S.holding=false;clearTimeout(S.aimHoldT);aimPad.hidden=false;}
+  if(!A.moved)return true;
+  if(l<AIM_DEAD){A.cancel=true;S.aimVec=null;throwBtn.classList.add('cancel');aimPad.classList.add('cancel');throwBtn.style.transform=`translate(${dx*.4}px,${dy*.4}px)`;return true;}
+  A.cancel=false;throwBtn.classList.remove('cancel');aimPad.classList.remove('cancel');
+  const cl=Math.min(AIM_MAX,l),ux=dx/l,uy=dy/l,f=Math.max(0.18,(cl-AIM_DEAD)/(AIM_MAX-AIM_DEAD));
+  throwBtn.style.transform=`translate(${ux*cl*.68}px,${uy*cl*.68}px)`;
+  S.aimVec={ax:ux*f,az:uy*f};if(S.player&&S.player.state==='active')S.player.face=Math.atan2(ux,uy);return true;}
+function endAimStick(e,cancelled){const A=S.aim;if(!A||!A.on||e.pointerId!==A.id)return false;clearTimeout(S.aimHoldT);S.holding=false;
+  const vec=S.aimVec,moved=A.moved,cancel=cancelled||A.cancel;
+  S.aim=null;S.aimVec=null;throwBtn.classList.remove('down','cancel');throwBtn.style.transform='';aimPad.hidden=true;aimPad.classList.remove('cancel');
+  if(!cancel){if(moved&&vec)tryPlayerThrow(vec.ax,vec.az);else if(!moved)tryPlayerThrow();}return true;}
 touch.addEventListener('pointerdown',e=>{if(S.phase!=='play')return;
   if(S.spectator){SP.ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});if(SP.ptrs.size===1)SP.drag={x:e.clientX,y:e.clientY,lx:e.clientX,ly:e.clientY,moved:false,id:e.pointerId};else if(SP.drag)SP.drag.moved=true;try{touch.setPointerCapture(e.pointerId);}catch(_){}return;}
-  if(e.clientX<innerWidth*0.6&&!S.joy.on){S.joy={on:true,id:e.pointerId,ox:e.clientX,oy:e.clientY,x:0,y:0};joyEl.style.left=e.clientX+'px';joyEl.style.top=e.clientY+'px';knob.style.transform='';joyEl.hidden=false;try{touch.setPointerCapture(e.pointerId);}catch(_){}}
-  else if(e.clientX>=innerWidth*0.6)tryPlayerThrow();});
-touch.addEventListener('pointermove',e=>{if(S.spectator&&SP.ptrs.has(e.pointerId)){specPointerMove(e);return;}if(!S.joy.on||e.pointerId!==S.joy.id)return;let dx=e.clientX-S.joy.ox,dy=e.clientY-S.joy.oy;const l=Math.hypot(dx,dy),max=50;if(l>max){dx*=max/l;dy*=max/l;}S.joy.x=dx/max;S.joy.y=dy/max;knob.style.transform=`translate(${dx}px,${dy}px)`;});
+  if(e.pointerType!=='mouse'&&e.clientX<innerWidth*0.6&&!S.joy.on){S.joy={on:true,id:e.pointerId,ox:e.clientX,oy:e.clientY,x:0,y:0};joyEl.style.left=e.clientX+'px';joyEl.style.top=e.clientY+'px';knob.style.transform='';joyEl.hidden=false;try{touch.setPointerCapture(e.pointerId);}catch(_){}}
+  else if(e.pointerType==='mouse'||e.clientX>=innerWidth*0.6){startAimStick(e,false);try{touch.setPointerCapture(e.pointerId);}catch(_){}}});
+touch.addEventListener('pointermove',e=>{if(S.spectator&&SP.ptrs.has(e.pointerId)){specPointerMove(e);return;}if(moveAimStick(e))return;if(!S.joy.on||e.pointerId!==S.joy.id)return;let dx=e.clientX-S.joy.ox,dy=e.clientY-S.joy.oy;const l=Math.hypot(dx,dy),max=50;if(l>max){dx*=max/l;dy*=max/l;}S.joy.x=dx/max;S.joy.y=dy/max;knob.style.transform=`translate(${dx}px,${dy}px)`;});
 const endJoy=e=>{if(e.pointerId!==S.joy.id)return;S.joy.on=false;S.joy.x=S.joy.y=0;joyEl.hidden=true;};
 touch.addEventListener('pointerup',e=>{if(S.spectator&&SP.ptrs.has(e.pointerId)){SP.ptrs.delete(e.pointerId);const d=SP.drag;if(SP.ptrs.size)return;SP.drag=null;if(d&&!d.moved){let best=null,bd=48;const v=new THREE.Vector3();
     for(const m of specList()){v.set(m.pos.x,1.4,m.pos.z).project(camera);const sx=(v.x*0.5+0.5)*innerWidth,sy=(-v.y*0.5+0.5)*innerHeight,dd=Math.hypot(sx-e.clientX,sy-e.clientY);if(dd<bd){bd=dd;best=m;}}
-    if(best){specFollow(best);sfx('click');}}return;}endJoy(e);});touch.addEventListener('pointercancel',e=>{if(S.spectator){SP.ptrs.delete(e.pointerId);if(!SP.ptrs.size)SP.drag=null;return;}endJoy(e);});
+    if(best){specFollow(best);sfx('click');}}return;}if(endAimStick(e,false))return;endJoy(e);});touch.addEventListener('pointercancel',e=>{if(S.spectator){SP.ptrs.delete(e.pointerId);if(!SP.ptrs.size)SP.drag=null;return;}if(endAimStick(e,true))return;endJoy(e);});
 touch.addEventListener('wheel',e=>{if(!S.spectator||S.phase!=='play')return;e.preventDefault();specZoom(Math.exp(e.deltaY*0.0015));},{passive:false});
-throwBtn.addEventListener('pointerdown',e=>{e.preventDefault();S.holding=true;throwBtn.classList.add('down');tryPlayerThrow();});
-['pointerup','pointercancel','pointerleave'].forEach(ev=>throwBtn.addEventListener(ev,()=>{S.holding=false;throwBtn.classList.remove('down');}));
+throwBtn.addEventListener('pointerdown',e=>{e.preventDefault();if(S.phase!=='play'||S.spectator)return;startAimStick(e,true);try{throwBtn.setPointerCapture(e.pointerId);}catch(_){}});
+throwBtn.addEventListener('pointermove',e=>{moveAimStick(e);});
+throwBtn.addEventListener('pointerup',e=>{endAimStick(e,false);});
+throwBtn.addEventListener('pointercancel',e=>{endAimStick(e,true);});
+
 buildBtn.addEventListener('pointerdown',e=>{e.preventDefault();tryPlayerBuild();});
 const upBtn=$('#upBtn');upBtn.addEventListener('pointerdown',e=>{e.preventDefault();tryPlayerUpgrade();});
 addEventListener('keydown',e=>{if(e.target&&(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)||e.target.isContentEditable||e.target.closest&&e.target.closest('#dz')))return;S.keys[e.code]=true;if(e.code==='Space'){S.holding=true;tryPlayerThrow();if(S.phase==='play')e.preventDefault();}if(e.code==='KeyB')tryPlayerBuild();if(e.code==='KeyU')tryPlayerUpgrade();if(S.spectator&&S.phase==='play'){if(e.code==='ArrowRight')specStep(1);if(e.code==='ArrowLeft')specStep(-1);if(e.code==='KeyA')$('#specAuto').click();if(e.code==='KeyV'||e.key==='0')$('#specOver').click();const n=+e.key;if(n>=1&&n<=5)specTeams.children[n-1].click();if(e.key==='+'||e.code==='NumpadAdd')specZoom(0.8);if(e.key==='-'||e.code==='NumpadSubtract')specZoom(1.25);
@@ -1671,7 +1711,7 @@ function drawMini(){const W=176,c=W/2,sc=(c-6)/(ARENA_R+1);mx2.clearRect(0,0,W,W
   for(const q of S.crates){mx2.fillStyle=WEAP[q.type].col;mx2.fillRect(c+q.x*sc-3,c+q.z*sc-3,6,6);}
   for(const t of TEAMS){mx2.fillStyle=t.css;const r=5+Math.min(9,t.stock/8);mx2.beginPath();mx2.arc(c+t.base.x*sc,c+t.base.z*sc,r,0,6.283);mx2.fill();
     mx2.globalAlpha=.85;for(const m of t.active)if(!m.isPlayer)mx2.fillRect(c+m.pos.x*sc-1.5,c+m.pos.z*sc-1.5,3,3);mx2.globalAlpha=1;}
-  if(S.baseAlert>0&&S.player&&S.player.team&&!S.spectator){const b=S.player.team.base,r=8+Math.sin(performance.now()/90)*3;mx2.strokeStyle='#ff4a3a';mx2.lineWidth=3;mx2.beginPath();mx2.arc(c+b.x*sc,c+b.z*sc,r,0,6.283);mx2.stroke();}
+  if(S.baseAlert>0&&S.player&&S.player.team&&!S.spectator){const b=S.player.team.base,now=performance.now(),r1=8+Math.sin(now/75)*3.5,r2=6+((now/35)%12);mx2.strokeStyle='#ff3a2e';mx2.lineWidth=3;mx2.beginPath();mx2.arc(c+b.x*sc,c+b.z*sc,r1,0,6.283);mx2.stroke();mx2.strokeStyle='rgba(255,190,90,.85)';mx2.lineWidth=2;mx2.beginPath();mx2.arc(c+b.x*sc,c+b.z*sc,r2,0,6.283);mx2.stroke();}
   const P=S.spectator?S.follow:S.player;if(P&&P.state==='active'){mx2.fillStyle='#fff';mx2.strokeStyle='#0e1122';mx2.lineWidth=2;mx2.beginPath();mx2.arc(c+P.pos.x*sc,c+P.pos.z*sc,5,0,6.283);mx2.fill();mx2.stroke();}}
 const TIPS_OLD=['Llança castanyes als monstres de Halloween: deixen llenya.','Passa per sobre la llenya per agafar-la i porta-la a l\'anell de la teva foguera.','Busca les caixes d\'armes: foc, ràfega i bazooka de moniato.','A la teva base pots construir torradores que disparen soles.'];
 function updateTips(dt){if(S.spectator)return;const el=$('#tip'),P=S.player;
@@ -1680,7 +1720,7 @@ function updateTips(dt){if(S.spectator)return;const el=$('#tip'),P=S.player;
     if(P.carry===0&&S.logs.length&&near(S.logs,10))hint('logs');
     if(P.carry>0)hint('carry');
     if(near(S.crates,11))hint('crate');
-    if(P.hp<50&&S.pans.length)hint('heal');
+    if(P.hp<50)hint('heal');
     if(HSEEN.has('deliver')&&P.team.stock>=TOWER_COST&&Math.hypot(P.pos.x-P.team.base.x,P.pos.z-P.team.base.z)<6)hint('tower');}
   if(S.pickN&&(S.pickT-=dt)<=0){if(P)popText(P.pos.x,2.7,P.pos.z,`+${S.pickN} llenya`,'wood');S.pickN=0;}
   if(hintT>0){hintT-=dt;if(hintT<0.5)el.style.opacity='0';}
@@ -1688,14 +1728,14 @@ function updateTips(dt){if(S.spectator)return;const el=$('#tip'),P=S.player;
 // fletxa a terra que apunta a la teva foguera mentre portes llenya
 const homeArrow=(()=>{const sh=new THREE.Shape();sh.moveTo(0,0.55);sh.lineTo(0.42,0);sh.lineTo(0.16,0);sh.lineTo(0.16,-0.45);sh.lineTo(-0.16,-0.45);sh.lineTo(-0.16,0);sh.lineTo(-0.42,0);sh.closePath();
   const gm=new THREE.ShapeGeometry(sh);gm.rotateX(-Math.PI/2);const m=new THREE.Mesh(gm,new THREE.MeshBasicMaterial({color:0xffd070,transparent:true,opacity:.95,depthWrite:false}));m.renderOrder=4;m.visible=false;scene.add(m);return m;})();
-function updateHomeArrow(now){const P=S.player;const on=S.phase==='play'&&!S.spectator&&P&&P.state==='active'&&P.carry>0;
+function updateHomeArrow(now){const P=S.player,alert=S.baseAlert>0,lowHp=P&&P.hp<45;const on=S.phase==='play'&&!S.spectator&&P&&P.state==='active'&&(P.carry>0||alert||lowHp);
   if(!on){homeArrow.visible=false;return;}const b=P.team.base,dx=b.x-P.pos.x,dz=b.z-P.pos.z,d=Math.hypot(dx,dz);if(d<DELIVER_R+1){homeArrow.visible=false;return;}
-  const a=Math.atan2(dx,dz),r=1.9+Math.sin(now/180)*0.15;homeArrow.visible=true;homeArrow.position.set(P.pos.x+Math.sin(a)*r,0.08,P.pos.z+Math.cos(a)*r);homeArrow.rotation.y=a;
-  const full=P.carry>=CARRY_MAX;homeArrow.material.color.setHex(full?0xffd24a:P.team.color);homeArrow.scale.setScalar(full?1.35:1.1);}
+  const a=Math.atan2(dx,dz),r=1.9+Math.sin(now/(alert?85:180))*0.18;homeArrow.visible=true;homeArrow.position.set(P.pos.x+Math.sin(a)*r,0.08,P.pos.z+Math.cos(a)*r);homeArrow.rotation.y=a;
+  const full=P.carry>=CARRY_MAX;homeArrow.material.color.setHex(alert?(Math.floor(now/110)%2?0xff3a2e:0xffc060):lowHp?0x8fe07a:full?0xffd24a:P.team.color);homeArrow.scale.setScalar(alert?1.45:full||lowHp?1.35:1.1);}
 // consells que surten quan toca, una sola vegada
 const HINTS={logs:"Els monstres deixen llenya. Passa-hi per sobre per agafar-la.",carry:"Porta la llenya a l'anell de la teva foguera: segueix la fletxa.",full:"No hi cap més llenya! Torna a la foguera.",super:"Portes 6 de llenya o més! Porta-la a la foguera i et convertiràs en Supercastanyera.",
   deliver:"Molt bé! Com més llenya, més gran la foguera. Guanya la més gran.",monster:"Monstres de Halloween! Mantén LLANÇA per tirar-los castanyes.",crate:"Caixa d'armes a prop: agafa-la per tenir trets especials.",
-  heal:"Tens poca vida: busca un panellet (els verds).",tower:"Ets a la teva base: pots construir una torradora que defensa sola. Amb més llenya, la pots millorar.",rival:"Si fas caure una rival, deixa a terra la llenya que portava."};
+  heal:"Tens poca vida: torna a la teva foguera per curar-te o busca un panellet.",tower:"Ets a la teva base: pots construir una torradora que defensa sola. Amb més llenya, la pots millorar.",rival:"Si fas caure una rival, deixa a terra la llenya que portava."};
 const HSEEN=new Set();const HQUEUE=[];let hintT=0;
 function hint(k){if(S.spectator||HSEEN.has(k))return;HSEEN.add(k);HQUEUE.push(HINTS[k]);}
 /* ---------- mode espectador ---------- */
@@ -1765,11 +1805,11 @@ function updateHud(dt){updateTips(dt);if(FA.t>0){FA.t-=dt;if(FA.t<=0)$('#fireAle
   if(bannerT>0){bannerT-=dt;if(bannerT<=0)$('#banner').style.opacity='0';}
   hudT-=dt;if(hudT>0)return;hudT=0.1;
   $('#timeLbl').textContent=fmt(S.time);$('#roundLbl').textContent=S.night?'Nit de Difunts':'Ronda '+S.round;$('#clock').classList.toggle('night',S.night);
-  const LEAD=leaderTeam();TEAMS.forEach((t,i)=>{if(chips[i].n.textContent!==t.short){chips[i].n.textContent=t.short;fitLabel(chips[i].n,10);drawSign(t);}chips[i].el.classList.toggle('lead',t===LEAD);chips[i].s.textContent=t.stock;chips[i].m.textContent=t.queue.length?`llenya · cua ${t.queue.length}`:'llenya';chips[i].el.classList.toggle('me',!S.spectator&&t.id===S.pTeam);chips[i].el.classList.toggle('hit',t.hitT>0);});
+  const LEAD=leaderTeam();TEAMS.forEach((t,i)=>{if(chips[i].n.textContent!==t.short){chips[i].n.textContent=t.short;fitLabel(chips[i].n,10);drawSign(t);}chips[i].el.classList.toggle('lead',t===LEAD);chips[i].s.textContent=t.stock;chips[i].m.textContent=t.queue.length?`llenya · cua ${t.queue.length}`:'llenya';chips[i].el.classList.toggle('me',!S.spectator&&t.id===S.pTeam);chips[i].el.classList.toggle('hit',t.hitT>0||(!S.spectator&&t.id===S.pTeam&&S.baseAlert>0));});
   if(S.spectator){drawMini();updateSpecHud();return;}
   const P=S.player,t=P.team;
-  const hr=P.state==='active'?P.hp/MAXHP:0;$('#hpBar').style.width=(hr*100)+'%';$('#hpTxt').textContent=P.state==='active'?Math.max(0,Math.ceil(P.hp)):0;$('#hpBox').classList.toggle('low',hr<0.3);
-  const chg=P.carry>=SUPER_LOAD&&!(P.superT>0);$('#carry').textContent=chg?`${P.carry}/${CARRY_MAX} ⚡ a la foguera!`:`${P.carry}/${CARRY_MAX} llenya`;$('#carry').classList.toggle('full',P.carry>=CARRY_MAX);$('#carry').classList.toggle('charged',chg);
+  const hr=P.state==='active'?P.hp/MAXHP:0,inHeal=P.state==='active'&&P.hp<MAXHP&&Math.hypot(P.pos.x-t.base.x,P.pos.z-t.base.z)<HEAL_R;$('#hpBar').style.width=(hr*100)+'%';$('#hpTxt').textContent=P.state==='active'?Math.max(0,Math.ceil(P.hp)):0;$('#hpBox').classList.toggle('low',hr<0.3&&!inHeal);$('#hpBox').classList.toggle('heal',inHeal);
+  const chg=P.carry>=SUPER_LOAD&&!(P.superT>0)&&!(P.superCd>0);$('#carry').textContent=chg?`${P.carry}/${CARRY_MAX} ⚡ a la foguera!`:P.superCd>0&&P.carry>=SUPER_LOAD?`${P.carry}/${CARRY_MAX} · ⚡ en ${Math.ceil(P.superCd)} s`:`${P.carry}/${CARRY_MAX} llenya`;$('#carry').classList.toggle('full',P.carry>=CARRY_MAX);$('#carry').classList.toggle('charged',chg);
   {const w=P.state==='active'?P.weapon:null,W=w&&WEAP[w];$('#wpPill').hidden=!w;if(w){$('#wpPill').textContent=`${W.label} · ${P.ammo}`;$('#wpPill').style.background=W.col;$('#wpPill').style.borderColor=W.col;}
    $('#throwLbl').textContent=w?W.label.toUpperCase():T('partida.llanca');$('#throwAm').hidden=!w;$('#throwAm').textContent=w?`×${P.ammo}`:'';
    throwBtn.style.background=w?`radial-gradient(circle at 35% 30%,${W.grad})`:'';throwBtn.style.boxShadow=w?`0 6px 0 ${W.shadow},0 10px 24px rgba(0,0,0,.45)`:'';}
@@ -1817,7 +1857,7 @@ function endRound(){
 function nextRound(){
   if(NET.role==='client')return;
   S.round++;resetRound();
-  TEAMS.forEach(t=>{for(const m of t.members){m.kills=0;m.delivered=0;if(m.state==='respawning')m.state='queue';}
+  TEAMS.forEach(t=>{for(const m of t.members){m.kills=0;m.delivered=0;m.superCd=0;if(m.state==='respawning')m.state='queue';}
     for(const m of t.members)if(m.state==='queue'&&!t.queue.includes(m)&&t.active.length<SLOTS)spawn(m);
     for(const m of t.active.slice())spawn(m);});
   S.phase='play';$('#results').hidden=true;feedEl.innerHTML='';hudT=0;banner(`Ronda ${S.round}`,'var(--ember)');
@@ -1885,7 +1925,7 @@ function renderLook(){const box=$('#lookRows');box.innerHTML='';$('#nameIn').val
     row.appendChild(o);box.appendChild(row);}
   const tb=$('#lookTeams');tb.innerHTML='';TEAMS.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='sw';b.style.setProperty('--c',t.css);b.setAttribute('aria-label','Color de prova '+(i+1));b.title='Color de prova '+(i+1);b.setAttribute('aria-pressed',i===pickTeam);
     b.addEventListener('click',()=>{pickTeam=i;sfx('click');[...tb.children].forEach(c=>c.setAttribute('aria-pressed',c===b));renderPick();updatePreview();});tb.appendChild(b);});}
-$('#nameIn').addEventListener('input',e=>{S.look.name=e.target.value.trim().slice(0,12);});
+$('#nameIn').addEventListener('input',e=>{S.look.name=e.target.value.trim().slice(0,16);});
 function saveLookNow(){try{localStorage.setItem('castaween-look',JSON.stringify(S.look));}catch(e){}}
 $('#saveLook').addEventListener('click',()=>{saveLookNow();sfx('heal');const back=S.lookBack||'home';S.lookBack=null;$('#customBack').dataset.go='home';$('#customBack').textContent='← Menú';showCard(back);});
 $('#previewArea').addEventListener('pointerdown',e=>{if(S.view!=='custom')return;e.preventDefault();spinDrag={x:e.clientX,s:spin};e.currentTarget.setPointerCapture(e.pointerId);});
@@ -1899,7 +1939,7 @@ $('#muteBtn').addEventListener('click',()=>{const on=!(AU.sfxOn||AU.musOn);AU.sf
 async function openCodeCard(){await NET.config;if(!NET.url||NET.offline){startLocalGame();return;}S.code='';$('#codeTitle').textContent=T('codi.titol');$('#codeIn').value='';$('#codeErr').textContent='';$('#codeIn').classList.remove('bad');showStep(2);
   $('#roomCode').parentElement.hidden=!!NET.url&&!NET.offline;
   $('#simFullRow').hidden=!!S.spectator||!!NET.url&&!NET.offline;$('#joinBtn').textContent=S.spectator?T('codi.entra-espectador'):T('codi.entra');if(S.spectator)$('#codeTitle').textContent=T('codi.titol-espectador');$('#backBtn').textContent=S.spectator?'← Menú':'← Canvia el nickname';}
-function saveNickname(){const name=$('#nicknameIn').value.replace(/[\u0000-\u001f\u007f]/g,'').trim().slice(0,12);if(!name){$('#nicknameErr').textContent='Escriu un nickname perquè els altres et puguin identificar.';$('#nicknameIn').focus();return false;}S.look.name=name;try{localStorage.setItem('castaween-look',JSON.stringify(S.look));}catch{}return true;}
+function saveNickname(){const name=$('#nicknameIn').value.replace(/[\u0000-\u001f\u007f]/g,'').trim().slice(0,16);if(!name){$('#nicknameErr').textContent='Escriu un nickname perquè els altres et puguin identificar.';$('#nicknameIn').focus();return false;}S.look.name=name;try{localStorage.setItem('castaween-look',JSON.stringify(S.look));}catch{}return true;}
 function startLocalGame(){netClose();NET.offline=true;S.code='Local';$('#simFull').checked=false;startGame();}
 $('#nicknameIn').addEventListener('input',()=>{$('#nicknameErr').textContent='';});
 $('#toCode').addEventListener('click',()=>{if(!saveNickname())return;S.spectator=false;if(NET.offline)startLocalGame();else openCodeCard();});
@@ -1987,12 +2027,12 @@ function netHostMessage(m){
   }else if(m.t==='sync')netBroadcast(m.id);
 }
 function netLook(raw){const look=Object.assign({},DEFAULT_LOOK);for(const k in LOOK_OPTS)if(LOOK_OPTS[k].opts.some(o=>o[0]===raw[k]))look[k]=raw[k];if('model' in raw)look.model=raw.model&&castAsset(raw.model)?raw.model:defaultCastId();look.fringe=raw.fringe!==false;return look;}
-function netHuman(m,dt){const input=m.netInput||{mx:0,mz:0};const l=Math.hypot(input.mx,input.mz);if(l>.15)m.face=Math.atan2(input.mx,input.mz);moveEnt(m,l>.15?input.mx:0,l>.15?input.mz:0,PLAYER_SPEED*(m.superT>0?SUPER_SPEED:1),dt,.42);if(input.tir){const saved=S.player;S.player=m;tryPlayerThrow();S.player=saved;}}
+function netHuman(m,dt){const input=m.netInput||{mx:0,mz:0};const l=Math.hypot(input.mx,input.mz),hasAim=Number.isFinite(input.ax)&&Number.isFinite(input.az)&&Math.hypot(input.ax,input.az)>0.05;if(hasAim)m.face=Math.atan2(input.ax,input.az);else if(l>.15)m.face=Math.atan2(input.mx,input.mz);moveEnt(m,l>.15?input.mx:0,l>.15?input.mz:0,PLAYER_SPEED*(m.superT>0?SUPER_SPEED:1),dt,.42);if(input.tir){const saved=S.player;S.player=m;tryPlayerThrow(input.ax,input.az);S.player=saved;}}
 const netRound=n=>Number.isFinite(n)?Math.round(n*100)/100:0;
 function netId(o){if(!NET.ids.has(o))NET.ids.set(o,String(++NET.serial));return NET.ids.get(o);}
 function netCapture(){const rows=[];
   const add=(k,o,extra)=>{const p=o.pos||o;const r={id:netId(o),k,x:netRound(p.x),y:netRound(p.y),z:netRound(p.z),...extra};rows.push(r);return r;};
-  for(const c of S.cast){const r=add('c',c,{team:c.team.id,name:c.name,look:c.look||DEFAULT_LOOK,human:c.human,peer:c.peer||null});for(const key of ['state','hp','turn','kills','delivered','carry','weapon','ammo','burn','inv','flash','respawn','rush','throwAnim','role','face','superT'])r[key]=typeof c[key]==='number'?netRound(c[key]):c[key];r.vx=netRound(c.vel.x);r.vz=netRound(c.vel.z);}
+  for(const c of S.cast){const r=add('c',c,{team:c.team.id,name:c.name,look:c.look||DEFAULT_LOOK,human:c.human,peer:c.peer||null});for(const key of ['state','hp','turn','kills','delivered','carry','weapon','ammo','burn','inv','flash','respawn','rush','throwAnim','role','face','superT','superCd'])r[key]=typeof c[key]==='number'?netRound(c[key]):c[key];r.vx=netRound(c.vel.x);r.vz=netRound(c.vel.z);}
   for(const o of S.mons)add('m',o,{v:o.mesh.g.userData.assetId||'',type:o.type,hp:netRound(o.hp),maxHp:o.maxHp,face:netRound(o.face),flash:netRound(o.flash),lunge:netRound(o.lunge),burn:netRound(o.burn),vx:netRound(o.vel.x),vz:netRound(o.vel.z)});
   for(const o of S.logs)add('l',o,{v:o.g?.userData.assetId||'',ry:netRound(o.ry),fly:o.fly});
   for(const o of S.pans)add('a',o,{v:o.g.userData.assetId||'',gold:o.gold});
@@ -2041,23 +2081,49 @@ function netReceive(m){
   }
   const all=[...NET.replicas.values()],of=k=>all.filter(e=>e.netData.k===k);
   S.cast=of('c');S.mons=of('m');S.logs=of('l');S.pans=of('a');S.crates=of('b');S.towers=of('t');S.puddles=of('u');
-  TEAMS.forEach((t,i)=>{Object.assign(t,m.meta.teams[i]);t.members=S.cast.filter(c=>c.team===t);t.active=t.members.filter(c=>c.state==='active');t.queue=m.meta.queues[i].map(id=>NET.replicas.get(id)).filter(Boolean);});
+  TEAMS.forEach((t,i)=>{const h0=t.hitT||0;Object.assign(t,m.meta.teams[i]);t.hitT=Math.max(h0,t.hitT||0);t.members=S.cast.filter(c=>c.team===t);t.active=t.members.filter(c=>c.state==='active');t.queue=m.meta.queues[i].map(id=>NET.replicas.get(id)).filter(Boolean);});
   S.player=S.spectator?S.player:S.cast.find(c=>c.peer===NET.id);S.follow=S.follow&&S.cast.includes(S.follow)?S.follow:S.cast.find(c=>c.state==='active');
   if(!S.player)S.player={name:'Espectador',team:TEAMS[pickTeam],state:'spectator',pos:new THREE.Vector3(),vel:new THREE.Vector3(),hp:100,carry:0,delivered:0};
   S.pTeam=S.player.team.id;if(!S.spectator&&S.player.peer===NET.id&&!NET.teamNoted&&m.meta.phase!=='lobby'){NET.teamNoted=true;if(wantTeam&&S.player.team.short!==wantTeam){addFeed(`<b>Els ${esc(wantTeam)}</b> és ple`,` · jugues amb ${teamTag(S.player.team)}`);banner(`Ets dels ${S.player.team.short}`,S.player.team.css);}}S.time=m.meta.time;S.night=m.meta.night;S.round=m.meta.round;refreshProps(S.round);$('#connectionLabel').textContent=`Sala ${S.code} · en línia`;
   const phase=m.meta.phase;
   if(phase==='results'&&S.phase!=='results'){endRound();$('#nextBtn').hidden=true;}
   else if(phase!=='results'){S.phase=phase;if(phase==='lobby'){netWaiting();$('#onlineStatus').textContent='Espera que el professor comenci.';}else{$('#lobby').hidden=true;$('#results').hidden=true;$('#hud').hidden=false;$('#hud').classList.toggle('spectating',!!S.spectator);$('#spec').hidden=!S.spectator;}}
-  for(const ev of m.events||[]){if(ev.t==='ona'){waveFx(ev.x,ev.z);}else if(ev.t==='baixa'){showElimination(ev);}else if(ev.t==='tir'){sfx(ev.kind==='bazooka'?'heavy':ev.kind==='fire'?'fire':'throw',ev.x,ev.z);}else if(ev.t==='entrega'){sparks(ev.x,2,ev.z,10,0xffc050,5);popText(ev.x,3,ev.z,'+'+ev.n+' llenya','wood');sfx('deliver',ev.x,ev.z);}else if(ev.t==='mort'){smoke(ev.x,.6,ev.z,6);shock(ev.x,ev.z,2,0xffa040);}else{sparks(ev.x,1,ev.z,6,0xffa040,4);sfx('hit',ev.x,ev.z);}}
+  for(const ev of m.events||[]){if(ev.t==='ona'){waveFx(ev.x,ev.z);}else if(ev.t==='baixa'){showElimination(ev);}else if(ev.t==='tir'){sfx(ev.kind==='bazooka'?'heavy':ev.kind==='fire'?'fire':'throw',ev.x,ev.z);}else if(ev.t==='entrega'){sparks(ev.x,2,ev.z,10,0xffc050,5);popText(ev.x,3,ev.z,'+'+ev.n+' llenya','wood');sfx('deliver',ev.x,ev.z);}else if(ev.t==='atacBase'){const t=TEAMS[ev.team];if(t){baseHitFx(t,ev.n||0,ev.x,ev.z);if(!S.spectator&&S.player&&t===S.player.team)fireAlert(ev.src==='mon'?'mon':{short:ev.src||'Un rival'});}}else if(ev.t==='mort'){smoke(ev.x,.6,ev.z,6);shock(ev.x,ev.z,2,0xffa040);}else{sparks(ev.x,1,ev.z,6,0xffa040,4);sfx('hit',ev.x,ev.z);}}
   netRoster();
 }
 function netInterpolate(now,dt){for(const e of NET.replicas.values()){if(!e.netTarget)continue;const a=clamp((now-e.netAt)/100,0,1),v=e.netFrom.clone().lerp(e.netTarget,a);if(e.pos)e.pos.copy(v);e.x=v.x;e.y=v.y;e.z=v.z;const k=e.netData.k;if(['a','b','u','p'].includes(k)&&e.g)e.g.position.set(v.x,k==='a'?.6:k==='b'?.5:v.y,v.z);if(k==='p')e.g.rotation.x+=dt*12;}specUpdate(dt);}
-function netInputs(now){if(S.spectator||NET.role!=='client')return;const k=NET.localPaused?{}:S.keys;let mx=(NET.localPaused?0:S.joy.x)+(k.KeyD||k.ArrowRight?1:0)-(k.KeyA||k.ArrowLeft?1:0),mz=(NET.localPaused?0:S.joy.y)+(k.KeyS||k.ArrowDown?1:0)-(k.KeyW||k.ArrowUp?1:0);const l=Math.hypot(mx,mz);if(l>1){mx/=l;mz/=l;}const input={t:'input',mx:netRound(mx),mz:netRound(mz),tir:!NET.localPaused&&!!(S.holding||NET.tap),construir:!NET.localPaused&&NET.build,millorar:!NET.localPaused&&NET.upgrade};
-  const json=JSON.stringify(input);if(now-NET.lastInput>=100&&json!==NET.input&&netSend(input)){NET.input=json;NET.lastInput=now;NET.tap=NET.build=NET.upgrade=false;}}
+function netInputs(now){if(S.spectator||NET.role!=='client')return;const k=NET.localPaused?{}:S.keys;let mx=(NET.localPaused?0:S.joy.x)+(k.KeyD||k.ArrowRight?1:0)-(k.KeyA||k.ArrowLeft?1:0),mz=(NET.localPaused?0:S.joy.y)+(k.KeyS||k.ArrowDown?1:0)-(k.KeyW||k.ArrowUp?1:0);const l=Math.hypot(mx,mz);if(l>1){mx/=l;mz/=l;}const a=!NET.localPaused&&(NET.aim||S.aimVec);const input={t:'input',mx:netRound(mx),mz:netRound(mz),tir:!NET.localPaused&&!!(S.holding||NET.tap),construir:!NET.localPaused&&NET.build,millorar:!NET.localPaused&&NET.upgrade,...(a?{ax:netRound(a.ax),az:netRound(a.az)}:{})};
+  const json=JSON.stringify(input);if(now-NET.lastInput>=100&&json!==NET.input&&netSend(input)){NET.input=json;NET.lastInput=now;NET.tap=NET.build=NET.upgrade=false;NET.aim=null;}}
 
 /* ---------- bucle ---------- */
-const aimMarker=new THREE.Mesh(new THREE.RingGeometry(0.7,0.9,20),B(0xff8a2a,{transparent:true,opacity:.85,depthWrite:false}));
+const aimMarker=new THREE.Mesh(new THREE.RingGeometry(0.7,0.9,28),B(0xff8a2a,{transparent:true,opacity:.85,depthWrite:false}));
 aimMarker.geometry.rotateX(-Math.PI/2);aimMarker.visible=false;scene.add(aimMarker);
+
+const aimFill=new THREE.Mesh(new THREE.CircleGeometry(0.88,28),B(0xff8a2a,{transparent:true,opacity:.22,depthWrite:false}));
+aimFill.geometry.rotateX(-Math.PI/2);aimFill.visible=false;scene.add(aimFill);
+const aimLine=new THREE.Mesh(new THREE.PlaneGeometry(0.28,1),B(0xffd27a,{transparent:true,opacity:.55,depthWrite:false,side:THREE.DoubleSide}));
+aimLine.geometry.translate(0,0.5,0);aimLine.geometry.rotateX(-Math.PI/2);aimLine.visible=false;scene.add(aimLine);
+const AIM_DOTS=8,aimDots=Array.from({length:AIM_DOTS},()=>{const d=new THREE.Mesh(new THREE.SphereGeometry(0.13,8,6),B(0xffe29a,{transparent:true,opacity:.82,depthWrite:false}));d.visible=false;scene.add(d);return d;});
+function updateAimMarker(dt,now){
+  const P=S.player;if(!P||P.state!=='active'||S.phase!=='play'||S.spectator){aimMarker.visible=aimFill.visible=aimLine.visible=false;for(const d of aimDots)d.visible=false;return;}
+  const v=S.aimVec;
+  if(v){
+    const R=aimMaxR(P),tx=P.pos.x+v.ax*R,tz=P.pos.z+v.az*R,dx=tx-P.pos.x,dz=tz-P.pos.z,dist=Math.hypot(dx,dz);
+    const w=P.weapon,col=w==='super'?0x48b8ff:w==='bazooka'?0xff9a3c:w==='fire'?0xff4820:0xffb03a;
+    const rad=w==='super'?WAVE_R*0.55:w==='bazooka'?BAZ_R:1.0;
+    aimMarker.visible=aimFill.visible=aimLine.visible=true;
+    aimMarker.material.color.setHex(col);aimFill.material.color.setHex(col);aimLine.material.color.setHex(col);
+    aimMarker.position.set(tx,0.06,tz);aimMarker.scale.setScalar(rad/0.85*(1+Math.sin(now/90)*0.05));aimMarker.rotation.y+=dt*2.5;
+    aimFill.position.set(tx,0.05,tz);aimFill.scale.setScalar(rad/0.88);
+    aimLine.position.set(P.pos.x,0.04,P.pos.z);aimLine.rotation.z=-Math.atan2(dx,dz);aimLine.scale.set(w==='super'?1.4:1,Math.max(0.1,dist),1);
+    const arcH=w==='bazooka'||w==='super'?1.25+dist*0.18:0.75+dist*0.09;
+    for(let i=0;i<AIM_DOTS;i++){const u=(i+1)/(AIM_DOTS+1),d=aimDots[i];d.visible=true;d.material.color.setHex(col);d.position.set(P.pos.x+dx*u,1.25*(1-u)+0.15*u+4*arcH*u*(1-u),P.pos.z+dz*u);d.scale.setScalar(0.85+0.35*Math.sin(now/80-i*0.6));}
+    return;
+  }
+  aimFill.visible=aimLine.visible=false;for(const d of aimDots)d.visible=false;
+  const tg=playerAim();if(tg){aimMarker.visible=true;aimMarker.material.color.setHex(0xff8a2a);aimMarker.position.set(tg.pos.x,0.06,tg.pos.z);aimMarker.scale.setScalar(tg.type==='boss'||tg.isFire?2:1);aimMarker.rotation.y+=dt*2;}else aimMarker.visible=false;
+}
+
 const camPos=new THREE.Vector3(0,30,30),camLook=new THREE.Vector3();
 const lerpA=(a,b,t)=>{let d=((b-a+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;return a+d*t;};
 function step(dt){
@@ -2073,10 +2139,10 @@ function step(dt){
   S.crateT-=dt;if(S.crateT<=0){S.crateT=rand(6,9);if(S.crates.length<5)spawnCrate();}
   // cremades i puré de moniato
   for(const mo of S.mons){if(mo.burn>0&&mo.alive){mo.burn-=dt;mo.hp-=dt*1.1;if(Math.random()<dt*8)burst(mo.pos.x,mo.def.h*0.6,mo.pos.z,1,'ember',1.5);if(mo.hp<=0)killMonster(mo,mo.burnBy);}}
-  for(const t of TEAMS)for(const c of t.active.slice()){if(c.burn>0){c.burn-=dt;if(c.inv<=0)c.hp-=dt*6;if(Math.random()<dt*8)burst(c.pos.x,1.2,c.pos.z,1,'ember',1.5);if(c.hp<=0)downCast(c,c.burnBy?who(c.burnBy)+' i el foc':'el foc');}}
+  for(const t of TEAMS)for(const c of t.active.slice()){if(c.burn>0){c.burn-=dt;if(c.inv<=0)c.hp-=dt*4;if(Math.random()<dt*8)burst(c.pos.x,1.2,c.pos.z,1,'ember',1.5);if(c.hp<=0)downCast(c,c.burnBy?who(c.burnBy)+' i el foc':'el foc');}}
   for(let i=S.puddles.length-1;i>=0;i--){const q=S.puddles[i];q.t-=dt;q.tick-=dt;q.mat.opacity=0.75*Math.min(1,q.t/1.2);
     if(q.tick<=0){q.tick=0.5;for(const mo of S.mons)if(mo.alive&&Math.hypot(mo.pos.x-q.x,mo.pos.z-q.z)<BAZ_R){mo.hp-=0.8;mo.flash=0.06;if(mo.hp<=0)killMonster(mo,q.by);}
-      for(const t of TEAMS){if(t===q.team)continue;for(const c of t.active.slice())if(c.inv<=0&&Math.hypot(c.pos.x-q.x,c.pos.z-q.z)<BAZ_R){c.hp-=5;if(c.hp<=0)downCast(c,who(q.by)+' i el puré de moniato');}}}
+      for(const t of TEAMS){if(t===q.team)continue;for(const c of t.active.slice())if(c.inv<=0&&Math.hypot(c.pos.x-q.x,c.pos.z-q.z)<BAZ_R){c.hp-=4;if(c.hp<=0)downCast(c,who(q.by)+' i el puré de moniato');}}}
     if(q.t<=0){scene.remove(q.g);S.puddles.splice(i,1);}}
   // torns (només persones amb cua) i reaparicions
   for(const t of TEAMS){t.hitT-=dt;if(t.queue.length)for(const m of t.active.slice()){if(!m.human)continue;m.turn+=clk;if(m.turn>=TURN){dropCarry(m);const n=swapOut(m);addFeed(`${who(m)} acaba el torn`,n?` · entra ${esc(n.name)}`:'');}}}
@@ -2085,11 +2151,13 @@ function step(dt){
   if(P.state==='active'){
     let mx=S.joy.x,mz=S.joy.y;const k=S.keys;
     if(k.KeyW||k.ArrowUp)mz-=1;if(k.KeyS||k.ArrowDown)mz+=1;if(k.KeyA||k.ArrowLeft)mx-=1;if(k.KeyD||k.ArrowRight)mx+=1;
-    const l=Math.hypot(mx,mz);if(l>0.15){P.face=Math.atan2(mx,mz);if(!S.firstMove){S.firstMove=true;$('#hint').style.opacity='0';}}
+    const l=Math.hypot(mx,mz);if(S.aimVec)P.face=Math.atan2(S.aimVec.ax,S.aimVec.az);else if(l>0.15)P.face=Math.atan2(mx,mz);if(l>0.15&&!S.firstMove){S.firstMove=true;$('#hint').style.opacity='0';}
     moveEnt(P,l>0.15?mx:0,l>0.15?mz:0,PLAYER_SPEED*(P.superT>0?SUPER_SPEED:1),dt,0.42);if(S.holding)tryPlayerThrow();
   }
   updateWaves(dt);
-  for(const t of TEAMS)for(const m of t.active){m.cd-=dt;m.inv-=dt;m.flash-=dt;m.rush-=dt;if(m.superT>0){m.superT-=dt;m.ammo=Math.max(1,Math.ceil(m.superT));if(m.superT<=0){m.superT=0;if(m.weapon==='super'){m.weapon=null;m.ammo=0;}if(m.isPlayer)addFeed('S\'acaba la <b style="color:#ffd400">Supercastanyera</b>','');}}if(m.peer)netHuman(m,dt);else if(!m.isPlayer)botUpdate(m,dt);}
+  // recàrrega de la Supercastanyera: compta també mentre has caigut
+  for(const c of S.cast)if(c.superCd>0)c.superCd-=dt;
+  for(const t of TEAMS)for(const m of t.active){m.cd-=dt;m.inv-=dt;m.flash-=dt;m.rush-=dt;if(m.superT>0){m.superT-=dt;m.ammo=Math.max(1,Math.ceil(m.superT));if(m.superT<=0){m.superT=0;m.superCd=SUPER_COOLDOWN;if(m.weapon==='super'){m.weapon=null;m.ammo=0;}if(m.isPlayer)addFeed('S\'acaba la <b style="color:#ffd400">Supercastanyera</b>',` · torna a carregar-se en ${SUPER_COOLDOWN} s`);}}if(m.peer)netHuman(m,dt);else if(!m.isPlayer)botUpdate(m,dt);}
   // regla igual per a tots els cursos: construir torradora quan hi ha prou llenya de marge
   for(const t of TEAMS){const n=S.towers.filter(w=>w.team===t).length;if(n<TOWER_MAX&&t.stock>=14+n*10&&Math.random()<dt*0.3)buildTower(t,null);
     else if(n>=TOWER_MAX){const u=nextUpgrade(t);if(u&&t.stock>=TOWER_LV[u.lv+1].cost+22&&Math.random()<dt*0.2)upgradeTower(t,null);}}
@@ -2098,17 +2166,20 @@ function step(dt){
   S.mons=S.mons.filter(m=>m.alive);
   // separació
   const ents=[];for(const t of TEAMS)for(const c of t.active)ents.push([c,0.42]);for(const m of S.mons)ents.push([m,m.def.r]);
-  for(let i=0;i<ents.length;i++)for(let j=i+1;j<ents.length;j++){const[a,ra]=ents[i],[b,rb]=ents[j];const dx=b.pos.x-a.pos.x,dz=b.pos.z-a.pos.z,d=Math.hypot(dx,dz),min=ra+rb;if(d<min&&d>0.001){const p=(min-d)/2/d;a.pos.x-=dx*p;a.pos.z-=dz*p;b.pos.x+=dx*p;b.pos.z+=dz*p;}}
+  for(let i=0;i<ents.length;i++)for(let j=i+1;j<ents.length;j++){const[a,ra]=ents[i],[b,rb]=ents[j];let dx=b.pos.x-a.pos.x,dz=b.pos.z-a.pos.z,d=Math.hypot(dx,dz);const min=ra+rb;if(d<min){if(d<0.001){const an=(i*1.7+j)*2.1;dx=Math.cos(an)*0.01;dz=Math.sin(an)*0.01;d=0.01;}const p=(min-d)/2/d;a.pos.x-=dx*p;a.pos.z-=dz*p;b.pos.x+=dx*p;b.pos.z+=dz*p;}}
   for(const w of S.towers)for(const[e,r]of ents){const dx=e.pos.x-w.pos.x,dz=e.pos.z-w.pos.z,d=Math.hypot(dx,dz),min=r+0.7;if(d<min&&d>0.001){e.pos.x=w.pos.x+dx/d*min;e.pos.z=w.pos.z+dz/d*min;}}
+  for(const t of TEAMS)for(const c of t.active){for(const o of obstacles){const dx=c.pos.x-o.x,dz=c.pos.z-o.z,d=Math.hypot(dx,dz),min=o.r+0.42;if(d<min&&d>0.001){c.pos.x=o.x+dx/d*min;c.pos.z=o.z+dz/d*min;}}const rr=Math.hypot(c.pos.x,c.pos.z),R=ARENA_R-0.8;if(rr>R){c.pos.x*=R/rr;c.pos.z*=R/rr;}}
   // recollir llenya, panellets i entregar
   for(const t of TEAMS)for(const c of t.active){
     if(c.carry<CARRY_MAX)for(let i=S.logs.length-1;i>=0;i--){const l=S.logs[i];if(l.fly&&l.age<0.35)continue;const dx=c.pos.x-l.x,dz=c.pos.z-l.z,d=Math.hypot(dx,dz);
       if(d<2.3&&d>0.01){const k=Math.min(1,dt*(c.isPlayer?9:6));l.x+=dx*k;l.z+=dz*k;if(!l.fly)l.y=0.13+Math.max(0,(2.3-d))*0.25;}
       if(d<0.75){c.carry++;if(l.g){l.g.visible=false;logPool.push(l.g);}S.logs.splice(i,1);
         if(c.isPlayer){sfx('pick');S.pickN=(S.pickN||0)+1;S.pickT=0.35;sparks(c.pos.x,1.2,c.pos.z,5,0xffc050,3);const pl=$('#carry');pl.classList.remove('bump');void pl.offsetWidth;pl.classList.add('bump');}
-        if(c.isPlayer&&c.carry===SUPER_LOAD&&!(c.superT>0)){popText(c.pos.x,3.2,c.pos.z,'⚡ Supercàrrega!','gold');hint('super');}
+        if(c.isPlayer&&c.carry===SUPER_LOAD&&!(c.superT>0)&&!(c.superCd>0)){popText(c.pos.x,3.2,c.pos.z,'⚡ Supercàrrega!','gold');hint('super');}
         if(c.carry>=CARRY_MAX){if(c.isPlayer){popText(c.pos.x,3,c.pos.z,'Ple!','gold');hint('full');}break;}}}
-    if(c.carry>0&&Math.hypot(c.pos.x-t.base.x,c.pos.z-t.base.z)<DELIVER_R+0.4){const v=c.carry*(S.night?2:1);if(c.carry>=SUPER_LOAD&&!(c.superT>0))startSuper(c);t.stock+=v;c.delivered+=v;sparks(t.base.x,2,t.base.z,8+v*2,0xffc050,5);if(c.isPlayer){popText(t.base.x,3,t.base.z,'+'+v+' llenya','wood');sfx('deliver');hint('deliver');}burst(t.base.x,2,t.base.z,8,'ember',3);bump(t.id);if(c.isPlayer)addFeed(`${who(c)} alimenta la foguera`,'',`+${v}`);c.carry=0;}
+    const dBase=Math.hypot(c.pos.x-t.base.x,c.pos.z-t.base.z);
+    if(c.carry>0&&dBase<DELIVER_R+0.4){const v=c.carry*(S.night?2:1);if(c.carry>=SUPER_LOAD&&!(c.superT>0)&&!(c.superCd>0))startSuper(c);t.stock+=v;c.delivered+=v;if(c.hp<MAXHP)c.hp=Math.min(MAXHP,c.hp+c.carry*4);sparks(t.base.x,2,t.base.z,8+v*2,0xffc050,5);if(c.isPlayer){popText(t.base.x,3,t.base.z,'+'+v+' llenya','wood');sfx('deliver');hint('deliver');}burst(t.base.x,2,t.base.z,8,'ember',3);bump(t.id);if(c.isPlayer)addFeed(`${who(c)} alimenta la foguera`,'',`+${v}`);c.carry=0;}
+    if(dBase<HEAL_R){if(c.burn>0)c.burn=0;if(c.hp<MAXHP){const h0=c.hp;c.hp=Math.min(MAXHP,c.hp+BASE_HEAL*dt);c.healAcc=(c.healAcc||0)+(c.hp-h0);if(Math.random()<dt*9)burst(c.pos.x+rand(-.35,.35),0.9,c.pos.z+rand(-.35,.35),1,'heal',2);if(c.isPlayer&&(c.healAcc>=10||c.hp>=MAXHP&&c.healAcc>=2)){const gain=Math.round(c.healAcc);c.healAcc=0;sfx('heal');popText(c.pos.x,2.7,c.pos.z,c.hp>=MAXHP?'Vida plena!':`+${gain} vida`,'heal');}}}else c.healAcc=0;
     if(!c.weapon||c.isPlayer||c.peer)for(let i=S.crates.length-1;i>=0;i--){const q=S.crates[i];if(Math.hypot(c.pos.x-q.x,c.pos.z-q.z)<1.1){S.crates.splice(i,1);scene.remove(q.g);shock(q.x,q.z,1.8,new THREE.Color(WEAP[q.type].col).getHex());c.weapon=q.type;if(c.isPlayer)sfx('weapon');c.ammo=WEAP[q.type].ammo;if(q.type==='super'){c.superT=SUPER_T;sfx('boss',q.x,q.z);flash(q.x,q.z,6);if(!c.isPlayer)addFeed(`${who(c)} es transforma en <b style="color:#ffd400">Supercastanyera</b>`,'');}burst(q.x,1,q.z,12,q.type==='bazooka'?'moni':'ember',3.5);
       if(c.isPlayer){popText(c.pos.x,2.8,c.pos.z,q.type==='super'?`${SUPER_T} s!`:`${WEAP[q.type].label} ×${c.ammo}`,'gold');banner((WEAP[q.type].title||WEAP[q.type].label)+'!',WEAP[q.type].col);addFeed(`${who(c)} agafa ${WEAP[q.type].name}`,q.type==='super'?` · ${SUPER_T} s`:` · ×${c.ammo}`);}break;}}
     for(let i=S.pans.length-1;i>=0;i--){const p=S.pans[i];if(Math.hypot(c.pos.x-p.x,c.pos.z-p.z)<1.0){S.pans.splice(i,1);scene.remove(p.g);
@@ -2129,7 +2200,7 @@ function step(dt){
       for(const mo of S.mons){if(!mo.alive)continue;const dx=mo.pos.x-p.pos.x,dz=mo.pos.z-p.pos.z,r=mo.def.r+0.15;if(dx*dx+dz*dz<r*r&&p.pos.y<mo.def.h){hit=true;const dmg=p.kind==='fire'?2:1;if(p.kind==='fire'){mo.hp-=2;mo.burn=3;mo.burnBy=p.owner;burst(p.pos.x,p.pos.y,p.pos.z,5,'ember',3);}else mo.hp--;mo.flash=0.1;sparks(p.pos.x,p.pos.y,p.pos.z,p.kind==='fire'?10:6,p.kind==='fire'?0xff3a10:0xffa040,4);sfx('hit',p.pos.x,p.pos.z);if(p.owner.isPlayer)popText(mo.pos.x,mo.def.h+0.2,mo.pos.z,'-'+dmg,p.kind==='fire'?'burn':'');burst(p.pos.x,p.pos.y,p.pos.z,5,mo.type==='ghost'?'ghost':'pump',3.5);if(mo.hp<=0)killMonster(mo,p.owner);break;}}
       if(!hit)for(const t of TEAMS){if(t===p.team)continue;for(const c of t.active){const dx=c.pos.x-p.pos.x,dz=c.pos.z-p.pos.z;if(dx*dx+dz*dz<0.42&&p.pos.y<1.95){hit=true;
         if(c.inv>0)burst(p.pos.x,p.pos.y,p.pos.z,3,'ember',2);else{c.hp-=p.owner.isTower?(p.owner.dmg||TOWER_DMG):p.kind==='fire'?PVP_DMG*1.5:PVP_DMG;if(p.kind==='fire'){c.burn=2;c.burnBy=p.owner;}c.flash=0.12;sparks(p.pos.x,p.pos.y,p.pos.z,6,0xff8040,3.5);if(c.isPlayer)sfx('hitMe');else sfx('hit',p.pos.x,p.pos.z);if(p.owner.isPlayer)popText(c.pos.x,2.2,c.pos.z,'-'+Math.round(p.kind==='fire'?PVP_DMG*1.5:PVP_DMG),'');burst(p.pos.x,p.pos.y,p.pos.z,5,'nut',3);if(c.hp<=0)downCast(c,p.owner.isTower?`una torradora de ${teamTag(p.team)}`:who(p.owner));}break;}}if(hit)break;}
-      if(!hit)for(const w of S.towers){if(w.team===p.team)continue;const dx=w.pos.x-p.pos.x,dz=w.pos.z-p.pos.z;if(dx*dx+dz*dz<0.6&&p.pos.y<1.3){hit=true;damageTower(w,4);break;}}
+      if(!hit)for(const w of S.towers){if(w.team===p.team)continue;const dx=w.pos.x-p.pos.x,dz=w.pos.z-p.pos.z;if(dx*dx+dz*dz<0.6&&p.pos.y<1.3){hit=true;damageTower(w,4,p.team);break;}}
       if(!hit)for(const o of obstacles){const dx=o.x-p.pos.x,dz=o.z-p.pos.z;if(dx*dx+dz*dz<o.r*o.r&&p.pos.y<o.h){hit=true;
         if(o.fireOf&&o.fireOf!==p.team){const n=knockFire(o.fireOf,1,p.pos.x,p.pos.z,p.team);if(n&&p.owner.isPlayer&&Math.random()<0.3)addFeed(`Fas caure llenya de ${teamTag(o.fireOf)}`);}
         else burst(p.pos.x,p.pos.y,p.pos.z,3,o.fireOf?'ember':'dust',2.5);break;}}
@@ -2138,7 +2209,7 @@ function step(dt){
       if(hit){p.alive=false;p.mesh.visible=false;break;}}
     if(p.alive){p.mesh.position.copy(p.pos);p.mesh.rotation.x+=dt*12;p.mesh.rotation.z+=dt*9;if(p.kind==='fire'&&Math.random()<0.6)burst(p.pos.x,p.pos.y,p.pos.z,1,'ember',0.6);if(p.kind==='super'){fxAdd.emit({x:p.pos.x,y:p.pos.y,z:p.pos.z,vx:0,vy:0,vz:0,life:0.28,s0:0.9,s1:0.1,c0:0xe8fbff,c1:0x2a9cff,a:0.9});}else if(p.heavy&&Math.random()<0.4)burst(p.pos.x,p.pos.y,p.pos.z,1,'moni',0.5);}}
   S.mons=S.mons.filter(m=>m.alive);
-  const tg=playerAim();if(tg){aimMarker.visible=true;aimMarker.position.set(tg.pos.x,0.06,tg.pos.z);aimMarker.scale.setScalar(tg.type==='boss'||tg.isFire?2:1);aimMarker.rotation.y+=dt*2;}else aimMarker.visible=false;
+
 }
 // animació exagerada: anticipació, squash & stretch, inclinació a la carrera i aparició amb rebot
 const easeBack=t=>{const c=1.9;t=clamp(t,0,1);return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2);};
@@ -2164,7 +2235,7 @@ function animate(dt,now){
     g.position.set(m.pos.x,0,m.pos.z);g.rotation.y=lerpA(g.rotation.y,m.face,Math.min(1,dt*14));
     animCast(m.mesh,sp,m.phase,dt,now,m.throwAnim>0?m.throwAnim/0.18:0,m.flash>0,m.inv);if(m.mesh.X){animAsset(m.mesh.X,dt,sp,m.throwAnim>0,m.flash>0,BOT.speed);setAssetFlash(m.mesh.X,m.flash>0);}if(m.throwAnim>0)m.throwAnim-=dt;
     for(const fp of m.mesh.flashParts)fp.material=m.flash>0?flashM:m.mesh.teamMat;
-    m.mesh.rig.visible=m.inv>0?(Math.floor(now/90)%2===0):true;updateAura(m,dt,now);
+    m.mesh.rig.visible=m.inv>0?(Math.floor(now/90)%2===0):true;updateAura(m,dt,now);if(NET.role==='client'&&m.hp<MAXHP&&Math.hypot(m.pos.x-m.team.base.x,m.pos.z-m.team.base.z)<HEAL_R&&Math.random()<dt*9)burst(m.pos.x+rand(-.35,.35),0.9,m.pos.z+rand(-.35,.35),1,'heal',2);
     m.mesh.bundle.visible=m.carry>0;m.mesh.bundle.scale.setScalar(0.7+Math.min(1,m.carry/CARRY_MAX)*0.6);
     if(g.userData.arrow)g.userData.arrow.position.y=3.0+Math.sin(now/220)*0.12;
     setBar(m.mesh.bar,m.pos.x,3.3,m.pos.z,m.hp/MAXHP);}
@@ -2178,10 +2249,18 @@ function animate(dt,now){
   for(const tw of S.towers){if(tw.mesh.X)setAssetFlash(tw.mesh.X,tw.flash>0);for(const fp of tw.mesh.flashParts)fp.material=tw.flash>0?flashM:stoneM;if(tw.hp<tw.maxHp)setBar(tw.mesh.bar,tw.pos.x,1.8,tw.pos.z,tw.hp/tw.maxHp);else tw.mesh.bar.g.visible=false;}
   for(const p of S.pans){p.t+=dt;p.g.position.y=0.6+Math.sin(p.t*3)*0.12;p.g.rotation.y+=dt*1.6;if(p.g.userData.halo)p.g.userData.halo.scale.setScalar(1.5+Math.sin(p.t*4)*0.2);if(Math.random()<dt*3)fxAdd.emit({x:p.x+rand(-.4,.4),y:0.5,z:p.z+rand(-.4,.4),vy:rand(.8,1.4),life:0.9,s0:0.28,s1:0.05,c0:p.gold?0xffe08a:0xc8ffb8,c1:p.gold?0xffa000:0x3a9a30,a:0.9});}
   for(const q of S.crates){q.t+=dt;q.icon.position.y=0.62+Math.sin(q.t*3)*0.1;q.icon.rotation.y+=dt*1.8;}
-  updateLogs(dt,now);updateHomeArrow(now);
+  updateLogs(dt,now);updateHomeArrow(now);updateAimMarker(dt,now);
   TEAMS.forEach((t,ti)=>{const lvl=S.phase==='lobby'?0.8:0.35+Math.min(1.9,(t.stock||0)/35);t.flameGroup.scale.setScalar(lvl);
     t.flames.forEach((fl,i)=>{const s=1+Math.sin(now/(80+i*23)+ti)*0.12;fl.scale.set(1/s,s,1/s);fl.rotation.y+=dt*(1+i);});
-    t.light.intensity=(1.2+lvl*0.8)+Math.sin(now/90+ti)*0.2;});
+    t.light.intensity=(1.2+lvl*0.8)+Math.sin(now/90+ti)*0.2;
+    if(NET.role==='client'&&t.hitT>0)t.hitT=Math.max(0,t.hitT-dt);
+    const hit=t.hitT>0,fl=t.hitT>0.42,al=hit||(!S.spectator&&t.id===S.pTeam&&S.baseAlert>0),jx=hit?(Math.random()-.5)*t.hitT*0.26:0,jz=hit?(Math.random()-.5)*t.hitT*0.26:0;
+    if(t.fireGroup)t.fireGroup.position.set(t.base.x+jx,0,t.base.z+jz);
+    if(t.stallGroup)t.stallGroup.position.set(t.stallPos.x+jx,0,t.stallPos.z+jz);
+    for(const[m,mat]of t.flashParts||[])m.material=fl?flashM:mat;
+    for(const cat of['foguera','paradeta'])for(const o of PROPS[cat]?.applied||[])if(o.userData.team===t){o.position.set(o.userData.ox+jx,0,o.userData.oz+jz);if(o.userData.X)setAssetFlash(o.userData.X,fl);}
+    if(t.ring){t.ring.material.color.setHex(al?(Math.floor(now/110)%2?0xff3a2e:0xffffff):t.color);t.ring.material.opacity=al?0.88:0.55;t.ring.scale.setScalar(al?1+Math.sin(now/65)*0.09:1);}
+    t.light.color.setHex(hit?0xff2a1a:0xff7a20);t.glow.material.color.setHex(hit?0xff2a1a:0xff8a2a);});
   portal.rotation.y+=dt*0.4;
 }
 function updateCam(dt){

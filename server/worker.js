@@ -66,7 +66,7 @@ export class Room {
     if (m.t === "join" && !a.joined) {
       if (!Number.isInteger(m.curs) || m.curs < 0 || m.curs > 4 || typeof m.nom !== "string" || !m.look || typeof m.look !== "object" || JSON.stringify(m.look).length > 1500) return socket.close(1008, "Entrada incorrecta");
       a.joined = true; socket.serializeAttachment(a);
-      this.send(host, { t: "join", id: a.id, curs: m.curs, nom: m.nom.slice(0, 12), look: m.look, spectator: m.spectator === true });
+      this.send(host, { t: "join", id: a.id, curs: m.curs, nom: m.nom.slice(0, 16), look: m.look, spectator: m.spectator === true });
     } else if (m.t === "input" && a.joined) {
       if (![m.mx, m.mz].every(v => Number.isFinite(v) && Math.abs(v) <= 1)) return;
       // 10/s sustained, with two packets of tolerance for network jitter.
@@ -74,7 +74,8 @@ export class Room {
       a.credit = Math.min(2, (a.credit ?? 2) + (now - a.last) / 100);
       if (a.credit < 1) return socket.close(1008, "Massa inputs");
       a.credit--; a.last = now; socket.serializeAttachment(a);
-      this.send(host, { t: "input", id: a.id, mx: m.mx, mz: m.mz, tir: m.tir === true, construir: m.construir === true, millorar: m.millorar === true });
+      const aim = [m.ax, m.az].every(v => Number.isFinite(v) && Math.abs(v) <= 1) ? { ax: m.ax, az: m.az } : {};
+      this.send(host, { t: "input", id: a.id, mx: m.mx, mz: m.mz, tir: m.tir === true, construir: m.construir === true, millorar: m.millorar === true, ...aim });
     } else if (m.t === "sync" && a.joined) this.send(host, { t: "sync", id: a.id });
   }
   webSocketClose(socket) {
