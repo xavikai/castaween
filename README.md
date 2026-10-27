@@ -1,12 +1,14 @@
 # Castaween
 
-Videojoc web 3D low poly per a mòbil, fet a CIFOG per la Castanyada. Cinc equips de castanyeres defensen la Castanyada davant de Halloween: cacen monstres, recullen la llenya que deixen i alimenten la foguera del seu curs. Guanya el curs amb la foguera més gran quan s'acaben els 5 minuts.
+Videojoc web 3D low poly per a mòbil, fet a CIFOG per la Castanyada. Cinc equips de castanyeres defensen la Castanyada davant de Halloween: cacen monstres, recullen la llenya que deixen i alimenten la foguera del seu curs. Cada ronda dura 5 minuts i la guanya l'equip amb més llenya a la foguera. La partida és al millor de 3: guanya el primer equip que aconsegueix dues victòries. Si després de tres rondes encara no n'hi ha cap, es juguen rondes extra fins que un equip arriba a dues; una ronda empatada no suma victòries.
 
 **Estat:** joc amb bots i mode en línia d'aula. El professor executa la simulació i Cloudflare retransmet els missatges WebSocket.
 
 **Joc:** https://castaween.pages.dev/
 
 Professor: **Obre una sala (professor) → comparteix el codi → Comença**. Alumnes: **Mode en línia → nickname → codi**. Els equips tenen noms aleatoris a cada sala i cada alumne entra automàticament a l'equip amb menys gent (fins a 15 per equip; els bots completen fins a 10). Es pot canviar a `assets/config.json` → `places`. El nickname es veu damunt les castanyeres humanes i als avisos d'eliminació, per exemple «Pau elimina Marta». Es desa en aquest dispositiu i també es pot editar a **Personatge**.
+
+Els resultats mostren les victòries acumulades de cada equip. En arribar a dues, s'anuncia el guanyador de la partida i no es pot començar una ronda més. **Nova partida** reinicia el marcador i torna a la ronda 1; en línia només ho pot fer el professor i es conserven el codi de sala i els participants.
 
 **Mode local · bots → nickname → Comença partida local** inicia una partida contra la màquina sense cap codi ni connexió al Worker. Conserva l'ordinador del professor despert i el joc en primer pla durant el mode en línia. **Mira una partida** conserva el mode espectador.
 

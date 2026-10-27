@@ -371,7 +371,7 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
     <div class="card" id="howto" hidden>
       <button class="back" data-go="home" data-t="com-es-juga.button1">← Menú</button>
       <h2 data-t="com-es-juga.h21">Com es juga</h2>
-      <p class="lead" data-t="com-es-juga.p1">Halloween surt del cementiri per apagar les fogueres. Cada equip alimenta la seva. <b>Guanya l'equip amb la foguera més gran quan s'acaben els 5 minuts.</b></p>
+      <p class="lead" data-t="com-es-juga.p1">Halloween surt del cementiri per apagar les fogueres. Cada equip alimenta la seva. <b>Guanya la ronda qui té més llenya al cap de 5 minuts. Guanya la partida el primer equip que guanya 2 rondes.</b> Es juga al millor de 3; si cal, es fan rondes extra fins que un equip arriba a dues victòries.</p>
       <div class="loop">
         <div data-t="com-es-juga.div1"><span class="n">1</span><b>Caça</b>Llança castanyes als monstres de Halloween.</div>
         <div data-t="com-es-juga.div2"><span class="n">2</span><b>Recull</b>Cada monstre deixa llenya. L'agafes passant-hi per sobre (màxim 10).</div>
@@ -454,7 +454,7 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
       <span class="eyebrow" data-t="pausa.span1">Pausa · regles de la sala</span>
       <h2 data-t="pausa.h21">Regles de l'arena</h2>
       <ul class="rules">
-        <li data-t="pausa.li1">Rondes de <b>5 minuts</b>. Guanya l'equip amb <b>més llenya a la foguera</b>.</li>
+        <li data-t="pausa.li1">Rondes de <b>5 minuts</b>: guanya la ronda qui té <b>més llenya a la foguera</b>. La partida és al millor de 3: guanya el primer equip amb <b>2 victòries</b>. Si cal, hi ha rondes extra; una ronda empatada no suma victòries.</li>
         <li data-t="pausa.li2">Els monstres deixen llenya: 1 per carabassa o fantasma, 5 pel Carabassot. Si caus, deixes a terra la que portes.</li>
         <li data-t="pausa.li3">Cada castanya que impacta en una foguera rival en fa caure 1 de llenya. Halloween també ataca les fogueres, sobretot la més gran.</li>
         <li data-t="pausa.li4">Torradora: costa <b>8 de llenya</b> de la foguera, màxim 3 per equip. Es millora al nivell 2 (<b>12</b>) i al 3 (<b>18</b>): dispara més ràpid, més lluny i amb foc.</li>
@@ -474,10 +474,11 @@ pre.json{margin:0;padding:10px;border-radius:calc(10px * var(--rad,1));backgroun
   <div class="sheet" id="results" hidden>
     <div class="card">
       <span class="eyebrow" id="resEyebrow">Final de la ronda 1</span>
-      <div><div class="label" data-t="resultats.div1">Foguera més gran</div><div class="winner" id="resWinner"></div></div>
+      <div><div class="label" id="resLabel" data-t="resultats.div1">Guanyador de la ronda</div><div class="winner" id="resWinner"></div></div>
+      <p class="note" id="resSummary" role="status"></p>
       <div class="stats"><div><b id="resMine">0</b><span data-t="resultats.span1">Llenya que has entregat</span></div><div><b id="resMvp">–</b><span id="resMvpL">Millor castanyera</span></div></div>
       <div style="overflow-x:auto"><table id="resTable"></table></div>
-      <div class="btns"><button class="btn" id="nextBtn" data-t="resultats.nextBtn">Següent ronda</button><button class="btn ghost" id="lobbyBtn" data-t="resultats.lobbyBtn">Surt de la sala</button></div>
+      <div class="btns"><button class="btn" id="nextBtn" data-t="resultats.nextBtn">Següent ronda</button><button class="btn" id="rematchBtn" hidden>Nova partida</button><button class="btn ghost" id="lobbyBtn" data-t="resultats.lobbyBtn">Surt de la sala</button></div>
     </div>
   </div>
 </div>
@@ -512,7 +513,7 @@ function fitLabel(el,max,tries=0){el.dataset.fit=max;el.style.fontSize='';el.sty
   for(const up of [true,false]){if(!up){el.style.textTransform='none';}for(let f=max;f>=7;f-=0.5){el.style.fontSize=f+'px';el.style.letterSpacing=f<max?'0':'';if(el.scrollWidth<=el.clientWidth+0.5)return;}}}
 addEventListener('resize',()=>{clearTimeout(fitLabel.t);fitLabel.t=setTimeout(()=>document.querySelectorAll('[data-fit]').forEach(el=>fitLabel(el,+el.dataset.fit)),150);});
 function rollTeamNames(){const pool=TEAM_NAMES.slice();for(const t of TEAMS){const n=pool.splice(Math.floor(Math.random()*pool.length),1)[0];t.short=n;t.name='Els '+n;drawSign(t);}}
-let SLOTS=15,BOT_FILL=10;const ROUND=300,TURN=90,RESPAWN=3,ARENA_R=42,MAXHP=100,PSPEED=16,GRAV=18,BASE_R=33,NIGHT=60,MONI_MAX=3,MONI_R=2.8;
+let SLOTS=15,BOT_FILL=10;const ROUND=300,MATCH_WINS=2,TURN=90,RESPAWN=3,ARENA_R=42,MAXHP=100,PSPEED=16,GRAV=18,BASE_R=33,NIGHT=60,MONI_MAX=3,MONI_R=2.8;
 const TOWER_LV=[null,{cost:8,hp:80,cd:1.0,range:9.5,dmg:8,kind:'nut',label:'Castanyes'},{cost:12,hp:130,cd:0.65,range:11,dmg:10,kind:'fire',label:'Castanyes de foc'},{cost:18,hp:180,cd:0.5,range:12.5,dmg:13,kind:'fire',splash:3,label:'Foc i moniatos'}];
 const CARRY_MAX=10,TOWER_COST=8,TOWER_MAX=3,PVP_DMG=9,TOWER_DMG=8,FIRE_R=1.5,DELIVER_R=3.2,HEAL_R=6.0,BASE_HEAL=16,START_STOCK=10;
 const BOT={speed:5.0,cd:1.5,engage:14},PLAYER_SPEED=5.6;
@@ -1362,7 +1363,7 @@ async function loadAssets(){
 }
 
 /* ---------- estat ---------- */
-const S={phase:'lobby',round:1,time:ROUND,clock:1,cast:[],mons:[],pans:[],logs:[],towers:[],crates:[],crateT:5,puddles:[],player:null,pTeam:0,simFull:false,code:'',holding:false,joy:{on:false,id:null,ox:0,oy:0,x:0,y:0},keys:{},firstMove:false,spawnT:2,panT:4,bosses:0,night:false};
+const S={phase:'lobby',round:1,scoredRound:0,time:ROUND,clock:1,cast:[],mons:[],pans:[],logs:[],towers:[],crates:[],crateT:5,puddles:[],player:null,pTeam:0,simFull:false,code:'',holding:false,joy:{on:false,id:null,ox:0,oy:0,x:0,y:0},keys:{},firstMove:false,spawnT:2,panT:4,bosses:0,night:false};
 let pickTeam=0;
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 function clearRound(){
@@ -1826,7 +1827,7 @@ function updateHud(dt){updateTips(dt);if(FA.t>0){FA.t-=dt;if(FA.t<=0)$('#fireAle
   if(bannerT>0){bannerT-=dt;if(bannerT<=0)$('#banner').style.opacity='0';}
   if(!S.spectator&&S.player){const P=S.player,t=P.team,hr=P.state==='active'?P.hp/MAXHP:0,inHeal=P.state==='active'&&P.hp<MAXHP&&Math.hypot(P.pos.x-t.base.x,P.pos.z-t.base.z)<HEAL_R;$('#hpBar').style.width=(hr*100)+'%';$('#hpTxt').textContent=P.state==='active'?Math.max(0,Math.ceil(P.hp)):0;$('#hpBox').classList.toggle('low',hr<0.3&&!inHeal);$('#hpBox').classList.toggle('heal',inHeal);}
   hudT-=dt;if(hudT>0)return;hudT=0.1;
-  $('#timeLbl').textContent=fmt(S.time);$('#roundLbl').textContent=S.night?'Nit de Difunts':'Ronda '+S.round;$('#clock').classList.toggle('night',S.night);
+  $('#timeLbl').textContent=fmt(S.time);$('#roundLbl').textContent=S.night?'Nit de Difunts':(S.round>3?'Extra ':'Ronda ')+S.round;$('#clock').classList.toggle('night',S.night);
   const LEAD=leaderTeam();TEAMS.forEach((t,i)=>{if(chips[i].n.textContent!==t.short){chips[i].n.textContent=t.short;fitLabel(chips[i].n,10);drawSign(t);}chips[i].el.classList.toggle('lead',t===LEAD);chips[i].s.textContent=t.stock;chips[i].m.textContent=t.queue.length?`llenya · cua ${t.queue.length}`:'llenya';chips[i].el.classList.toggle('me',!S.spectator&&t.id===S.pTeam);chips[i].el.classList.toggle('hit',t.hitT>0||(!S.spectator&&t.id===S.pTeam&&S.baseAlert>0));});
   if(S.spectator){drawMini();updateSpecHud();return;}
   const P=S.player,t=P.team;
@@ -1851,6 +1852,9 @@ function updateHud(dt){updateTips(dt);if(FA.t>0){FA.t-=dt;if(FA.t<=0)$('#fireAle
 }
 
 /* ---------- rondes ---------- */
+function roundWinner(teams){const sorted=teams.slice().sort((a,b)=>b.stock-a.stock);return sorted.length&&(!sorted[1]||sorted[0].stock>sorted[1].stock)?sorted[0]:null;}
+function matchWinner(teams){return teams.find(t=>t.wins>=MATCH_WINS)||null;}
+function recordRoundWin(){if(NET.role==='client'||S.scoredRound===S.round)return;const winner=roundWinner(TEAMS);if(winner)winner.wins++;S.scoredRound=S.round;}
 function resetRound(){refreshProps(S.round);S.time=ROUND;S.spawnT=2.5;S.panT=3;S.bosses=0;S.night=false;clearRound();TEAMS.forEach(t=>{t.stock=START_STOCK;t.delivered=0;t.hitT=0;});for(let i=0;i<3;i++)spawnPanellet(false);for(let i=0;i<3;i++)spawnCrate();}
 async function startGame(){
   await assetsReady;
@@ -1858,7 +1862,7 @@ async function startGame(){
   audioInit();S.tipT=0;S.tipI=-1;
   applyQuality($('#hq').checked);
   S.pTeam=Math.floor(Math.random()*TEAMS.length);S.simFull=NET.role==='host'?false:$('#simFull').checked;S.clock=NET.role==='host'?1:$('#accel').checked?6:1;$('#accLbl').hidden=S.clock===1;
-  TEAMS.forEach(t=>t.wins=0);S.round=1;if(NET.role!=='host')buildRoom();resetRound();
+  TEAMS.forEach(t=>t.wins=0);S.round=1;S.scoredRound=0;if(NET.role!=='host')buildRoom();resetRound();
   S.phase='play';$('#lobby').hidden=true;$('#results').hidden=true;$('#hud').hidden=false;feedEl.innerHTML='';hudT=0;
   if(!NET.role)localSessions.start();
   $('#connectionLabel').textContent=NET.role?`Sala ${S.code} · en línia`:'Partida amb bots';
@@ -1871,16 +1875,20 @@ function endRound(){
   if(!NET.role)localSessions.finish();
   sfx('end');$('#tip').style.opacity='0';
   S.phase='results';S.holding=false;S.joy.on=false;joyEl.hidden=true;for(const p of projPool){p.alive=false;p.mesh.visible=false;}
-  const sorted=TEAMS.slice().sort((a,b)=>b.stock-a.stock);const top=sorted[0];const tie=sorted[1]&&sorted[1].stock===top.stock;if(!tie&&NET.role!=='client')top.wins++;
-  const w=$('#resWinner');w.style.setProperty('--c',tie?'var(--ink)':top.css);w.textContent=tie?'Empat':top.name;
-  $('#resEyebrow').textContent=`Final de la ronda ${S.round} · ${NET.offline?'partida local':'sala '+S.code}`;
+  const top=roundWinner(TEAMS);recordRoundWin();const champion=matchWinner(TEAMS),shown=champion||top,sorted=TEAMS.slice().sort((a,b)=>b.wins-a.wins||b.stock-a.stock);
+  const w=$('#resWinner');w.style.setProperty('--c',shown?shown.css:'var(--ink)');w.textContent=shown?shown.name:'Empat';
+  $('#resLabel').textContent=champion?'Equip guanyador de la partida':'Guanyador de la ronda';
+  $('#resEyebrow').textContent=`${champion?'Final de la partida':S.round>3?'Final de la ronda extra '+S.round:'Final de la ronda '+S.round} · ${NET.offline?'partida local':'sala '+S.code}`;
+  $('#resSummary').textContent=champion?`Ha guanyat ${champion.wins} rondes. Partida acabada!`:(top?'':'Ronda empatada: cap equip suma una victòria. ')+(S.round>=3?'Encara ningú té dues victòries. Continuem amb una ronda de desempat.':'Guanya la partida el primer equip que aconsegueix dues victòries.');
+  $('#nextBtn').hidden=NET.role==='client'||!!champion;$('#nextBtn').textContent=S.round>=3?'Ronda de desempat':'Següent ronda';
+  $('#rematchBtn').hidden=NET.role==='client'||!champion;
   let mvp=null;for(const m of S.cast)if(!mvp||m.delivered>mvp.delivered)mvp=m;
   $('#resMine').textContent=S.spectator?'–':S.player.delivered;$('#resMvp').textContent=mvp&&mvp.delivered?mvp.name:'–';$('#resMvpL').textContent=mvp&&mvp.delivered?`Millor castanyera · ${mvp.delivered} de llenya (${mvp.team.short})`:'Millor castanyera';
-  $('#resTable').innerHTML='<tr><th>#</th><th>Equip</th><th class="num">Llenya</th><th class="num">Rondes</th></tr>'+sorted.map((t,i)=>`<tr><td>${i+1}</td><td><span class="tdot" style="--c:${t.css}"></span>${t.name}${t.id===S.pTeam?' (tu)':''}</td><td class="num">${t.stock}</td><td class="num">${t.wins}</td></tr>`).join('');
+  $('#resTable').innerHTML='<tr><th>#</th><th>Equip</th><th class="num">Llenya</th><th class="num">Victòries</th></tr>'+sorted.map((t,i)=>`<tr><td>${i+1}</td><td><span class="tdot" style="--c:${t.css}"></span>${t.name}${t.id===S.pTeam?' (tu)':''}</td><td class="num">${t.stock}</td><td class="num">${t.wins}/${MATCH_WINS}</td></tr>`).join('');
   $('#results').hidden=false;
 }
 function nextRound(){
-  if(NET.role==='client')return;
+  if(NET.role==='client'||S.phase!=='results'||matchWinner(TEAMS))return;
   if(!NET.role){netTrack('local');localSessions.start();}
   S.round++;resetRound();
   TEAMS.forEach(t=>{for(const m of t.members){m.kills=0;m.delivered=0;m.superCd=0;if(m.state==='respawning')m.state='queue';}
@@ -1888,6 +1896,7 @@ function nextRound(){
     for(const m of t.active.slice())spawn(m);});
   S.phase='play';$('#results').hidden=true;feedEl.innerHTML='';hudT=0;banner(`Ronda ${S.round}`,'var(--ember)');
 }
+function restartMatch(){if(NET.role==='client'||S.phase!=='results'||!matchWinner(TEAMS))return;TEAMS.forEach(t=>t.wins=0);S.round=0;S.scoredRound=0;NET.previous.clear();nextRound();}
 function openPause(){if(S.phase!=='play')return;if(!NET.role)localSessions.pause();if(NET.role==='client')NET.localPaused=true;else S.phase='paused';S.holding=false;S.joy.on=false;S.joy.x=S.joy.y=0;S.keys={};joyEl.hidden=true;
   $('#pauseCode').textContent=NET.offline?'· partida local':'· codi '+S.code;
   const canSw=NET.role==='client'&&!S.spectator&&S.player&&S.player.team;
@@ -1899,6 +1908,7 @@ $('#pauseSwitch').addEventListener('click',e=>{const b=e.target.closest('[data-s
 $('#resumeBtn').addEventListener('click',()=>{NET.localPaused=false;$('#pause').hidden=true;if(NET.role!=='client')S.phase='play';if(!NET.role)localSessions.resume();});
 const toLobby=()=>{localSessions.finish();netClose();$('#nextBtn').hidden=false;specRing.visible=false;$('#spec').hidden=true;$('#hud').classList.remove('spectating');S.spectator=false;$('#pause').hidden=true;$('#results').hidden=true;$('#hud').hidden=true;S.phase='lobby';$('#lobby').hidden=false;showCard('home');clearWorld();S.player=null;};
 $('#quitBtn').addEventListener('click',toLobby);$('#lobbyBtn').addEventListener('click',toLobby);$('#nextBtn').addEventListener('click',nextRound);
+$('#rematchBtn').addEventListener('click',restartMatch);
 document.addEventListener('visibilitychange',()=>{if(document.hidden){if(NET.role==='client'){S.holding=false;S.keys={};S.joy.x=S.joy.y=0;NET.tap=false;setTimeout(()=>netInputs(performance.now()),110);}else if(NET.role!=='host')openPause();}});
 addEventListener('blur',()=>{S.keys={};S.holding=false;S.joy.x=S.joy.y=0;NET.tap=false;});
 
@@ -2103,6 +2113,7 @@ function netReplica(d){const team=TEAMS[d.team||0];let e={pos:new THREE.Vector3(
 }
 function netReceive(m){
   if(!m.full&&m.seq!==NET.received+1){if(!NET.resync){NET.resync=true;netSend({t:'sync'});}return;}
+  const previousRound=S.round,previousScores=TEAMS.map(t=>t.stock+':'+t.wins).join('|');
   if(m.full){for(const e of NET.replicas.values())netDispose(e);NET.replicas.clear();clearWorld();NET.resync=false;}
   NET.received=m.seq;NET.lastState=performance.now();
   for(const id of m.del||[]){const e=NET.replicas.get(id);if(e){netDispose(e);NET.replicas.delete(id);}}
@@ -2120,7 +2131,7 @@ function netReceive(m){
   if(!S.player)S.player={name:'Espectador',team:TEAMS[pickTeam],state:'spectator',pos:new THREE.Vector3(),vel:new THREE.Vector3(),hp:100,carry:0,delivered:0};
   S.pTeam=S.player.team.id;if(!S.spectator&&S.player.peer===NET.id&&!NET.teamNoted&&m.meta.phase!=='lobby'){NET.teamNoted=true;if(wantTeam&&S.player.team.short!==wantTeam){addFeed(`<b>Els ${esc(wantTeam)}</b> és ple`,` · jugues amb ${teamTag(S.player.team)}`);banner(`Ets dels ${S.player.team.short}`,S.player.team.css);}}S.time=m.meta.time;S.night=m.meta.night;S.round=m.meta.round;refreshProps(S.round);$('#connectionLabel').textContent=`Sala ${S.code} · en línia`;
   const phase=m.meta.phase;
-  if(phase==='results'&&S.phase!=='results'){endRound();$('#nextBtn').hidden=true;}
+  if(phase==='results'&&(S.phase!=='results'||S.round!==previousRound||previousScores!==TEAMS.map(t=>t.stock+':'+t.wins).join('|'))){endRound();}
   else if(phase!=='results'){S.phase=phase;if(phase==='lobby'){netWaiting();$('#onlineStatus').textContent='Espera que el professor comenci.';}else{$('#lobby').hidden=true;$('#results').hidden=true;$('#hud').hidden=false;$('#hud').classList.toggle('spectating',!!S.spectator);$('#spec').hidden=!S.spectator;}}
   for(const ev of m.events||[]){if(ev.t==='ona'){waveFx(ev.x,ev.z);}else if(ev.t==='baixa'){showElimination(ev);}else if(ev.t==='tir'){sfx(ev.kind==='bazooka'?'heavy':ev.kind==='fire'?'fire':'throw',ev.x,ev.z);}else if(ev.t==='entrega'){sparks(ev.x,2,ev.z,10,0xffc050,5);popText(ev.x,3,ev.z,'+'+ev.n+' llenya','wood');sfx('deliver',ev.x,ev.z);}else if(ev.t==='atacBase'){const t=TEAMS[ev.team];if(t){baseHitFx(t,ev.n||0,ev.x,ev.z);if(!S.spectator&&S.player&&t===S.player.team)fireAlert(ev.src==='mon'?'mon':{short:ev.src||'Un rival'});}}else if(ev.t==='mort'){smoke(ev.x,.6,ev.z,6);shock(ev.x,ev.z,2,0xffa040);}else{sparks(ev.x,1,ev.z,6,0xffa040,4);sfx('hit',ev.x,ev.z);}}
   netRoster();
