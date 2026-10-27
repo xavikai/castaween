@@ -240,16 +240,16 @@
     ],
     "paradeta": [
       {
-        "id": "integrat-paradeta",
-        "nom": "Original de Castaween",
-        "integrat": true
-      },
-      {
         "id": "alumnat-oliveras-paradeta",
         "nom": "Paradeta de castanyes · Anna",
         "autor": "Anna Oliveras",
         "curs": "3D i videojocs",
         "fitxer": "escenari/alumnat/3d-oliveras-anna-paradeta-de-castanyes.glb"
+      },
+      {
+        "id": "integrat-paradeta",
+        "nom": "Original de Castaween",
+        "integrat": true
       }
     ],
     "portal": [
@@ -269,16 +269,16 @@
     ],
     "foguera": [
       {
-        "id": "integrat-foguera",
-        "nom": "Original de Castaween",
-        "integrat": true
-      },
-      {
         "id": "alumnat-torres-foguera",
         "nom": "Foguera · Alejandro",
         "autor": "Alejandro Torres",
         "curs": "3D i videojocs",
         "fitxer": "escenari/alumnat/3d-torres-alejandro-foguera.glb"
+      },
+      {
+        "id": "integrat-foguera",
+        "nom": "Original de Castaween",
+        "integrat": true
       }
     ]
   },

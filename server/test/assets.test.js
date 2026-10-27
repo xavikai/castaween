@@ -43,6 +43,12 @@ test('all five teams share the same fire and stall model each round, including o
   }
   assert.equal(c.propAssignments(models,[],1,'foguera').size,0);
   assert.equal(c.propAssignments(models,places,1,'lapida').size,3,'other scenery still mixes variants');
+  const manifest=JSON.parse(fs.readFileSync(new URL('../../assets/assets.json',import.meta.url)));
+  for(const kind of ['foguera','paradeta'])for(let round=1;round<=4;round++){
+    const [[model,assigned]]=c.propAssignments(manifest.escenari[kind],places,round,kind);
+    assert.equal(model.integrat===true,round%2===0,'student model first, then original: '+kind+' round '+round);
+    assert.equal(assigned.length,5);
+  }
 });
 test('network snapshots preserve the chosen model for every dynamic asset',()=>{
   const g=id=>({userData:{assetId:id}}),o=(id,extra={})=>({pos:{x:1,y:0,z:2},mesh:{g:g(id)},g:g(id),vel:{x:0,z:0},...extra});

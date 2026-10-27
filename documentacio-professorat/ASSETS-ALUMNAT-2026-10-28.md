@@ -23,7 +23,7 @@ La Mortícia conserva la mateixa vida, velocitat, mal, aparicions i recompenses 
 
 - Cada tipus conserva la variant procedural original amb una entrada `integrat: true`. Cada aparició dinàmica agafa la següent variant, inclosa l'original; l'amfitrió sincronitza l'identificador amb els clients. L'identificador buit continua representant el model original en línia.
 - En escenari fix es reparteixen variants per posició i es renoven cada ronda. El portal únic mostra l'original a la ronda 1, el de Quim a la 2 i l'original a la 3. Cases, làpides, pins, arbres secs i criptes conviuen amb les originals dins la mateixa ronda.
-- Fogueres i paradetes fan servir un únic model de cada tipus per ronda, compartit pels cinc equips, conservant el color de cadascun. Amb les entregues actuals, tots fan servir els originals a la ronda 1, els models d'Alejandro i Anna a la ronda 2, i els originals a la ronda 3.
+- Fogueres i paradetes fan servir un únic model de cada tipus per ronda, compartit pels cinc equips, conservant el color de cadascun. Amb les entregues actuals, tots fan servir els models d'Alejandro i Anna a la ronda 1, els originals a la ronda 2, els de l'alumnat a la ronda 3, i així successivament. El manifest i l'importador conserven aquest ordre.
 - Es conserven les geometries i transformacions originals, també les instàncies i els resplendors de les finestres. Canviar de ronda les amaga o restaura sense perdre-les.
 - El portal pla de Quim s'ajusta a 0,32 m d'alt per mantenir uns 5,5 m de diàmetre; el panet a 0,24 m d'alt. Els models s'escalen uniformement, sense deformar-los.
 - Les col·lisions, la vida, el moviment, les regles i les recompenses mantenen els valors que ja tenia el joc.

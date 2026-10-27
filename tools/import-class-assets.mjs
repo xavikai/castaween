@@ -28,6 +28,7 @@ for (const sourceName of fs.readdirSync(source).filter(s => /\.glb$/i.test(s)).s
   const existing = manifest[group][kind] || [{ id: 'integrat-' + kind, nom: 'Original de Castaween', integrat: true }];
   const list = Array.isArray(existing) ? existing : [existing];
   manifest[group][kind] = list.filter(e => e.id !== entry.id).concat(entry);
+  if (kind === 'foguera' || kind === 'paradeta') manifest[group][kind].sort((a, b) => Number(!!a.integrat) - Number(!!b.integrat));
   fs.mkdirSync(path.dirname(destination), { recursive: true }); fs.copyFileSync(path.join(source, sourceName), destination);
   plan.push({ source: path.resolve(source, sourceName), sourceName, destination: path.resolve(destination), kind, author: authors[surname], title: entry.nom, triangles, limit: limits[kind], meshes: doc.meshes.length,
     optimize: triangles > limits[kind] || doc.meshes.length > 1, sha256: crypto.createHash('sha256').update(bytes).digest('hex') });
